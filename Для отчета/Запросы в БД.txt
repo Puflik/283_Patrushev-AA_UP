@@ -1,0 +1,47 @@
+CREATE TABLE users (
+    "userID" SERIAL PRIMARY KEY,
+    fio VARCHAR(255) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    login VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    type VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE requests (
+    "requestID" SERIAL PRIMARY KEY,
+    "startDate" DATE NOT NULL,
+    "carType" VARCHAR(100) NOT NULL,
+    "carModel" VARCHAR(100) NOT NULL,
+    "problemDescryption" TEXT NOT NULL,
+    "requestStatus" VARCHAR(50) NOT NULL,
+    "completionDate" DATE,
+    "repairParts" TEXT,
+    "masterID" INTEGER REFERENCES "users"("userID") ON DELETE SET NULL,
+    "clientID" INTEGER NOT NULL REFERENCES "users"("userID") ON DELETE CASCADE
+);
+
+CREATE TABLE comments (
+    "commentID" SERIAL PRIMARY KEY,
+    message TEXT NOT NULL,
+    "masterID" INTEGER NOT NULL REFERENCES "users"("userID") ON DELETE CASCADE,
+    "requestID" INTEGER NOT NULL REFERENCES "requests"("requestID") ON DELETE CASCADE
+);
+
+
+COPY users("userID", fio, phone, login, password, type) 
+FROM 'C:\postgresql\17\data\inputDataUsers.csv'
+DELIMITER ';' 
+CSV HEADER;
+
+COPY requests("requestID", "startDate", "carType", "carModel", "problemDescryption", "requestStatus", "completionDate", "repairParts", "masterID", "clientID") 
+FROM 'C:\postgresql\17\data\inputDataRequests.txt'
+DELIMITER ';' 
+CSV HEADER
+NULL 'null';
+
+COPY comments("commentID", message, "masterID", "requestID") 
+FROM 'C:\postgresql\17\data\inputDataComments.csv'
+DELIMITER ';' 
+CSV HEADER;
+
+
