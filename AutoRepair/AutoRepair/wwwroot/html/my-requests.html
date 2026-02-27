@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <title>Мои заявки — АвтоТранс</title>
+  <link rel="stylesheet" href="../css/shared.css">
+</head>
+<body>
+
+<input type="hidden" id="currentUserId" value="" />
+
+<nav class="client-nav">
+  <span class="client-nav__logo">АвтоТранс</span>
+  <div class="client-nav__links">
+    <a class="client-nav__link" href="/profile">Главная</a>
+    <a class="client-nav__link active" href="/my-requests">Мои заявки</a>
+    <a class="client-nav__link" href="/create-request">Создать заявку</a>
+    <a class="client-nav__link" href="/faq">FAQ</a>
+    <a class="client-nav__link" href="/contact">Связаться с нами</a>
+  </div>
+  <div class="client-nav__user">
+    <div class="client-nav__avatar" id="navAvatar">ИИ</div>
+    <span class="client-nav__name" id="navName"></span>
+  </div>
+</nav>
+
+<div style="padding: 28px 40px;">
+  <div class="flex items-center justify-between mb-20">
+    <h1>Мои заявки</h1>
+    <a href="/create-request" class="btn btn-primary">+ Новая заявка</a>
+  </div>
+
+  <div class="filters">
+    <button class="filter-btn active" data-status="all">Все</button>
+    <button class="filter-btn" data-status="new">Новые</button>
+    <button class="filter-btn" data-status="in_progress">В работе</button>
+    <button class="filter-btn" data-status="waiting">Ожидание</button>
+    <button class="filter-btn" data-status="done">Завершено</button>
+    <button class="filter-btn" data-status="cancelled">Отменено</button>
+  </div>
+
+  <div class="card" style="padding:0; overflow:hidden;">
+    <div class="table-wrap">
+      <table id="t1">
+        <thead>
+          <tr>
+            <th>№</th>
+            <th>Дата</th>
+            <th>Вид авто</th>
+            <th>Модель</th>
+            <th>Проблема</th>
+            <th>Статус</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="../js/my-requests.js"></script>
+</body>
+</html>

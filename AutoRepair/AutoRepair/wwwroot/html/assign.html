@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <title>Назначение механика — АвтоТранс</title>
+  <link rel="stylesheet" href="../css/shared.css">
+</head>
+<body>
+<input type="hidden" id="currentUserId" value="" />
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="sidebar__logo">АвтоТранс</div>
+    <div class="sidebar__role">Менеджер</div>
+    <div class="sidebar__divider"></div>
+    <a class="sidebar__link active" href="/requests">
+      <span class="icon">☰</span> Заявки
+    </a>
+    <a class="sidebar__link" href="/statistics">
+      <span class="icon">#</span> Статистика
+    </a>
+    <div class="sidebar__bottom">
+      <div class="sidebar__divider"></div>
+      <div class="sidebar__user">
+        <div class="sidebar__avatar">МА</div>
+        <div><div class="sidebar__uname" id="sidebarName">—</div></div>
+      </div>
+      <div class="sidebar__logout"><a href="/api/logout">Выйти</a></div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <span class="topbar__title">Назначение механика</span>
+      <span class="topbar__sub" id="topbarSub"></span>
+    </div>
+    <div class="content">
+
+      <div class="breadcrumb mb-16">
+        <a id="backLink" href="/requests">← Назад к заявке</a>
+      </div>
+
+      <div class="card mb-24" style="border-left:4px solid var(--st-new);">
+        <input type="hidden" id="requestID" />
+        <div class="flex items-center gap-16">
+          <div>
+            <div class="font-bold" id="requestInfo">—</div>
+            <div class="text-sm text-muted mt-4" id="requestProblem">—</div>
+          </div>
+          <span class="badge badge-new" style="margin-left:auto;" id="statusBadge">Новая</span>
+        </div>
+      </div>
+
+      <h2 class="mb-8">Выберите механика</h2>
+      <p class="text-sm text-muted mb-20">Доступность и нагрузка по каждому механику</p>
+
+      <div class="card" style="padding:0; overflow:hidden; max-width:900px;">
+        <div class="table-wrap">
+          <table id="t1">
+            <thead>
+              <tr>
+                <th>Механик</th>
+                <th>Телефон</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="divider" style="max-width:900px;"></div>
+
+      <div class="flex gap-16 items-center" style="max-width:900px;">
+        <div class="form-group" style="flex:0 0 200px;">
+          <label>Срок выполнения</label>
+          <input type="date" id="completionDateInput" />
+        </div>
+        <div style="margin-top:18px;">
+          <button class="btn btn-ghost" onclick="location.href='/requests'">Отмена</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="../js/assign.js"></script>
+</body>
+</html>

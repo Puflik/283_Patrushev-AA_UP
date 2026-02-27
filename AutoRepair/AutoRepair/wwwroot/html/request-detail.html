@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <title>Заявка — АвтоТранс</title>
+  <link rel="stylesheet" href="../css/shared.css">
+</head>
+<body>
+
+<input type="hidden" id="currentUserId" value="" />
+
+<nav class="client-nav">
+  <span class="client-nav__logo">АвтоТранс</span>
+  <div class="client-nav__links">
+    <a class="client-nav__link" href="/profile">Главная</a>
+    <a class="client-nav__link active" href="/my-requests">Мои заявки</a>
+    <a class="client-nav__link" href="/create-request">Создать заявку</a>
+    <a class="client-nav__link" href="/faq">FAQ</a>
+    <a class="client-nav__link" href="/contact">Связаться с нами</a>
+  </div>
+  <div class="client-nav__user">
+    <div class="client-nav__avatar">ИИ</div>
+  </div>
+</nav>
+
+<div style="padding: 28px 40px;">
+  <div class="breadcrumb mb-16">
+    <a href="/my-requests">← Назад к списку</a>
+  </div>
+
+  <div class="flex items-center gap-12 mb-24">
+    <h1 id="pageTitle">Заявка #—</h1>
+    <span class="badge" id="statusBadge"></span>
+  </div>
+
+  <div class="grid-2" style="max-width:1000px;">
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Информация о заявке</span>
+      </div>
+
+      <input type="hidden" id="requestID" />
+
+      <div class="grid-2 gap-20">
+        <div class="form-group">
+          <label>Дата создания</label>
+          <input type="text" id="startDate" readonly />
+        </div>
+        <div class="form-group">
+          <label>Срок выполнения</label>
+          <input type="text" id="completionDate" readonly />
+        </div>
+        <div class="form-group">
+          <label>Вид авто</label>
+          <input type="text" id="carType" readonly />
+        </div>
+        <div class="form-group">
+          <label>Модель</label>
+          <input type="text" id="carModel" readonly />
+        </div>
+        <div class="form-group" style="grid-column:1/-1;">
+          <label>Описание проблемы</label>
+          <textarea id="problem" readonly></textarea>
+        </div>
+        <div class="form-group" style="grid-column:1/-1;">
+          <label>Запчасти и материалы</label>
+          <input type="text" id="repairParts" readonly />
+        </div>
+        <div class="form-group">
+          <label>Статус</label>
+          <input type="text" id="status" readonly />
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div>
+        <button class="btn btn-danger hidden" id="cancelBtn">Отменить заявку</button>
+        <p class="text-sm text-muted mt-8" id="cancelHint">Отмена доступна только для заявок со статусом «Новая»</p>
+      </div>
+    </div>
+
+    <div class="card" style="align-self:start;">
+      <div class="card-header">
+        <span class="card-title">История статусов</span>
+      </div>
+      <div class="timeline" id="timeline">
+      </div>
+    </div>
+
+  </div>
+
+  <div class="card mt-20" style="max-width:1000px;">
+    <div class="card-header">
+      <span class="card-title">Комментарии</span>
+    </div>
+    <div class="table-wrap">
+      <table id="t1">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Сообщение</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="../js/request-detail.js"></script>
+</body>
+</html>

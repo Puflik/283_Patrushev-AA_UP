@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <title>Вход — АвтоТранс</title>
+  <link rel="stylesheet" href="../css/shared.css">
+  <link rel="stylesheet" href="../css/login.css">
+</head>
+<body>
+<div class="login-page">
+
+  <div class="login-page__left" style="position:relative;overflow:hidden;">
+    <div class="login-page__decor1"></div>
+    <div class="login-page__decor2"></div>
+    <div class="login-page__brand">АвтоТранс</div>
+    <div class="login-page__tagline">Удобное управление<br>заявками на ремонт автомобилей</div>
+  </div>
+
+  <div class="login-page__right">
+    <div class="login-page__title">Добро пожаловать</div>
+    <div class="login-page__sub">Войдите или создайте аккаунт</div>
+
+    <div class="login-tabs">
+      <button class="login-tab active" id="tabLogin">Вход</button>
+      <button class="login-tab" id="tabRegister">Регистрация</button>
+    </div>
+
+    <div class="login-form" id="formLogin">
+      <div class="form-group">
+        <label>Логин</label>
+        <input type="text" id="userLogin" placeholder="Введите логин" />
+      </div>
+      <div class="form-group">
+        <label>Пароль</label>
+        <input type="password" id="userPassword" placeholder="Введите пароль" />
+      </div>
+      <div class="error-msg" id="errorMsg"></div>
+      <button class="btn btn-primary w-full" id="saveBtn">Войти</button>
+      <p class="text-sm text-muted" style="text-align:center;">
+        Нет аккаунта? <a href="#" id="linkToRegister">Зарегистрируйтесь</a>
+      </p>
+    </div>
+
+    <div class="login-form hidden" id="formRegister">
+      <div class="form-group">
+        <label>ФИО</label>
+        <input type="text" id="regFio" placeholder="Иванов Иван Иванович" />
+      </div>
+      <div class="form-group">
+        <label>Телефон</label>
+        <input type="text" id="regPhone" placeholder="+7 (___) ___-__-__" />
+      </div>
+      <div class="form-group">
+        <label>Логин</label>
+        <input type="text" id="regLogin" placeholder="Придумайте логин" />
+      </div>
+      <div class="form-group">
+        <label>Пароль</label>
+        <input type="password" id="regPassword" placeholder="Придумайте пароль" />
+      </div>
+      <div class="error-msg" id="errorMsgReg"></div>
+      <button class="btn btn-primary w-full" id="regBtn">Зарегистрироваться</button>
+      <p class="text-sm text-muted" style="text-align:center;">
+        Уже есть аккаунт? <a href="#" id="linkToLogin">Войти</a>
+      </p>
+    </div>
+  </div>
+
+</div>
+<script src="../js/login.js"></script>
+</body>
+</html>

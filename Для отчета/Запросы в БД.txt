@@ -1,47 +1,44 @@
-CREATE TABLE users (
-    "userID" SERIAL PRIMARY KEY,
-    fio VARCHAR(255) NOT NULL,
-    phone VARCHAR(20) NOT NULL,
-    login VARCHAR(100) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    type VARCHAR(50) NOT NULL
+CREATE TABLE "Users" (
+    "UserID" SERIAL PRIMARY KEY,
+    "Fio" VARCHAR(255) NOT NULL,
+    "Phone" VARCHAR(20) NOT NULL,
+    "Login" VARCHAR(100) UNIQUE NOT NULL,
+    "Password" VARCHAR(255) NOT NULL,
+    "Type" VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE requests (
-    "requestID" SERIAL PRIMARY KEY,
-    "startDate" DATE NOT NULL,
-    "carType" VARCHAR(100) NOT NULL,
-    "carModel" VARCHAR(100) NOT NULL,
-    "problemDescryption" TEXT NOT NULL,
-    "requestStatus" VARCHAR(50) NOT NULL,
-    "completionDate" DATE,
-    "repairParts" TEXT,
-    "masterID" INTEGER REFERENCES "users"("userID") ON DELETE SET NULL,
-    "clientID" INTEGER NOT NULL REFERENCES "users"("userID") ON DELETE CASCADE
+CREATE TABLE "Requests" (
+    "RequestID" SERIAL PRIMARY KEY,
+    "StartDate" DATE NOT NULL,
+    "CarType" VARCHAR(100) NOT NULL,
+    "CarModel" VARCHAR(100) NOT NULL,
+    "ProblemDescryption" TEXT NOT NULL,
+    "RequestStatus" VARCHAR(50) NOT NULL,
+    "CompletionDate" DATE,
+    "RepairParts" TEXT,
+    "MasterID" INTEGER REFERENCES "Users"("UserID") ON DELETE SET NULL,
+    "ClientID" INTEGER NOT NULL REFERENCES "Users"("UserID") ON DELETE CASCADE
 );
 
-CREATE TABLE comments (
-    "commentID" SERIAL PRIMARY KEY,
-    message TEXT NOT NULL,
-    "masterID" INTEGER NOT NULL REFERENCES "users"("userID") ON DELETE CASCADE,
-    "requestID" INTEGER NOT NULL REFERENCES "requests"("requestID") ON DELETE CASCADE
+CREATE TABLE "Comments" (
+    "CommentID" SERIAL PRIMARY KEY,
+    "Message" TEXT NOT NULL,
+    "MasterID" INTEGER NOT NULL REFERENCES "Users"("UserID") ON DELETE CASCADE,
+    "RequestID" INTEGER NOT NULL REFERENCES "Requests"("RequestID") ON DELETE CASCADE
 );
 
-
-COPY users("userID", fio, phone, login, password, type) 
+COPY "Users"("UserID", "Fio", "Phone", "Login", "Password", "Type") 
 FROM 'C:\postgresql\17\data\inputDataUsers.csv'
 DELIMITER ';' 
 CSV HEADER;
 
-COPY requests("requestID", "startDate", "carType", "carModel", "problemDescryption", "requestStatus", "completionDate", "repairParts", "masterID", "clientID") 
+COPY "Requests"("RequestID", "StartDate", "CarType", "CarModel", "ProblemDescryption", "RequestStatus", "CompletionDate", "RepairParts", "MasterID", "ClientID") 
 FROM 'C:\postgresql\17\data\inputDataRequests.txt'
 DELIMITER ';' 
 CSV HEADER
 NULL 'null';
 
-COPY comments("commentID", message, "masterID", "requestID") 
+COPY "Comments"("CommentID", "Message", "MasterID", "RequestID") 
 FROM 'C:\postgresql\17\data\inputDataComments.csv'
 DELIMITER ';' 
 CSV HEADER;
-
-

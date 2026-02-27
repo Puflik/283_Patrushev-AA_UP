@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <title>Статистика — АвтоТранс</title>
+  <link rel="stylesheet" href="../css/shared.css">
+</head>
+<body>
+<input type="hidden" id="currentUserId" value="" />
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="sidebar__logo">АвтоТранс</div>
+    <div class="sidebar__role" id="sidebarRole">—</div>
+    <div class="sidebar__divider"></div>
+    <a class="sidebar__link" href="/requests">
+      <span class="icon">☰</span> Заявки
+    </a>
+    <a class="sidebar__link active" href="/statistics">
+      <span class="icon">#</span> Статистика
+    </a>
+    <a class="sidebar__link hidden" href="/staff" id="linkStaff">
+      <span class="icon">@</span> Сотрудники
+    </a>
+    <div class="sidebar__bottom">
+      <div class="sidebar__divider"></div>
+      <div class="sidebar__user">
+        <div class="sidebar__avatar" id="sidebarAvatar">—</div>
+        <div>
+          <div class="sidebar__uname" id="sidebarName">—</div>
+        </div>
+      </div>
+      <div class="sidebar__logout"><a href="/api/logout">Выйти</a></div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <span class="topbar__title">Статистика</span>
+      <span class="topbar__sub">Анализ работы сервиса</span>
+    </div>
+    <div class="content">
+
+      <div class="filters mb-24">
+        <button class="filter-btn" data-period="week">Неделя</button>
+        <button class="filter-btn active" data-period="month">Месяц</button>
+        <button class="filter-btn" data-period="quarter">Квартал</button>
+        <button class="filter-btn" data-period="year">Год</button>
+      </div>
+
+      <div class="metrics">
+        <div class="metric-card" style="--_color:var(--st-done);">
+          <div class="val" id="statDone">—</div>
+          <div class="lbl">Выполнено заявок</div>
+        </div>
+        <div class="metric-card" style="--_color:var(--accent);">
+          <div class="val" id="statAvgTime">—</div>
+          <div class="lbl">Среднее время выполнения</div>
+        </div>
+        <div class="metric-card" style="--_color:var(--st-new);">
+          <div class="val" id="statTotal">—</div>
+          <div class="lbl">Всего заявок за период</div>
+        </div>
+        <div class="metric-card" style="--_color:var(--st-work);">
+          <div class="val" id="statWaiting">—</div>
+          <div class="lbl">Ожидают назначения</div>
+        </div>
+      </div>
+
+      <div class="grid-2 mb-20">
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Заявки по дням</span>
+          </div>
+          <div id="barChart" style="display:flex;align-items:flex-end;gap:6px;height:160px;padding-bottom:24px;position:relative;">
+          </div>
+          <div id="barLabels" style="display:flex;gap:6px;margin-top:4px;"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Топ неисправностей</span>
+          </div>
+          <div id="issuesList">
+          </div>
+        </div>
+
+      </div>
+
+      <div class="card" style="padding:0; overflow:hidden;">
+        <div class="card-header" style="padding:16px 20px;">
+          <span class="card-title">Производительность механиков</span>
+        </div>
+        <div class="table-wrap">
+          <table id="t1">
+            <thead>
+              <tr>
+                <th>Механик</th>
+                <th>Выполнено заявок</th>
+                <th>Среднее время</th>
+                <th>Последняя заявка</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="../js/statistics.js"></script>
+</body>
+</html>

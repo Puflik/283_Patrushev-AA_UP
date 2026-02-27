@@ -1,12 +1,71 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{1BB69342-6CE8-42E7-82D6-10EF65415536}|AutoRepair\\AutoRepair.csproj|c:\\users\\\u0430\u043D\u0442\u043E\u043D\\downloads\\\u0438\u0441\u0440\u043F\u043E\\283_patrushev-aa_up\\autorepair\\autorepair\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1BB69342-6CE8-42E7-82D6-10EF65415536}|AutoRepair\\AutoRepair.csproj|solutionrelative:autorepair\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1BB69342-6CE8-42E7-82D6-10EF65415536}|AutoRepair\\AutoRepair.csproj|c:\\users\\\u0430\u043D\u0442\u043E\u043D\\downloads\\\u0438\u0441\u0440\u043F\u043E\\283_patrushev-aa_up\\autorepair\\autorepair\\wwwroot\\html\\faq.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{1BB69342-6CE8-42E7-82D6-10EF65415536}|AutoRepair\\AutoRepair.csproj|solutionrelative:autorepair\\wwwroot\\html\\faq.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1BB69342-6CE8-42E7-82D6-10EF65415536}|AutoRepair\\AutoRepair.csproj|c:\\users\\\u0430\u043D\u0442\u043E\u043D\\downloads\\\u0438\u0441\u0440\u043F\u043E\\283_patrushev-aa_up\\autorepair\\autorepair\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{1BB69342-6CE8-42E7-82D6-10EF65415536}|AutoRepair\\AutoRepair.csproj|solutionrelative:autorepair\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "faq.html",
+              "DocumentMoniker": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\wwwroot\\html\\faq.html",
+              "RelativeDocumentMoniker": "AutoRepair\\wwwroot\\html\\faq.html",
+              "ToolTip": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\wwwroot\\html\\faq.html",
+              "RelativeToolTip": "AutoRepair\\wwwroot\\html\\faq.html",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2026-02-27T16:33:23.093Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\appsettings.json",
+              "RelativeDocumentMoniker": "AutoRepair\\appsettings.json",
+              "ToolTip": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\appsettings.json",
+              "RelativeToolTip": "AutoRepair\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-02-27T16:20:03.534Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\Program.cs",
+              "RelativeDocumentMoniker": "AutoRepair\\Program.cs",
+              "ToolTip": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\Program.cs",
+              "RelativeToolTip": "AutoRepair\\Program.cs",
+              "ViewState": "AgIAABUBAAAAAAAAAIA1wB8BAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-27T05:10:26.034Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }

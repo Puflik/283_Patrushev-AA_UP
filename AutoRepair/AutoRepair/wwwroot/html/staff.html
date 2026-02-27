@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <title>Сотрудники — АвтоТранс</title>
+  <link rel="stylesheet" href="../css/shared.css">
+</head>
+<body>
+<input type="hidden" id="currentUserId" value="" />
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="sidebar__logo">АвтоТранс</div>
+    <div class="sidebar__role">Администратор</div>
+    <div class="sidebar__divider"></div>
+    <a class="sidebar__link" href="/requests">
+      <span class="icon">☰</span> Заявки
+    </a>
+    <a class="sidebar__link" href="/statistics">
+      <span class="icon">#</span> Статистика
+    </a>
+    <a class="sidebar__link active" href="/staff">
+      <span class="icon">@</span> Сотрудники
+    </a>
+    <div class="sidebar__bottom">
+      <div class="sidebar__divider"></div>
+      <div class="sidebar__user">
+        <div class="sidebar__avatar">АД</div>
+        <div>
+          <div class="sidebar__uname" id="sidebarName">—</div>
+        </div>
+      </div>
+      <div class="sidebar__logout"><a href="/api/logout">Выйти</a></div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <span class="topbar__title">Сотрудники</span>
+      <span class="topbar__sub">Управление учётными записями</span>
+    </div>
+    <div class="content">
+
+      <div class="card mb-20">
+        <div class="card-header">
+          <span class="card-title" id="formTitle">Добавить сотрудника</span>
+        </div>
+        <input type="hidden" id="userID" />
+        <div class="grid-2 gap-16">
+          <div class="form-group" style="grid-column:1/-1;">
+            <label>ФИО</label>
+            <input type="text" id="userFio" placeholder="Фамилия Имя Отчество" />
+          </div>
+          <div class="form-group">
+            <label>Телефон</label>
+            <input type="text" id="userPhone" placeholder="+7 (___) ___-__-__" />
+          </div>
+          <div class="form-group">
+            <label>Логин</label>
+            <input type="text" id="userLogin" placeholder="Логин для входа" />
+          </div>
+          <div class="form-group">
+            <label>Пароль</label>
+            <input type="password" id="userPassword" placeholder="Пароль" />
+          </div>
+          <div class="form-group">
+            <label>Роль</label>
+            <select id="userType">
+              <option value="mechanic">Механик</option>
+              <option value="manager">Менеджер</option>
+              <option value="admin">Администратор</option>
+            </select>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="flex gap-12">
+          <button class="btn btn-primary" id="saveBtn">Сохранить</button>
+          <button class="btn btn-ghost" id="resetBtn">Очистить</button>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between mb-12">
+        <div class="filters" style="margin-bottom:0;">
+          <button class="filter-btn active" data-role="all">Все</button>
+          <button class="filter-btn" data-role="mechanic">Механики</button>
+          <button class="filter-btn" data-role="manager">Менеджеры</button>
+          <button class="filter-btn" data-role="admin">Администраторы</button>
+        </div>
+      </div>
+
+      <div class="card" style="padding:0; overflow:hidden;">
+        <div class="table-wrap">
+          <table id="t1">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>ФИО</th>
+                <th>Телефон</th>
+                <th>Логин</th>
+                <th>Пароль</th>
+                <th>Роль</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="../js/staff.js"></script>
+</body>
+</html>
