@@ -16,7 +16,7 @@ async function createRequest(clientId, carType, carModel, problemDescryption) {
         location.href = "/my-requests";
     } else {
         const error = await response.json();
-        console.log(error.message);
+        showError(error.message);
     }
 }
 

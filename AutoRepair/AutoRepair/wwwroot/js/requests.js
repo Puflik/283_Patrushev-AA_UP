@@ -11,7 +11,7 @@ async function getRequests() {
         requests.forEach(request => rows.append(row(request)));
     } else {
         const error = await response.json();
-        console.log(error.message);
+        showError(error.message);
     }
 }
 

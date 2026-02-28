@@ -11,7 +11,7 @@ async function getRequests(clientId) {
         requests.forEach(request => rows.append(row(request)));
     } else {
         const error = await response.json();
-        console.log(error.message);
+        showError(error.message);
     }
 }
 
@@ -27,7 +27,7 @@ async function cancelRequest(id) {
         document.querySelector(`#t1 tr[data-rowid='${request.requestID}']`).replaceWith(row(request));
     } else {
         const error = await response.json();
-        console.log(error.message);
+        showError(error.message);
     }
 }
 
@@ -88,7 +88,13 @@ function row(request) {
         const cancelLink = document.createElement("button");
         cancelLink.append("Отменить");
         cancelLink.classList.add("remove-button");
-        cancelLink.addEventListener("click", async () => await cancelRequest(request.requestID));
+        cancelLink.addEventListener("click", async () => {
+            const ok = await confirmAction('Вы уверены? Это действие необратимо');
+            if (ok) {
+                await cancelRequest(request.requestID);
+                showInfo('Заявка отменена');
+            }
+        });
         linksTd.append(cancelLink);
     }
 

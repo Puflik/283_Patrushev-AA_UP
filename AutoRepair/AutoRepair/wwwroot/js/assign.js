@@ -13,7 +13,7 @@ async function getRequest(id) {
         document.getElementById("status").value    = request.requestStatus;
     } else {
         const error = await response.json();
-        console.log(error.message);
+        showError(error.message);
     }
 }
 
@@ -31,7 +31,7 @@ async function getMechanics() {
         mechanics.forEach(mechanic => rows.append(row(mechanic)));
     } else {
         const error = await response.json();
-        console.log(error.message);
+        showError(error.message);
     }
 }
 
@@ -50,7 +50,7 @@ async function assignMechanic(requestId, masterId) {
         location.href = "/requests";
     } else {
         const error = await response.json();
-        console.log(error.message);
+        showError(error.message);
     }
 }
 

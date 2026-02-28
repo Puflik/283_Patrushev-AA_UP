@@ -30,7 +30,7 @@ async function getRequest(id) {
         }
     } else {
         const error = await response.json();
-        console.log(error.message);
+        showError(error.message);
     }
 }
 
@@ -47,12 +47,14 @@ async function getComments(requestId) {
         comments.forEach(comment => rows.append(row(comment)));
     } else {
         const error = await response.json();
-        console.log(error.message);
+        showError(error.message);
     }
 }
 
 // отмена заявки
 document.getElementById("cancelBtn").addEventListener("click", async () => {
+    const ok = await confirmAction('Вы уверены? Это действие необратимо');
+    if (!ok) return;
     const id = document.getElementById("requestID").value;
     const response = await fetch("/api/requests", {
         method: "PUT",
@@ -63,7 +65,7 @@ document.getElementById("cancelBtn").addEventListener("click", async () => {
         location.href = "/my-requests";
     } else {
         const error = await response.json();
-        console.log(error.message);
+        showError(error.message);
     }
 });
 

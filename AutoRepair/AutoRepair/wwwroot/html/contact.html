@@ -77,13 +77,14 @@
   </div>
 </div>
 
+<script src="../js/shared.js"></script>
 <script>
   document.getElementById("resetBtn").addEventListener("click", () => {
     document.getElementById("subject").value = "";
     document.getElementById("messageText").value = "";
   });
   document.getElementById("saveBtn").addEventListener("click", () => {
-    alert("Сообщение отправлено! Менеджер свяжется с вами в течение рабочего дня.");
+    showInfo("Сообщение отправлено! Менеджер свяжется с вами в течение рабочего дня.");
     document.getElementById("subject").value = "";
     document.getElementById("messageText").value = "";
   });

@@ -10,7 +10,7 @@ async function getUsers() {
         users.forEach(user => rows.append(row(user)));
     } else {
         const error = await response.json();
-        console.log(error.message);
+        showError(error.message);
     }
 }
 
@@ -30,7 +30,7 @@ async function getUser(id) {
         document.getElementById("userType").value     = user.type;
     } else {
         const error = await response.json();
-        console.log(error.message);
+        showError(error.message);
     }
 }
 
@@ -52,7 +52,7 @@ async function createUser(fio, phone, login, password, type) {
         document.querySelector("#t1 tbody").append(row(user));
     } else {
         const error = await response.json();
-        console.log(error.message);
+        showError(error.message);
     }
 }
 
@@ -75,7 +75,7 @@ async function editUser(userId, fio, phone, login, password, type) {
         document.querySelector(`#t1 tr[data-rowid='${user.userID}']`).replaceWith(row(user));
     } else {
         const error = await response.json();
-        console.log(error.message);
+        showError(error.message);
     }
 }
 
@@ -89,7 +89,7 @@ async function deleteUser(id) {
         document.querySelector(`#t1 tr[data-rowid='${id}']`).remove();
     } else {
         const error = await response.json();
-        console.log(error.message);
+        showError(error.message);
     }
 }
 
@@ -152,7 +152,13 @@ function row(user) {
     const removeLink = document.createElement("button");
     removeLink.append("Удалить");
     removeLink.classList.add("remove-button");
-    removeLink.addEventListener("click", async () => await deleteUser(user.userID));
+    removeLink.addEventListener("click", async () => {
+        const ok = await confirmAction('Вы уверены? Это действие необратимо');
+        if (ok) {
+            await deleteUser(user.userID);
+            showInfo('Пользователь удалён');
+        }
+    });
     linksTd.append(removeLink);
 
     tr.append(linksTd);

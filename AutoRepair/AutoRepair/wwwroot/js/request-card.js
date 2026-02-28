@@ -18,7 +18,7 @@ async function getRequest(id) {
         document.getElementById("clientID").value           = request.clientID;
     } else {
         const error = await response.json();
-        console.log(error.message);
+        showError(error.message);
     }
 }
 
@@ -41,7 +41,7 @@ async function editRequest(requestID, requestStatus, repairParts, completionDate
         document.getElementById("completionDate").value = request.completionDate ?? "";
     } else {
         const error = await response.json();
-        console.log(error.message);
+        showError(error.message);
     }
 }
 
@@ -58,7 +58,7 @@ async function getComments(requestId) {
         comments.forEach(comment => rows.append(row(comment)));
     } else {
         const error = await response.json();
-        console.log(error.message);
+        showError(error.message);
     }
 }
 
@@ -78,7 +78,7 @@ async function createComment(message, masterId, requestId) {
         document.querySelector("#t1 tbody").append(row(comment));
     } else {
         const error = await response.json();
-        console.log(error.message);
+        showError(error.message);
     }
 }
 
@@ -92,7 +92,7 @@ async function deleteComment(id) {
         document.querySelector(`#t1 tr[data-rowid='${id}']`).remove();
     } else {
         const error = await response.json();
-        console.log(error.message);
+        showError(error.message);
     }
 }
 
@@ -119,7 +119,13 @@ function row(comment) {
     const removeLink = document.createElement("button");
     removeLink.append("Удалить");
     removeLink.classList.add("remove-button");
-    removeLink.addEventListener("click", async () => await deleteComment(comment.commentID));
+    removeLink.addEventListener("click", async () => {
+        const ok = await confirmAction('Вы уверены? Это действие необратимо');
+        if (ok) {
+            await deleteComment(comment.commentID);
+            showInfo('Комментарий удалён');
+        }
+    });
     linksTd.append(removeLink);
 
     tr.append(linksTd);

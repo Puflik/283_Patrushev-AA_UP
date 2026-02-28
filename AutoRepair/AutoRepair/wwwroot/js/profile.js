@@ -12,7 +12,7 @@ async function getUser(id) {
         document.getElementById("userLogin").value = user.login;
     } else {
         const error = await response.json();
-        console.log(error.message);
+        showError(error.message);
     }
 }
 
@@ -36,7 +36,7 @@ async function editUser(userId, fio, phone, login, password) {
         document.getElementById("userLogin").value = user.login;
     } else {
         const error = await response.json();
-        console.log(error.message);
+        showError(error.message);
     }
 }
 
@@ -48,7 +48,23 @@ function reset() {
         document.getElementById("userPassword").value = "";
 }
 
-document.getElementById("resetBtn").addEventListener("click", () => reset());
+// показать/скрыть форму редактирования
+function toggleEdit() {
+    const form = document.getElementById("editForm");
+    const btn  = document.getElementById("toggleEditBtn");
+    if (form.classList.contains("hidden")) {
+        form.classList.remove("hidden");
+        btn.textContent = "Отмена";
+    } else {
+        form.classList.add("hidden");
+        btn.textContent = "Редактировать профиль";
+        reset();
+    }
+}
+
+document.getElementById("toggleEditBtn").addEventListener("click", toggleEdit);
+
+document.getElementById("resetBtn").addEventListener("click", () => toggleEdit());
 
 document.getElementById("saveBtn").addEventListener("click", async () => {
     const id       = document.getElementById("userID").value;
@@ -57,7 +73,7 @@ document.getElementById("saveBtn").addEventListener("click", async () => {
     const login    = document.getElementById("userLogin").value;
     const password = document.getElementById("userPassword").value;
     await editUser(id, fio, phone, login, password);
-    reset();
+    toggleEdit();
 });
 
 // инициализация
