@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AutoRepair")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6dc6205bff5039921fab1f0f661320621132dd26")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d9d088fb882848b47409e365a068d054e30c06dc")]
 [assembly: System.Reflection.AssemblyProductAttribute("AutoRepair")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AutoRepair")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

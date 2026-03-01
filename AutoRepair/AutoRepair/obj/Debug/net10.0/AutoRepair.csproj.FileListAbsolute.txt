@@ -75,7 +75,6 @@ C:\Users\Антон\Downloads\ИСРПО\283_Patrushev-AA_UP\AutoRepair\AutoRepa
 C:\Users\Антон\Downloads\ИСРПО\283_Patrushev-AA_UP\AutoRepair\AutoRepair\obj\Debug\net10.0\compressed\y2vtt0vyo5-{0}-xw72we9xv5-xw72we9xv5.gz
 C:\Users\Антон\Downloads\ИСРПО\283_Patrushev-AA_UP\AutoRepair\AutoRepair\obj\Debug\net10.0\compressed\44m0plhyvy-{0}-s4ptzaz54j-s4ptzaz54j.gz
 C:\Users\Антон\Downloads\ИСРПО\283_Patrushev-AA_UP\AutoRepair\AutoRepair\obj\Debug\net10.0\compressed\f6ripzxdeg-{0}-dn03msgrdx-dn03msgrdx.gz
-C:\Users\Антон\Downloads\ИСРПО\283_Patrushev-AA_UP\AutoRepair\AutoRepair\obj\Debug\net10.0\compressed\t8mxurc3n0-{0}-t3fk2p7s9m-t3fk2p7s9m.gz
 C:\Users\Антон\Downloads\ИСРПО\283_Patrushev-AA_UP\AutoRepair\AutoRepair\obj\Debug\net10.0\compressed\8q9u2yv3m4-{0}-m54sfsp9b8-m54sfsp9b8.gz
 C:\Users\Антон\Downloads\ИСРПО\283_Patrushev-AA_UP\AutoRepair\AutoRepair\obj\Debug\net10.0\compressed\9qgi22yvsp-{0}-7q4n7f32a4-7q4n7f32a4.gz
 C:\Users\Антон\Downloads\ИСРПО\283_Patrushev-AA_UP\AutoRepair\AutoRepair\obj\Debug\net10.0\compressed\fr9jcnp5wr-{0}-ro2cjcxssa-ro2cjcxssa.gz
@@ -83,3 +82,4 @@ C:\Users\Антон\Downloads\ИСРПО\283_Patrushev-AA_UP\AutoRepair\AutoRepa
 C:\Users\Антон\Downloads\ИСРПО\283_Patrushev-AA_UP\AutoRepair\AutoRepair\obj\Debug\net10.0\compressed\665ji0bhbk-{0}-4j5iyqufzm-4j5iyqufzm.gz
 C:\Users\Антон\Downloads\ИСРПО\283_Patrushev-AA_UP\AutoRepair\AutoRepair\obj\Debug\net10.0\compressed\f8mwx10dje-{0}-7kfdaa7qao-7kfdaa7qao.gz
 C:\Users\Антон\Downloads\ИСРПО\283_Patrushev-AA_UP\AutoRepair\AutoRepair\obj\Debug\net10.0\compressed\lmrq3nfbjk-{0}-k4ez1c2i4y-k4ez1c2i4y.gz
+C:\Users\Антон\Downloads\ИСРПО\283_Patrushev-AA_UP\AutoRepair\AutoRepair\obj\Debug\net10.0\compressed\t8mxurc3n0-{0}-gnbbt7l8fz-gnbbt7l8fz.gz
