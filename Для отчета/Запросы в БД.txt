@@ -27,6 +27,13 @@ CREATE TABLE "Comments" (
     "RequestID" INTEGER NOT NULL REFERENCES "Requests"("RequestID") ON DELETE CASCADE
 );
 
+CREATE TABLE "Messages" (
+    "MessageID" SERIAL PRIMARY KEY,
+    "Subject"     VARCHAR(255) NOT NULL,
+    "MessageText" TEXT         NOT NULL,
+    "ClientID"    INTEGER      NOT NULL REFERENCES "Users"("UserID") ON DELETE CASCADE
+);
+
 COPY "Users"("UserID", "Fio", "Phone", "Login", "Password", "Type") 
 FROM 'C:\postgresql\17\data\inputDataUsers.csv'
 DELIMITER ';' 

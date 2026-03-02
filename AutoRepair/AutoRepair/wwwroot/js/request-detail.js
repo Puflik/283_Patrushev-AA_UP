@@ -1,4 +1,3 @@
-// получение одной заявки по id из адресной строки
 async function getRequest(id) {
     const response = await fetch(`/api/requests/${id}`, {
         method: "GET",
@@ -24,8 +23,7 @@ async function getRequest(id) {
         document.getElementById("completionDate").value = request.completionDate ?? "—";
         document.getElementById("repairParts").value    = request.repairParts ?? "—";
 
-        // показать кнопку отмены только для статуса "new"
-        if (request.requestStatus === "new") {
+        if (request.requestStatus === "new" || request.requestStatus === "Новая заявка") {
             document.getElementById("cancelBtn").style.display = "inline-block";
         }
     } else {
@@ -34,7 +32,6 @@ async function getRequest(id) {
     }
 }
 
-// получение комментариев к заявке
 async function getComments(requestId) {
     const response = await fetch(`/api/comments/request/${requestId}`, {
         method: "GET",
@@ -51,25 +48,38 @@ async function getComments(requestId) {
     }
 }
 
-// отмена заявки
 document.getElementById("cancelBtn").addEventListener("click", async () => {
     const ok = await confirmAction('Вы уверены? Это действие необратимо');
     if (!ok) return;
     const id = document.getElementById("requestID").value;
+
+    const currentRes = await fetch(`/api/requests/${id}`);
+    const current = await currentRes.json();
+
     const response = await fetch("/api/requests", {
         method: "PUT",
         headers: { "Accept": "application/json", "Content-Type": "application/json" },
-        body: JSON.stringify({ requestID: parseInt(id), requestStatus: "cancelled" })
+        body: JSON.stringify({
+            requestID: current.requestID,
+            startDate: current.startDate,
+            carType: current.carType,
+            carModel: current.carModel,
+            problemDescryption: current.problemDescryption,
+            requestStatus: "Отменена",
+            completionDate: current.completionDate,
+            repairParts: current.repairParts,
+            masterID: current.masterID,
+            clientID: current.clientID
+        })
     });
-    if (response.ok === true) {
+    if (response.ok) {
         location.href = "/my-requests";
     } else {
         const error = await response.json();
-        showError(error.message);
+        showError(error.detail || error.message || 'Ошибка отмены');
     }
 });
 
-// формирование строки комментария
 function row(comment) {
     const tr = document.createElement("tr");
     tr.setAttribute("data-rowid", comment.commentID);
@@ -85,8 +95,8 @@ function row(comment) {
     return tr;
 }
 
-// инициализация: id заявки берётся из адресной строки (?id=...)
 const params = new URLSearchParams(window.location.search);
 const requestId = params.get("id");
 getRequest(requestId);
 getComments(requestId);
+initSidebar();

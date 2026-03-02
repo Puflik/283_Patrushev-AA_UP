@@ -1,4 +1,3 @@
-// получение заявки
 async function getRequest(id) {
     const response = await fetch(`/api/requests/${id}`, {
         method: "GET",
@@ -22,7 +21,6 @@ async function getRequest(id) {
     }
 }
 
-// обновление заявки (статус, запчасти, дата завершения)
 async function editRequest(requestID, requestStatus, repairParts, completionDate) {
     const response = await fetch("/api/requests", {
         method: "PUT",
@@ -45,7 +43,6 @@ async function editRequest(requestID, requestStatus, repairParts, completionDate
     }
 }
 
-// получение комментариев к заявке
 async function getComments(requestId) {
     const response = await fetch(`/api/comments/request/${requestId}`, {
         method: "GET",
@@ -62,7 +59,6 @@ async function getComments(requestId) {
     }
 }
 
-// добавление комментария
 async function createComment(message, masterId, requestId) {
     const response = await fetch("/api/comments", {
         method: "POST",
@@ -82,7 +78,6 @@ async function createComment(message, masterId, requestId) {
     }
 }
 
-// удаление комментария
 async function deleteComment(id) {
     const response = await fetch(`/api/comments/${id}`, {
         method: "DELETE",
@@ -96,7 +91,6 @@ async function deleteComment(id) {
     }
 }
 
-// формирование строки комментария
 function row(comment) {
     const tr = document.createElement("tr");
     tr.setAttribute("data-rowid", comment.commentID);
@@ -132,14 +126,12 @@ function row(comment) {
     return tr;
 }
 
-// сброс поля комментария
 function reset() {
     document.getElementById("commentMessage").value = "";
 }
 
 document.getElementById("resetBtn").addEventListener("click", () => reset());
 
-// сохранить изменения заявки
 document.getElementById("saveBtn").addEventListener("click", async () => {
     const id             = document.getElementById("requestID").value;
     const status         = document.getElementById("requestStatus").value;
@@ -148,7 +140,6 @@ document.getElementById("saveBtn").addEventListener("click", async () => {
     await editRequest(id, status, repairParts, completionDate);
 });
 
-// добавить комментарий
 document.getElementById("addCommentBtn").addEventListener("click", async () => {
     const message   = document.getElementById("commentMessage").value;
     const masterId  = document.getElementById("currentUserId").value;
@@ -157,8 +148,8 @@ document.getElementById("addCommentBtn").addEventListener("click", async () => {
     reset();
 });
 
-// инициализация
 const params = new URLSearchParams(window.location.search);
 const requestId = params.get("id");
 getRequest(requestId);
 getComments(requestId);
+initSidebar();

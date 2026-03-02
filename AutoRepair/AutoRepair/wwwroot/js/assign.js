@@ -1,23 +1,24 @@
-// получение заявки для назначения
 async function getRequest(id) {
     const response = await fetch(`/api/requests/${id}`, {
-        method: "GET",
         headers: { "Accept": "application/json" }
     });
-    if (response.ok === true) {
+    if (response.ok) {
         const request = await response.json();
         document.getElementById("requestID").value = request.requestID;
-        document.getElementById("carType").value   = request.carType;
-        document.getElementById("carModel").value  = request.carModel;
-        document.getElementById("problem").value   = request.problemDescryption;
-        document.getElementById("status").value    = request.requestStatus;
+        // Показываем информацию в шапке карточки
+        const infoEl = document.getElementById("requestInfo");
+        const problemEl = document.getElementById("requestProblem");
+        const subEl = document.getElementById("topbarSub");
+        if (infoEl) infoEl.textContent = `#${request.requestID} · ${request.carType} · ${request.carModel}`;
+        if (problemEl) problemEl.textContent = request.problemDescryption;
+        if (subEl) subEl.textContent = `Заявка #${request.requestID}`;
+        const backLink = document.getElementById("backLink");
+        if (backLink) backLink.href = `/request-card?id=${request.requestID}`;
     } else {
-        const error = await response.json();
-        showError(error.message);
+        showError('Заявка не найдена');
     }
 }
 
-// получение списка механиков
 async function getMechanics() {
     const response = await fetch("/api/users", {
         method: "GET",
@@ -35,7 +36,6 @@ async function getMechanics() {
     }
 }
 
-// назначение механика на заявку
 async function assignMechanic(requestId, masterId) {
     const response = await fetch("/api/requests", {
         method: "PUT",
@@ -54,7 +54,6 @@ async function assignMechanic(requestId, masterId) {
     }
 }
 
-// формирование строки механика
 function row(mechanic) {
     const tr = document.createElement("tr");
     tr.setAttribute("data-rowid", mechanic.userID);
@@ -87,8 +86,8 @@ function row(mechanic) {
     return tr;
 }
 
-// инициализация: id заявки из адресной строки
 const params = new URLSearchParams(window.location.search);
 const requestId = params.get("id");
 getRequest(requestId);
 getMechanics();
+initSidebar();

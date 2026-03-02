@@ -3,20 +3,48 @@
   "WorkspaceRootPath": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{5A487E65-06F5-3279-187F-FE17B428EFA0}|AutoRepair\\AutoRepair.csproj|c:\\users\\\u0430\u043D\u0442\u043E\u043D\\downloads\\\u0438\u0441\u0440\u043F\u043E\\283_patrushev-aa_up\\autorepair\\autorepair\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5A487E65-06F5-3279-187F-FE17B428EFA0}|AutoRepair\\AutoRepair.csproj|solutionrelative:autorepair\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5A487E65-06F5-3279-187F-FE17B428EFA0}|AutoRepair\\AutoRepair.csproj|c:\\users\\\u0430\u043D\u0442\u043E\u043D\\downloads\\\u0438\u0441\u0440\u043F\u043E\\283_patrushev-aa_up\\autorepair\\autorepair\\wwwroot\\html\\faq.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{5A487E65-06F5-3279-187F-FE17B428EFA0}|AutoRepair\\AutoRepair.csproj|solutionrelative:autorepair\\wwwroot\\html\\faq.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5A487E65-06F5-3279-187F-FE17B428EFA0}|AutoRepair\\AutoRepair.csproj|c:\\users\\\u0430\u043D\u0442\u043E\u043D\\downloads\\\u0438\u0441\u0440\u043F\u043E\\283_patrushev-aa_up\\autorepair\\autorepair\\wwwroot\\js\\faq.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{5A487E65-06F5-3279-187F-FE17B428EFA0}|AutoRepair\\AutoRepair.csproj|solutionrelative:autorepair\\wwwroot\\js\\faq.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{5A487E65-06F5-3279-187F-FE17B428EFA0}|AutoRepair\\AutoRepair.csproj|c:\\users\\\u0430\u043D\u0442\u043E\u043D\\downloads\\\u0438\u0441\u0440\u043F\u043E\\283_patrushev-aa_up\\autorepair\\autorepair\\wwwroot\\html\\contact.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{5A487E65-06F5-3279-187F-FE17B428EFA0}|AutoRepair\\AutoRepair.csproj|solutionrelative:autorepair\\wwwroot\\html\\contact.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5A487E65-06F5-3279-187F-FE17B428EFA0}|AutoRepair\\AutoRepair.csproj|c:\\users\\\u0430\u043D\u0442\u043E\u043D\\downloads\\\u0438\u0441\u0440\u043F\u043E\\283_patrushev-aa_up\\autorepair\\autorepair\\wwwroot\\html\\assign.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{5A487E65-06F5-3279-187F-FE17B428EFA0}|AutoRepair\\AutoRepair.csproj|solutionrelative:autorepair\\wwwroot\\html\\assign.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{5A487E65-06F5-3279-187F-FE17B428EFA0}|AutoRepair\\AutoRepair.csproj|c:\\users\\\u0430\u043D\u0442\u043E\u043D\\downloads\\\u0438\u0441\u0440\u043F\u043E\\283_patrushev-aa_up\\autorepair\\autorepair\\wwwroot\\html\\create-request.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{5A487E65-06F5-3279-187F-FE17B428EFA0}|AutoRepair\\AutoRepair.csproj|solutionrelative:autorepair\\wwwroot\\html\\create-request.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5A487E65-06F5-3279-187F-FE17B428EFA0}|AutoRepair\\AutoRepair.csproj|c:\\users\\\u0430\u043D\u0442\u043E\u043D\\downloads\\\u0438\u0441\u0440\u043F\u043E\\283_patrushev-aa_up\\autorepair\\autorepair\\wwwroot\\html\\assign.html||{C76D83F8-A489-11D0-8195-00A0C91BBEE3}",
-      "RelativeMoniker": "D:0:0:{5A487E65-06F5-3279-187F-FE17B428EFA0}|AutoRepair\\AutoRepair.csproj|solutionrelative:autorepair\\wwwroot\\html\\assign.html||{C76D83F8-A489-11D0-8195-00A0C91BBEE3}"
+      "AbsoluteMoniker": "D:0:0:{5A487E65-06F5-3279-187F-FE17B428EFA0}|AutoRepair\\AutoRepair.csproj|c:\\users\\\u0430\u043D\u0442\u043E\u043D\\downloads\\\u0438\u0441\u0440\u043F\u043E\\283_patrushev-aa_up\\autorepair\\autorepair\\wwwroot\\js\\requests.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{5A487E65-06F5-3279-187F-FE17B428EFA0}|AutoRepair\\AutoRepair.csproj|solutionrelative:autorepair\\wwwroot\\js\\requests.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5A487E65-06F5-3279-187F-FE17B428EFA0}|AutoRepair\\AutoRepair.csproj|c:\\users\\\u0430\u043D\u0442\u043E\u043D\\downloads\\\u0438\u0441\u0440\u043F\u043E\\283_patrushev-aa_up\\autorepair\\autorepair\\wwwroot\\js\\my-requests.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{5A487E65-06F5-3279-187F-FE17B428EFA0}|AutoRepair\\AutoRepair.csproj|solutionrelative:autorepair\\wwwroot\\js\\my-requests.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5A487E65-06F5-3279-187F-FE17B428EFA0}|AutoRepair\\AutoRepair.csproj|c:\\users\\\u0430\u043D\u0442\u043E\u043D\\downloads\\\u0438\u0441\u0440\u043F\u043E\\283_patrushev-aa_up\\autorepair\\autorepair\\wwwroot\\js\\request-detail.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{5A487E65-06F5-3279-187F-FE17B428EFA0}|AutoRepair\\AutoRepair.csproj|solutionrelative:autorepair\\wwwroot\\js\\request-detail.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5A487E65-06F5-3279-187F-FE17B428EFA0}|AutoRepair\\AutoRepair.csproj|c:\\users\\\u0430\u043D\u0442\u043E\u043D\\downloads\\\u0438\u0441\u0440\u043F\u043E\\283_patrushev-aa_up\\autorepair\\autorepair\\wwwroot\\js\\contact.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{5A487E65-06F5-3279-187F-FE17B428EFA0}|AutoRepair\\AutoRepair.csproj|solutionrelative:autorepair\\wwwroot\\js\\contact.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5A487E65-06F5-3279-187F-FE17B428EFA0}|AutoRepair\\AutoRepair.csproj|c:\\users\\\u0430\u043D\u0442\u043E\u043D\\downloads\\\u0438\u0441\u0440\u043F\u043E\\283_patrushev-aa_up\\autorepair\\autorepair\\wwwroot\\js\\create-request.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{5A487E65-06F5-3279-187F-FE17B428EFA0}|AutoRepair\\AutoRepair.csproj|solutionrelative:autorepair\\wwwroot\\js\\create-request.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5A487E65-06F5-3279-187F-FE17B428EFA0}|AutoRepair\\AutoRepair.csproj|c:\\users\\\u0430\u043D\u0442\u043E\u043D\\downloads\\\u0438\u0441\u0440\u043F\u043E\\283_patrushev-aa_up\\autorepair\\autorepair\\wwwroot\\html\\my-requests.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{5A487E65-06F5-3279-187F-FE17B428EFA0}|AutoRepair\\AutoRepair.csproj|solutionrelative:autorepair\\wwwroot\\html\\my-requests.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5A487E65-06F5-3279-187F-FE17B428EFA0}|AutoRepair\\AutoRepair.csproj|c:\\users\\\u0430\u043D\u0442\u043E\u043D\\downloads\\\u0438\u0441\u0440\u043F\u043E\\283_patrushev-aa_up\\autorepair\\autorepair\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5A487E65-06F5-3279-187F-FE17B428EFA0}|AutoRepair\\AutoRepair.csproj|solutionrelative:autorepair\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{5A487E65-06F5-3279-187F-FE17B428EFA0}|AutoRepair\\AutoRepair.csproj|c:\\users\\\u0430\u043D\u0442\u043E\u043D\\downloads\\\u0438\u0441\u0440\u043F\u043E\\283_patrushev-aa_up\\autorepair\\autorepair\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
@@ -30,61 +58,154 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "assign.html",
-              "DocumentMoniker": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\wwwroot\\html\\assign.html",
-              "RelativeDocumentMoniker": "AutoRepair\\wwwroot\\html\\assign.html",
-              "ToolTip": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\wwwroot\\html\\assign.html",
-              "RelativeToolTip": "AutoRepair\\wwwroot\\html\\assign.html",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2026-03-01T15:46:10.207Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "assign.html",
-              "DocumentMoniker": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\wwwroot\\html\\assign.html",
-              "RelativeDocumentMoniker": "AutoRepair\\wwwroot\\html\\assign.html",
-              "ToolTip": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\wwwroot\\html\\assign.html",
-              "RelativeToolTip": "AutoRepair\\wwwroot\\html\\assign.html",
-              "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2026-03-01T15:46:03.141Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "faq.js",
+              "DocumentMoniker": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\wwwroot\\js\\faq.js",
+              "RelativeDocumentMoniker": "AutoRepair\\wwwroot\\js\\faq.js",
+              "ToolTip": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\wwwroot\\js\\faq.js",
+              "RelativeToolTip": "AutoRepair\\wwwroot\\js\\faq.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2026-03-02T17:13:52.958Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "contact.html",
               "DocumentMoniker": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\wwwroot\\html\\contact.html",
               "RelativeDocumentMoniker": "AutoRepair\\wwwroot\\html\\contact.html",
               "ToolTip": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\wwwroot\\html\\contact.html",
               "RelativeToolTip": "AutoRepair\\wwwroot\\html\\contact.html",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAD8AAAAAAAAAAAAAAFAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2026-03-01T15:45:53.443Z",
+              "WhenOpened": "2026-03-02T17:12:12.267Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "create-request.html",
+              "DocumentMoniker": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\wwwroot\\html\\create-request.html",
+              "RelativeDocumentMoniker": "AutoRepair\\wwwroot\\html\\create-request.html",
+              "ToolTip": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\wwwroot\\html\\create-request.html",
+              "RelativeToolTip": "AutoRepair\\wwwroot\\html\\create-request.html",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2026-03-02T17:09:59.279Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "requests.js",
+              "DocumentMoniker": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\wwwroot\\js\\requests.js",
+              "RelativeDocumentMoniker": "AutoRepair\\wwwroot\\js\\requests.js",
+              "ToolTip": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\wwwroot\\js\\requests.js",
+              "RelativeToolTip": "AutoRepair\\wwwroot\\js\\requests.js",
+              "ViewState": "AgIAAEQAAAAAAAAAAAAmwF4AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2026-03-02T17:06:26.575Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "request-detail.js",
+              "DocumentMoniker": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\wwwroot\\js\\request-detail.js",
+              "RelativeDocumentMoniker": "AutoRepair\\wwwroot\\js\\request-detail.js",
+              "ToolTip": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\wwwroot\\js\\request-detail.js",
+              "RelativeToolTip": "AutoRepair\\wwwroot\\js\\request-detail.js",
+              "ViewState": "AgIAAC8AAAAAAAAAAAAuwFAAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2026-03-02T17:03:18.486Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "contact.js",
+              "DocumentMoniker": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\wwwroot\\js\\contact.js",
+              "RelativeDocumentMoniker": "AutoRepair\\wwwroot\\js\\contact.js",
+              "ToolTip": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\wwwroot\\js\\contact.js",
+              "RelativeToolTip": "AutoRepair\\wwwroot\\js\\contact.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2026-03-02T17:02:11.944Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "faq.html",
+              "DocumentMoniker": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\wwwroot\\html\\faq.html",
+              "RelativeDocumentMoniker": "AutoRepair\\wwwroot\\html\\faq.html",
+              "ToolTip": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\wwwroot\\html\\faq.html",
+              "RelativeToolTip": "AutoRepair\\wwwroot\\html\\faq.html",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAAADkAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2026-03-02T17:01:38.583Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "create-request.js",
+              "DocumentMoniker": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\wwwroot\\js\\create-request.js",
+              "RelativeDocumentMoniker": "AutoRepair\\wwwroot\\js\\create-request.js",
+              "ToolTip": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\wwwroot\\js\\create-request.js",
+              "RelativeToolTip": "AutoRepair\\wwwroot\\js\\create-request.js",
+              "ViewState": "AgIAACAAAAAAAAAAAAAAACwAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2026-03-02T17:01:11.932Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "my-requests.js",
+              "DocumentMoniker": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\wwwroot\\js\\my-requests.js",
+              "RelativeDocumentMoniker": "AutoRepair\\wwwroot\\js\\my-requests.js",
+              "ToolTip": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\wwwroot\\js\\my-requests.js",
+              "RelativeToolTip": "AutoRepair\\wwwroot\\js\\my-requests.js",
+              "ViewState": "AgIAAGMAAAAAAAAAAAAuwH4AAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2026-03-02T16:53:54.13Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "my-requests.html",
+              "DocumentMoniker": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\wwwroot\\html\\my-requests.html",
+              "RelativeDocumentMoniker": "AutoRepair\\wwwroot\\html\\my-requests.html",
+              "ToolTip": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\wwwroot\\html\\my-requests.html",
+              "RelativeToolTip": "AutoRepair\\wwwroot\\html\\my-requests.html",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2026-03-02T16:53:49.065Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\Program.cs",
               "RelativeDocumentMoniker": "AutoRepair\\Program.cs",
               "ToolTip": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\Program.cs",
               "RelativeToolTip": "AutoRepair\\Program.cs",
-              "ViewState": "AgIAAIIAAAAAAAAAAAAAAJQAAAATAAAAAAAAAA==",
+              "ViewState": "AgIAABECAAAAAAAAAAAuwBkCAABBAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-27T05:10:26.034Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 11,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\\u0410\u043D\u0442\u043E\u043D\\Downloads\\\u0418\u0421\u0420\u041F\u041E\\283_Patrushev-AA_UP\\AutoRepair\\AutoRepair\\appsettings.json",
               "RelativeDocumentMoniker": "AutoRepair\\appsettings.json",
@@ -92,7 +213,8 @@
               "RelativeToolTip": "AutoRepair\\appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-02-27T16:20:03.534Z"
+              "WhenOpened": "2026-02-27T16:20:03.534Z",
+              "EditorCaption": ""
             }
           ]
         }

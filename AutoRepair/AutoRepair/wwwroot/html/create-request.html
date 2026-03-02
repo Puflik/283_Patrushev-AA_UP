@@ -19,8 +19,8 @@
     <a class="client-nav__link" href="/contact">Связаться с нами</a>
   </div>
   <div class="client-nav__user">
-    <div class="client-nav__avatar">ИИ</div>
-    <span class="client-nav__name"></span>
+      <div class="client-nav__avatar" id="navAvatar">ИИ</div>
+      <span class="client-nav__name" id="navName"></span>
   </div>
 </nav>
 
@@ -39,15 +39,13 @@
 
       <div class="flex-col gap-16">
         <div class="form-group">
-          <label>Выберите автомобиль</label>
-          <select id="carSelect">
-            <option value="">— выберите из списка —</option>
-          </select>
-        </div>
-
-        <div class="form-group">
           <label>Вид автомобиля</label>
-          <input type="text" id="carType" placeholder="Легковой, грузовой..." />
+          <select id="carType">
+            <option value="">— выберите —</option>
+            <option value="Грузовая">Грузовая</option>
+            <option value="Легковая">Легковая</option>
+            <option value="Другое">Другое</option>
+          </select>
         </div>
 
         <div class="form-group">
@@ -60,10 +58,6 @@
           <textarea id="problemDescryption" placeholder="Опишите неисправность подробно..."></textarea>
         </div>
 
-        <div class="form-group">
-          <label>Желаемая дата выполнения (необязательно)</label>
-          <input type="date" id="completionDate" />
-        </div>
 
         <div class="divider"></div>
         <div class="flex gap-12">

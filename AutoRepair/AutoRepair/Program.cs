@@ -27,10 +27,13 @@ internal class Program
 
         app.UseAuthentication();
         app.UseAuthorization();
-        app.UseDefaultFiles();
+
+        DefaultFilesOptions options = new DefaultFilesOptions();
+        options.DefaultFileNames.Clear();
+        options.DefaultFileNames.Add("html/login.html"); 
+        app.UseDefaultFiles(options);
         app.UseStaticFiles();
 
-        // получение списка
         app.MapGet("/api/users", async (ApplicationDbContext db) =>
         {
             try
@@ -68,7 +71,6 @@ internal class Program
             }
         });
 
-        // получение по id
         app.MapGet("/api/users/{id}", async (ApplicationDbContext db, int id) =>
         {
             try
@@ -146,7 +148,6 @@ internal class Program
             }
         });
 
-        // создание
         app.MapPost("/api/users", async (User user, ApplicationDbContext db) =>
         {
             try
@@ -187,7 +188,6 @@ internal class Program
             }
         });
 
-        // обновление
         app.MapPut("/api/users", async (User userData, ApplicationDbContext db) =>
         {
             try
@@ -244,7 +244,6 @@ internal class Program
             }
         });
 
-        // удаление
         app.MapDelete("/api/users/{id}", async (ApplicationDbContext db, int id) =>
         {
             try
@@ -290,35 +289,21 @@ internal class Program
                 return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
             }
         });
-
-        // поиск (серверный)
-        app.MapGet("/api/requests/search", async (ApplicationDbContext db, string? status, string? query) =>
-        {
+        app.MapGet("/api/requests/search", async (ApplicationDbContext db, string? status, string? query) => {
             try
             {
                 var q = db.Requests.AsQueryable();
-                if (!string.IsNullOrWhiteSpace(status))
-                {
+                if (!string.IsNullOrEmpty(status) && status != "all")
                     q = q.Where(r => r.RequestStatus == status);
-                }
-                if (!string.IsNullOrWhiteSpace(query))
-                {
-                    // поиск по типу, модели и описанию проблемы (Postgres ILIKE)
-                    var pattern = $"%{query}%";
-                    q = q.Where(r => EF.Functions.ILike(r.CarType, pattern)
-                                  || EF.Functions.ILike(r.CarModel, pattern)
-                                  || EF.Functions.ILike(r.ProblemDescryption, pattern));
-                }
-                var list = await q.ToListAsync();
-                return Results.Ok(list);
+                if (!string.IsNullOrEmpty(query))
+                    q = q.Where(r => r.CarModel.Contains(query) || r.ProblemDescryption.Contains(query) || r.RequestID.ToString() == query);
+                return Results.Ok(await q.ToListAsync());
             }
-            catch
+            catch (Exception ex)
             {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
+                return Results.Problem("Ошибка поиска: " + ex.Message);
             }
         });
-
-        // авторизация
         app.MapPost("/api/login", async (HttpContext context, ApplicationDbContext db, Person person) =>
         {
             try
@@ -359,7 +344,6 @@ internal class Program
             }
         });
 
-        // клиент
         async Task ServePage(HttpContext ctx, string fileName, bool requireAuth = true)
         {
             if (requireAuth && !ctx.User.Identity!.IsAuthenticated)
@@ -378,6 +362,18 @@ internal class Program
             try
             {
                 await ServePage(ctx, "html/login.html", false);
+                return Results.Empty;
+            }
+            catch
+            {
+                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
+            }
+        });
+        app.MapGet("/profile", async (HttpContext ctx) =>
+        {
+            try
+            {
+                await ServePage(ctx, "html/profile.html");
                 return Results.Empty;
             }
             catch
@@ -446,7 +442,6 @@ internal class Program
             }
         });
 
-        // сотрудники
         app.MapGet("/requests", async (HttpContext ctx) =>
         {
             try
@@ -520,6 +515,39 @@ internal class Program
             }
         });
 
+        app.MapGet("/api/me", async (HttpContext ctx, ApplicationDbContext db) => {
+            try
+            {
+                if (!ctx.User.Identity!.IsAuthenticated)
+                    return Results.Unauthorized();
+
+                var userIdClaim = ctx.User.FindFirst("userID")?.Value;
+                if (userIdClaim == null) return Results.Unauthorized();
+
+                var user = await db.Users.FindAsync(int.Parse(userIdClaim));
+                if (user == null) return Results.Unauthorized();
+
+                return Results.Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem("Ошибка: " + ex.Message);
+            }
+        });
+
+        app.MapPost("/api/messages", async (Message message, ApplicationDbContext db) => {
+            try
+            {
+                await db.Messages.AddAsync(message);
+                await db.SaveChangesAsync();
+                return Results.Created($"/api/messages/{message.MessageID}", message);
+            }
+            catch
+            {
+                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
+            }
+        });
+
         app.Run();
     }
 }
@@ -553,11 +581,19 @@ public class Comment
     public int MasterID { get; set; }
     public int RequestID { get; set; }
 }
+public class Message
+{
+    public int MessageID { get; set; }
+    public required string Subject { get; set; }
+    public required string MessageText { get; set; }
+    public int ClientID { get; set; }
+}
 public class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
     public DbSet<User> Users { get; set; }
     public DbSet<Request> Requests { get; set; }
     public DbSet<Comment> Comments { get; set; }
+    public DbSet<Message> Messages { get; set; }
 }
 record class Person(string Login, string Password);
