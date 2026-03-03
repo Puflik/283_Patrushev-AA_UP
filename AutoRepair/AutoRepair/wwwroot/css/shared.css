@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;700&family=Mulish:wght@400;500;600;700&display=swap');
 
-/* ── Переменные ─────────────────────────────────────────────────── */
+
 :root {
   --bg:        #F7F3EE;
   --surface:   #FFFDF9;
@@ -22,7 +22,7 @@
   --shadow:    0 1px 4px rgba(60,30,10,.08);
 }
 
-/* ── Сброс ──────────────────────────────────────────────────────── */
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { font-size: 15px; }
 body {
@@ -35,13 +35,13 @@ a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 button { cursor: pointer; font-family: inherit; }
 
-/* ── Типографика ────────────────────────────────────────────────── */
+
 h1, h2, h3, h4 { font-family: 'Geologica', sans-serif; font-weight: 700; }
 h1 { font-size: 1.8rem; }
 h2 { font-size: 1.35rem; }
 h3 { font-size: 1.1rem; }
 
-/* ── Кнопки ─────────────────────────────────────────────────────── */
+
 .btn {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 9px 20px;
@@ -59,7 +59,7 @@ h3 { font-size: 1.1rem; }
 .btn-success   { background: var(--st-done);   color: #fff; }
 .btn-sm        { padding: 5px 12px; font-size: .8rem; }
 
-/* ── Бейджи статусов ────────────────────────────────────────────── */
+
 .badge {
   display: inline-block; padding: 3px 10px;
   border-radius: 12px; font-size: .75rem; font-weight: 700;
@@ -71,7 +71,7 @@ h3 { font-size: 1.1rem; }
 .badge-done   { background: var(--st-done);   color: #fff; }
 .badge-cancel { background: var(--st-cancel); color: #fff; }
 
-/* ── Поля ввода ─────────────────────────────────────────────────── */
+
 .form-group { display: flex; flex-direction: column; gap: 5px; }
 .form-group label { font-size: .78rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
 .form-group input,
@@ -91,7 +91,7 @@ h3 { font-size: 1.1rem; }
 .form-group textarea { resize: vertical; min-height: 96px; }
 input[readonly] { background: var(--bg); color: var(--muted); cursor: default; }
 
-/* ── Карточки ───────────────────────────────────────────────────── */
+
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -107,7 +107,7 @@ input[readonly] { background: var(--bg); color: var(--muted); cursor: default; }
 }
 .card-title { font-size: 1rem; font-weight: 700; }
 
-/* ── Таблицы ────────────────────────────────────────────────────── */
+
 .table-wrap { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; }
 thead tr { background: var(--bg); }
@@ -128,13 +128,13 @@ tbody tr:hover { background: rgba(158,90,45,.04); }
 .edit-button   { composes: btn btn-sm btn-outline; }
 .remove-button { composes: btn btn-sm btn-danger; }
 
-/* ── Разделитель ────────────────────────────────────────────────── */
+
 .divider { height: 1px; background: var(--border); margin: 20px 0; }
 
-/* ── Сообщение об ошибке ────────────────────────────────────────── */
+
 .error-msg { color: var(--st-cancel); font-size: .85rem; min-height: 1.2em; }
 
-/* ── Модальные окна (alert/confirm) ─────────────────────────────────── */
+
 .modal-backdrop {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -174,9 +174,9 @@ tbody tr:hover { background: rgba(158,90,45,.04); }
 }
 
 
-/* ════════════════════════════════════════════════════════════════ */
-/*  КЛИЕНТСКИЙ НАВБАР                                              */
-/* ════════════════════════════════════════════════════════════════ */
+
+
+
 .client-nav {
   position: sticky; top: 0; z-index: 100;
   background: var(--surface);
@@ -216,9 +216,9 @@ tbody tr:hover { background: rgba(158,90,45,.04); }
 }
 .client-nav__name { font-size: .875rem; font-weight: 600; color: var(--text); }
 
-/* ════════════════════════════════════════════════════════════════ */
-/*  САЙДБАР (сотрудники)                                           */
-/* ════════════════════════════════════════════════════════════════ */
+
+
+
 .layout { display: flex; min-height: 100vh; }
 
 .sidebar {
@@ -269,7 +269,7 @@ tbody tr:hover { background: rgba(158,90,45,.04); }
 .sidebar__logout a { font-size: .78rem; color: rgba(255,255,255,.4); }
 .sidebar__logout a:hover { color: rgba(255,255,255,.8); text-decoration: none; }
 
-/* ── Основная область (сотрудники) ──────────────────────────────── */
+
 .main {
   margin-left: var(--sidebar-w);
   flex: 1; display: flex; flex-direction: column;
@@ -287,12 +287,12 @@ tbody tr:hover { background: rgba(158,90,45,.04); }
 
 .content { padding: 28px 32px; flex: 1; }
 
-/* ── Breadcrumb ─────────────────────────────────────────────────── */
+
 .breadcrumb { font-size: .8rem; color: var(--muted); margin-bottom: 16px; }
 .breadcrumb a { color: var(--muted); }
 .breadcrumb a:hover { color: var(--accent); }
 
-/* ── Фильтры ────────────────────────────────────────────────────── */
+
 .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
 .filter-btn {
   padding: 5px 16px; border-radius: 16px;
@@ -303,7 +303,7 @@ tbody tr:hover { background: rgba(158,90,45,.04); }
 .filter-btn:hover    { border-color: var(--accent); color: var(--accent); }
 .filter-btn.active   { background: var(--accent); border-color: var(--accent); color: #fff; }
 
-/* ── Поисковая строка ───────────────────────────────────────────── */
+
 .search-bar {
   display: flex; align-items: center; gap: 10px;
   padding: 8px 14px;
@@ -318,7 +318,7 @@ tbody tr:hover { background: rgba(158,90,45,.04); }
 }
 .search-bar input::placeholder { color: var(--muted); }
 
-/* ── Статистика (карточки метрик) ───────────────────────────────── */
+
 .metrics { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 28px; }
 .metric-card {
   background: var(--surface);
@@ -334,7 +334,7 @@ tbody tr:hover { background: rgba(158,90,45,.04); }
 .metric-card .val { font-family: 'Geologica',sans-serif; font-size: 2rem; font-weight: 700; line-height: 1; }
 .metric-card .lbl { font-size: .78rem; color: var(--muted); margin-top: 8px; }
 
-/* ── Страница входа ─────────────────────────────────────────────── */
+
 .login-page {
   display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh;
 }
@@ -366,7 +366,7 @@ tbody tr:hover { background: rgba(158,90,45,.04); }
 .login-tab:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; border-left: none; }
 .login-tab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
 
-/* ── Личный кабинет ─────────────────────────────────────────────── */
+
 .profile-header {
   display: flex; align-items: center; gap: 20px; margin-bottom: 28px;
 }
@@ -380,7 +380,7 @@ tbody tr:hover { background: rgba(158,90,45,.04); }
 .profile-info__name { font-family:'Geologica',sans-serif; font-size:1.2rem; font-weight:700; }
 .profile-info__meta { font-size:.85rem; color:var(--muted); margin-top:2px; }
 
-/* ── Автомобиль ─────────────────────────────────────────────────── */
+
 .car-card {
   display: flex; align-items: center; gap: 16px;
   padding: 14px 16px;
@@ -392,7 +392,7 @@ tbody tr:hover { background: rgba(158,90,45,.04); }
 .car-card__meta { font-size: .8rem; color: var(--muted); margin-top: 2px; }
 .car-card__actions { margin-left: auto; }
 
-/* ── История ────────────────────────────────────────────────────── */
+
 .timeline { display: flex; flex-direction: column; gap: 0; }
 .timeline-item { display: flex; gap: 14px; padding-bottom: 20px; position: relative; }
 .timeline-item:not(:last-child)::before {
@@ -412,7 +412,7 @@ tbody tr:hover { background: rgba(158,90,45,.04); }
 .timeline-time  { font-size: .75rem; color: var(--muted); }
 .timeline-event { font-size: .875rem; font-weight: 600; }
 
-/* ── FAQ ────────────────────────────────────────────────────────── */
+
 .faq-item {
   background: var(--surface); border: 1px solid var(--border);
   border-radius: var(--radius); border-left: 4px solid var(--accent);
@@ -421,16 +421,16 @@ tbody tr:hover { background: rgba(158,90,45,.04); }
 .faq-item__q { font-weight: 700; font-size: .95rem; }
 .faq-item__a { font-size: .875rem; color: var(--muted); margin-top: 6px; line-height: 1.55; }
 
-/* ── Контакты ───────────────────────────────────────────────────── */
+
 .contact-item { display: flex; flex-direction: column; gap: 2px; margin-bottom: 16px; }
 .contact-item__label { font-size: .75rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
 .contact-item__value { font-size: .9rem; font-weight: 600; }
 
-/* ── Сетки ──────────────────────────────────────────────────────── */
+
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
 
-/* ── Утилиты ────────────────────────────────────────────────────── */
+
 .flex     { display: flex; }
 .flex-col { display: flex; flex-direction: column; }
 .items-center { align-items: center; }
@@ -457,7 +457,7 @@ tbody tr:hover { background: rgba(158,90,45,.04); }
 .w-full       { width: 100%; }
 .hidden       { display: none; }
 
-/* ── Адаптивность ───────────────────────────────────────────────── */
+
 @media (max-width: 900px) {
   .metrics { grid-template-columns: 1fr 1fr; }
   .grid-2  { grid-template-columns: 1fr; }

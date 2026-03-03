@@ -17,7 +17,7 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
-    "Method": "\u003CMain\u003Eb__0_13",
+    "Method": "\u003CMain\u003Eb__0_14",
     "RelativePath": "api/comments",
     "HttpMethod": "POST",
     "IsController": false,
@@ -39,7 +39,7 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
-    "Method": "\u003CMain\u003Eb__0_16",
+    "Method": "\u003CMain\u003Eb__0_18",
     "RelativePath": "api/comments",
     "HttpMethod": "PUT",
     "IsController": false,
@@ -61,7 +61,7 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
-    "Method": "\u003CMain\u003Eb__0_7",
+    "Method": "\u003CMain\u003Eb__0_8",
     "RelativePath": "api/comments/{id}",
     "HttpMethod": "GET",
     "IsController": false,
@@ -83,7 +83,7 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
-    "Method": "\u003CMain\u003Eb__0_19",
+    "Method": "\u003CMain\u003Eb__0_21",
     "RelativePath": "api/comments/{id}",
     "HttpMethod": "DELETE",
     "IsController": false,
@@ -105,7 +105,7 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
-    "Method": "\u003CMain\u003Eb__0_10",
+    "Method": "\u003CMain\u003Eb__0_11",
     "RelativePath": "api/comments/request/{requestId}",
     "HttpMethod": "GET",
     "IsController": false,
@@ -127,7 +127,7 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
-    "Method": "\u003CMain\u003Eb__0_21",
+    "Method": "\u003CMain\u003Eb__0_23",
     "RelativePath": "api/login",
     "HttpMethod": "POST",
     "IsController": false,
@@ -149,12 +149,66 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
-    "Method": "\u003CMain\u003Eb__0_22",
+    "Method": "\u003CMain\u003Eb__0_24",
     "RelativePath": "api/logout",
     "HttpMethod": "GET",
     "IsController": false,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Program\u002B\u003C\u003Ec",
+    "Method": "\u003CMain\u003Eb__0_39",
+    "RelativePath": "api/me",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Program\u002B\u003C\u003Ec",
+    "Method": "\u003CMain\u003Eb__0_5",
+    "RelativePath": "api/messages",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Program\u002B\u003C\u003Ec",
+    "Method": "\u003CMain\u003Eb__0_15",
+    "RelativePath": "api/messages",
+    "HttpMethod": "POST",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "message",
+        "Type": "Message",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": [
       {
         "Type": "System.Void",
@@ -181,7 +235,7 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
-    "Method": "\u003CMain\u003Eb__0_12",
+    "Method": "\u003CMain\u003Eb__0_13",
     "RelativePath": "api/requests",
     "HttpMethod": "POST",
     "IsController": false,
@@ -203,7 +257,7 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
-    "Method": "\u003CMain\u003Eb__0_15",
+    "Method": "\u003CMain\u003Eb__0_17",
     "RelativePath": "api/requests",
     "HttpMethod": "PUT",
     "IsController": false,
@@ -225,7 +279,7 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
-    "Method": "\u003CMain\u003Eb__0_6",
+    "Method": "\u003CMain\u003Eb__0_7",
     "RelativePath": "api/requests/{id}",
     "HttpMethod": "GET",
     "IsController": false,
@@ -247,7 +301,7 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
-    "Method": "\u003CMain\u003Eb__0_18",
+    "Method": "\u003CMain\u003Eb__0_20",
     "RelativePath": "api/requests/{id}",
     "HttpMethod": "DELETE",
     "IsController": false,
@@ -269,7 +323,7 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
-    "Method": "\u003CMain\u003Eb__0_8",
+    "Method": "\u003CMain\u003Eb__0_9",
     "RelativePath": "api/requests/client/{clientId}",
     "HttpMethod": "GET",
     "IsController": false,
@@ -291,7 +345,7 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
-    "Method": "\u003CMain\u003Eb__0_9",
+    "Method": "\u003CMain\u003Eb__0_10",
     "RelativePath": "api/requests/master/{masterId}",
     "HttpMethod": "GET",
     "IsController": false,
@@ -313,7 +367,7 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
-    "Method": "\u003CMain\u003Eb__0_20",
+    "Method": "\u003CMain\u003Eb__0_22",
     "RelativePath": "api/requests/search",
     "HttpMethod": "GET",
     "IsController": false,
@@ -356,7 +410,7 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
-    "Method": "\u003CMain\u003Eb__0_11",
+    "Method": "\u003CMain\u003Eb__0_12",
     "RelativePath": "api/users",
     "HttpMethod": "POST",
     "IsController": false,
@@ -378,7 +432,7 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
-    "Method": "\u003CMain\u003Eb__0_14",
+    "Method": "\u003CMain\u003Eb__0_16",
     "RelativePath": "api/users",
     "HttpMethod": "PUT",
     "IsController": false,
@@ -400,7 +454,7 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
-    "Method": "\u003CMain\u003Eb__0_5",
+    "Method": "\u003CMain\u003Eb__0_6",
     "RelativePath": "api/users/{id}",
     "HttpMethod": "GET",
     "IsController": false,
@@ -422,7 +476,7 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
-    "Method": "\u003CMain\u003Eb__0_17",
+    "Method": "\u003CMain\u003Eb__0_19",
     "RelativePath": "api/users/{id}",
     "HttpMethod": "DELETE",
     "IsController": false,
@@ -444,7 +498,7 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
-    "Method": "\u003CMain\u003Eb__0_32",
+    "Method": "\u003CMain\u003Eb__0_35",
     "RelativePath": "assign",
     "HttpMethod": "GET",
     "IsController": false,
@@ -460,7 +514,7 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
-    "Method": "\u003CMain\u003Eb__0_29",
+    "Method": "\u003CMain\u003Eb__0_32",
     "RelativePath": "contact",
     "HttpMethod": "GET",
     "IsController": false,
@@ -476,7 +530,7 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
-    "Method": "\u003CMain\u003Eb__0_26",
+    "Method": "\u003CMain\u003Eb__0_29",
     "RelativePath": "create-request",
     "HttpMethod": "GET",
     "IsController": false,
@@ -492,7 +546,7 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
-    "Method": "\u003CMain\u003Eb__0_28",
+    "Method": "\u003CMain\u003Eb__0_31",
     "RelativePath": "faq",
     "HttpMethod": "GET",
     "IsController": false,
@@ -508,7 +562,7 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
-    "Method": "\u003CMain\u003Eb__0_24",
+    "Method": "\u003CMain\u003Eb__0_26",
     "RelativePath": "login",
     "HttpMethod": "GET",
     "IsController": false,
@@ -524,7 +578,23 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
-    "Method": "\u003CMain\u003Eb__0_25",
+    "Method": "\u003CMain\u003Eb__0_38",
+    "RelativePath": "messages",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Program\u002B\u003C\u003Ec",
+    "Method": "\u003CMain\u003Eb__0_28",
     "RelativePath": "my-requests",
     "HttpMethod": "GET",
     "IsController": false,
@@ -540,40 +610,8 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
-    "Method": "\u003CMain\u003Eb__0_31",
-    "RelativePath": "request-card",
-    "HttpMethod": "GET",
-    "IsController": false,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "Program\u002B\u003C\u003Ec",
     "Method": "\u003CMain\u003Eb__0_27",
-    "RelativePath": "request-detail",
-    "HttpMethod": "GET",
-    "IsController": false,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "Program\u002B\u003C\u003Ec",
-    "Method": "\u003CMain\u003Eb__0_30",
-    "RelativePath": "requests",
+    "RelativePath": "profile",
     "HttpMethod": "GET",
     "IsController": false,
     "Order": 0,
@@ -589,7 +627,23 @@
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
     "Method": "\u003CMain\u003Eb__0_34",
-    "RelativePath": "staff",
+    "RelativePath": "request-card",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Program\u002B\u003C\u003Ec",
+    "Method": "\u003CMain\u003Eb__0_30",
+    "RelativePath": "request-detail",
     "HttpMethod": "GET",
     "IsController": false,
     "Order": 0,
@@ -605,6 +659,38 @@
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
     "Method": "\u003CMain\u003Eb__0_33",
+    "RelativePath": "requests",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Program\u002B\u003C\u003Ec",
+    "Method": "\u003CMain\u003Eb__0_37",
+    "RelativePath": "staff",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Program\u002B\u003C\u003Ec",
+    "Method": "\u003CMain\u003Eb__0_36",
     "RelativePath": "statistics",
     "HttpMethod": "GET",
     "IsController": false,

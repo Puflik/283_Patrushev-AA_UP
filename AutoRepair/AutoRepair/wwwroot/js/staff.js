@@ -1,4 +1,3 @@
-// получение всех пользователей
 async function getUsers() {
     const response = await fetch("/api/users", {
         method: "GET",
@@ -14,7 +13,6 @@ async function getUsers() {
     }
 }
 
-// получение одного пользователя для редактирования
 async function getUser(id) {
     const response = await fetch(`/api/users/${id}`, {
         method: "GET",
@@ -34,7 +32,6 @@ async function getUser(id) {
     }
 }
 
-// создание пользователя
 async function createUser(fio, phone, login, password, type) {
     const response = await fetch("/api/users", {
         method: "POST",
@@ -56,7 +53,6 @@ async function createUser(fio, phone, login, password, type) {
     }
 }
 
-// обновление пользователя
 async function editUser(userId, fio, phone, login, password, type) {
     const response = await fetch("/api/users", {
         method: "PUT",
@@ -79,7 +75,6 @@ async function editUser(userId, fio, phone, login, password, type) {
     }
 }
 
-// удаление пользователя
 async function deleteUser(id) {
     const response = await fetch(`/api/users/${id}`, {
         method: "DELETE",
@@ -93,7 +88,6 @@ async function deleteUser(id) {
     }
 }
 
-// сброс полей формы
 function reset() {
     document.getElementById("userID").value       =
         document.getElementById("userFio").value      =
@@ -103,43 +97,35 @@ function reset() {
         document.getElementById("userType").value     = "";
 }
 
-// формирование строки таблицы
 function row(user) {
     const tr = document.createElement("tr");
     tr.setAttribute("data-rowid", user.userID);
     tr.setAttribute("data-role", user.type);
 
-    // ID пользователя
     const idTd = document.createElement("td");
     idTd.append(user.userID);
     tr.append(idTd);
 
-    // ФИО
     const fioTd = document.createElement("td");
     fioTd.append(user.fio);
     tr.append(fioTd);
 
-    // телефон
     const phoneTd = document.createElement("td");
     phoneTd.append(user.phone);
     tr.append(phoneTd);
 
-    // логин
     const loginTd = document.createElement("td");
     loginTd.append(user.login);
     tr.append(loginTd);
 
-    // пароль
     const passwordTd = document.createElement("td");
     passwordTd.append(user.password);
     tr.append(passwordTd);
 
-    // тип
     const typeTd = document.createElement("td");
     typeTd.append(user.type);
     tr.append(typeTd);
 
-    // кнопки
     const linksTd = document.createElement("td");
     linksTd.classList.add("button-group");
 
@@ -181,10 +167,8 @@ document.getElementById("saveBtn").addEventListener("click", async () => {
     reset();
 });
 
-// инициализация
 getUsers();
 
-// Фильтрация по роли
 document.querySelectorAll(".filter-btn[data-role]").forEach(btn => {
     btn.addEventListener("click", () => {
         document.querySelectorAll(".filter-btn[data-role]").forEach(b => b.classList.remove("active"));

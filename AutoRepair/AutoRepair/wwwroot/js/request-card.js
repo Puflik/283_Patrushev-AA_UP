@@ -1,9 +1,27 @@
-// получение заявки
+var statusToEng = {
+    'Новая заявка': 'new', 'В процессе ремонта': 'in_progress',
+    'Ожидание автозапчастей': 'waiting', 'Готова к выдаче': 'done', 'Отменена': 'cancelled'
+};
+var statusToRu = {
+    'new': 'Новая заявка', 'in_progress': 'В процессе ремонта',
+    'waiting': 'Ожидание автозапчастей', 'done': 'Готова к выдаче', 'cancelled': 'Отменена'
+};
+
 async function getRequest(id) {
     const response = await fetch(`/api/requests/${id}`, {
         method: "GET",
         headers: { "Accept": "application/json" }
     });
+
+    const user = await getCurrentUser();
+    if (user && (user.type === 'manager' || user.type === 'admin')) {
+        const assignLink = document.getElementById('assignLink');
+        if (assignLink) {
+            assignLink.classList.remove('hidden');
+            assignLink.href = `/assign?id=${request.requestID}`;
+        }
+    }
+
     if (response.ok === true) {
         const request = await response.json();
         document.getElementById("requestID").value          = request.requestID;
@@ -11,41 +29,62 @@ async function getRequest(id) {
         document.getElementById("carType").value            = request.carType;
         document.getElementById("carModel").value           = request.carModel;
         document.getElementById("problemDescryption").value = request.problemDescryption;
-        document.getElementById("requestStatus").value      = request.requestStatus;
         document.getElementById("completionDate").value     = request.completionDate ?? "";
         document.getElementById("repairParts").value        = request.repairParts ?? "";
         document.getElementById("masterID").value           = request.masterID ?? "";
         document.getElementById("clientID").value           = request.clientID;
-    } else {
+        const statusToEng = {
+            'Новая заявка':           'new',
+            'В процессе ремонта':     'in_progress',
+            'Ожидание автозапчастей': 'waiting',
+            'Готова к выдаче':        'done',
+            'Отменена':               'cancelled'
+        };
+        const sel = document.getElementById("requestStatus");
+        if (sel) sel.value = statusToEng[request.requestStatus] || request.requestStatus;
+    } 
+    else {
         const error = await response.json();
         showError(error.message);
     }
 }
 
-// обновление заявки (статус, запчасти, дата завершения)
-async function editRequest(requestID, requestStatus, repairParts, completionDate) {
+async function editRequest(requestID, statusEng, repairParts, completionDate) {
+    const statusToRu = {
+        'new':         'Новая заявка',
+        'in_progress': 'В процессе ремонта',
+        'waiting':     'Ожидание автозапчастей',
+        'done':        'Готова к выдаче',
+        'cancelled':   'Отменена'
+    };
+    const requestStatus = statusToRu[statusEng] || statusEng;
+    const currentRes = await fetch(`/api/requests/${requestID}`);
+    const current = await currentRes.json();
+
     const response = await fetch("/api/requests", {
         method: "PUT",
         headers: { "Accept": "application/json", "Content-Type": "application/json" },
         body: JSON.stringify({
-            requestID: parseInt(requestID),
+            requestID: current.requestID,
+            startDate: current.startDate,
+            carType: current.carType,
+            carModel: current.carModel,
+            problemDescryption: current.problemDescryption,
             requestStatus: requestStatus,
-            repairParts: repairParts,
-            completionDate: completionDate || null
+            completionDate: completionDate || current.completionDate || null,
+            repairParts: repairParts || current.repairParts || null,
+            masterID: current.masterID,
+            clientID: current.clientID
         })
     });
-    if (response.ok === true) {
-        const request = await response.json();
-        document.getElementById("requestStatus").value  = request.requestStatus;
-        document.getElementById("repairParts").value    = request.repairParts ?? "";
-        document.getElementById("completionDate").value = request.completionDate ?? "";
+    if (response.ok) {
+        showInfo("Изменения сохранены");
     } else {
         const error = await response.json();
-        showError(error.message);
+        showError(error.detail || error.message || "Ошибка сохранения");
     }
 }
 
-// получение комментариев к заявке
 async function getComments(requestId) {
     const response = await fetch(`/api/comments/request/${requestId}`, {
         method: "GET",
@@ -62,7 +101,6 @@ async function getComments(requestId) {
     }
 }
 
-// добавление комментария
 async function createComment(message, masterId, requestId) {
     const response = await fetch("/api/comments", {
         method: "POST",
@@ -82,7 +120,6 @@ async function createComment(message, masterId, requestId) {
     }
 }
 
-// удаление комментария
 async function deleteComment(id) {
     const response = await fetch(`/api/comments/${id}`, {
         method: "DELETE",
@@ -96,7 +133,6 @@ async function deleteComment(id) {
     }
 }
 
-// формирование строки комментария
 function row(comment) {
     const tr = document.createElement("tr");
     tr.setAttribute("data-rowid", comment.commentID);
@@ -132,14 +168,12 @@ function row(comment) {
     return tr;
 }
 
-// сброс поля комментария
 function reset() {
     document.getElementById("commentMessage").value = "";
 }
 
 document.getElementById("resetBtn").addEventListener("click", () => reset());
 
-// сохранить изменения заявки
 document.getElementById("saveBtn").addEventListener("click", async () => {
     const id             = document.getElementById("requestID").value;
     const status         = document.getElementById("requestStatus").value;
@@ -148,7 +182,6 @@ document.getElementById("saveBtn").addEventListener("click", async () => {
     await editRequest(id, status, repairParts, completionDate);
 });
 
-// добавить комментарий
 document.getElementById("addCommentBtn").addEventListener("click", async () => {
     const message   = document.getElementById("commentMessage").value;
     const masterId  = document.getElementById("currentUserId").value;
@@ -157,8 +190,8 @@ document.getElementById("addCommentBtn").addEventListener("click", async () => {
     reset();
 });
 
-// инициализация
 const params = new URLSearchParams(window.location.search);
 const requestId = params.get("id");
 getRequest(requestId);
 getComments(requestId);
+initSidebar();

@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 internal class Program
 {
@@ -23,52 +25,102 @@ internal class Program
                 options.AccessDeniedPath = "/accessdenied";
             });
 
+        // Настройка JSON: camelCase для фронтенда
+        builder.Services.ConfigureHttpJsonOptions(opts =>
+        {
+            opts.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+        });
+
         var app = builder.Build();
 
         app.UseAuthentication();
         app.UseAuthorization();
-        app.UseDefaultFiles();
+
+        DefaultFilesOptions options = new DefaultFilesOptions();
+        options.DefaultFileNames.Clear();
+        options.DefaultFileNames.Add("html/login.html");
+        app.UseDefaultFiles(options);
         app.UseStaticFiles();
 
-        // получение списка
+        // ──────────────────────────────────────────────────────
+        // GET списки
+        // ──────────────────────────────────────────────────────
         app.MapGet("/api/users", async (ApplicationDbContext db) =>
         {
-            try
-            {
-                var users = await db.Users.ToListAsync();
-                return Results.Ok(users);
-            }
-            catch
-            {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
-            }
-        });
-        app.MapGet("/api/requests", async (ApplicationDbContext db) =>
-        {
-            try
-            {
-                var requests = await db.Requests.ToListAsync();
-                return Results.Ok(requests);
-            }
-            catch
-            {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
-            }
-        });
-        app.MapGet("/api/comments", async (ApplicationDbContext db) =>
-        {
-            try
-            {
-                var comments = await db.Comments.ToListAsync();
-                return Results.Ok(comments);
-            }
-            catch
-            {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
-            }
+            try { return Results.Ok(await db.Users.ToListAsync()); }
+            catch { return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500); }
         });
 
-        // получение по id
+        app.MapGet("/api/requests", async (ApplicationDbContext db) =>
+        {
+            try { return Results.Ok(await db.Requests.ToListAsync()); }
+            catch { return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500); }
+        });
+
+        app.MapGet("/api/comments", async (ApplicationDbContext db) =>
+        {
+            try { return Results.Ok(await db.Comments.ToListAsync()); }
+            catch { return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500); }
+        });
+
+        app.MapGet("/api/messages", async (ApplicationDbContext db) =>
+        {
+            try { return Results.Ok(await db.Messages.ToListAsync()); }
+            catch { return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500); }
+        });
+
+        // ──────────────────────────────────────────────────────
+        // ВАЖНО: маршруты с литеральными сегментами (client/master/search)
+        // должны быть зарегистрированы ДО /api/requests/{id},
+        // иначе ASP.NET Core перехватит "client" как id.
+        // ──────────────────────────────────────────────────────
+        app.MapGet("/api/requests/search", async (ApplicationDbContext db, string? status, string? query) =>
+        {
+            try
+            {
+                var q = db.Requests.AsQueryable();
+                if (!string.IsNullOrEmpty(status) && status != "all")
+                    q = q.Where(r => r.RequestStatus == status);
+                if (!string.IsNullOrEmpty(query))
+                    q = q.Where(r => r.CarModel.Contains(query) || r.ProblemDescryption.Contains(query) || r.RequestID.ToString() == query);
+                return Results.Ok(await q.ToListAsync());
+            }
+            catch (Exception ex) { return Results.Problem("Ошибка поиска: " + ex.Message); }
+        });
+
+        app.MapGet("/api/requests/client/{clientId}", async (ApplicationDbContext db, int clientId) =>
+        {
+            try
+            {
+                var list = await db.Requests.Where(r => r.ClientID == clientId).ToListAsync();
+                return Results.Ok(list);
+            }
+            catch { return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500); }
+        });
+
+        app.MapGet("/api/requests/master/{masterId}", async (ApplicationDbContext db, int masterId) =>
+        {
+            try
+            {
+                var list = await db.Requests.Where(r => r.MasterID == masterId).ToListAsync();
+                return Results.Ok(list);
+            }
+            catch { return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500); }
+        });
+
+        app.MapGet("/api/comments/request/{requestId}", async (ApplicationDbContext db, int requestId) =>
+        {
+            try
+            {
+                var list = await db.Comments.Where(c => c.RequestID == requestId).ToListAsync();
+                return Results.Ok(list);
+            }
+            catch { return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500); }
+        });
+
+        // ──────────────────────────────────────────────────────
+        // GET по id — после литеральных маршрутов
+        // ──────────────────────────────────────────────────────
         app.MapGet("/api/users/{id}", async (ApplicationDbContext db, int id) =>
         {
             try
@@ -77,11 +129,9 @@ internal class Program
                 if (user == null) return Results.NotFound();
                 return Results.Ok(user);
             }
-            catch
-            {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
-            }
+            catch { return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500); }
         });
+
         app.MapGet("/api/requests/{id}", async (ApplicationDbContext db, int id) =>
         {
             try
@@ -90,11 +140,9 @@ internal class Program
                 if (request == null) return Results.NotFound();
                 return Results.Ok(request);
             }
-            catch
-            {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
-            }
+            catch { return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500); }
         });
+
         app.MapGet("/api/comments/{id}", async (ApplicationDbContext db, int id) =>
         {
             try
@@ -103,50 +151,12 @@ internal class Program
                 if (comment == null) return Results.NotFound();
                 return Results.Ok(comment);
             }
-            catch
-            {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
-            }
+            catch { return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500); }
         });
 
-        app.MapGet("/api/requests/client/{clientId}", async (ApplicationDbContext db, int clientId) =>
-        {
-            try
-            {
-                var request = await db.Requests.Where(r => r.ClientID == clientId).ToListAsync();
-                return Results.Ok(request);
-            }
-            catch
-            {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
-            }
-        });
-        app.MapGet("/api/requests/master/{masterId}", async (ApplicationDbContext db, int masterId) =>
-        {
-            try
-            {
-                var request = await db.Requests.Where(r => r.MasterID == masterId).ToListAsync();
-                return Results.Ok(request);
-            }
-            catch
-            {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
-            }
-        });
-        app.MapGet("/api/comments/request/{requestId}", async (ApplicationDbContext db, int requestId) =>
-        {
-            try
-            {
-                var comment = await db.Comments.Where(c => c.RequestID == requestId).ToListAsync();
-                return Results.Ok(comment);
-            }
-            catch
-            {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
-            }
-        });
-
-        // создание
+        // ──────────────────────────────────────────────────────
+        // POST
+        // ──────────────────────────────────────────────────────
         app.MapPost("/api/users", async (User user, ApplicationDbContext db) =>
         {
             try
@@ -155,24 +165,22 @@ internal class Program
                 await db.SaveChangesAsync();
                 return Results.Created($"/api/users/{user.UserID}", user);
             }
-            catch
-            {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
-            }
+            catch { return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500); }
         });
+
         app.MapPost("/api/requests", async (Request request, ApplicationDbContext db) =>
         {
             try
             {
+                // Нормализуем статус: если пришёл английский — переводим в русский
+                request.RequestStatus = NormalizeStatus(request.RequestStatus);
                 await db.Requests.AddAsync(request);
                 await db.SaveChangesAsync();
                 return Results.Created($"/api/requests/{request.RequestID}", request);
             }
-            catch
-            {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
-            }
+            catch { return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500); }
         });
+
         app.MapPost("/api/comments", async (Comment comment, ApplicationDbContext db) =>
         {
             try
@@ -181,13 +189,23 @@ internal class Program
                 await db.SaveChangesAsync();
                 return Results.Created($"/api/comments/{comment.CommentID}", comment);
             }
-            catch
-            {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
-            }
+            catch { return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500); }
         });
 
-        // обновление
+        app.MapPost("/api/messages", async (Message message, ApplicationDbContext db) =>
+        {
+            try
+            {
+                await db.Messages.AddAsync(message);
+                await db.SaveChangesAsync();
+                return Results.Created($"/api/messages/{message.MessageID}", message);
+            }
+            catch { return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500); }
+        });
+
+        // ──────────────────────────────────────────────────────
+        // PUT
+        // ──────────────────────────────────────────────────────
         app.MapPut("/api/users", async (User userData, ApplicationDbContext db) =>
         {
             try
@@ -202,32 +220,33 @@ internal class Program
                 await db.SaveChangesAsync();
                 return Results.Ok(user);
             }
-            catch
-            {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
-            }
+            catch { return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500); }
         });
-        app.MapPut("/api/requests", async (Request requestData, ApplicationDbContext db) =>
+
+        app.MapPut("/api/requests", async (RequestUpdateDto requestData, ApplicationDbContext db) =>
         {
             try
             {
                 var request = await db.Requests.FirstOrDefaultAsync(r => r.RequestID == requestData.RequestID);
                 if (request == null) return Results.NotFound();
-                request.CarType = requestData.CarType;
-                request.CarModel = requestData.CarModel;
-                request.ProblemDescryption = requestData.ProblemDescryption;
-                request.RequestStatus = requestData.RequestStatus;
-                request.CompletionDate = requestData.CompletionDate;
-                request.RepairParts = requestData.RepairParts;
-                request.MasterID = requestData.MasterID;
+
+                // Обновляем только переданные поля (не null)
+                if (requestData.CarType != null) request.CarType = requestData.CarType;
+                if (requestData.CarModel != null) request.CarModel = requestData.CarModel;
+                if (requestData.ProblemDescryption != null) request.ProblemDescryption = requestData.ProblemDescryption;
+                if (requestData.RequestStatus != null)
+                    request.RequestStatus = NormalizeStatus(requestData.RequestStatus);
+                if (requestData.CompletionDate.HasValue) request.CompletionDate = requestData.CompletionDate;
+                if (requestData.RepairParts != null) request.RepairParts = requestData.RepairParts;
+                // MasterID: обновляем если передан (включая 0 — нет)
+                if (requestData.MasterID.HasValue) request.MasterID = requestData.MasterID == 0 ? null : requestData.MasterID;
+
                 await db.SaveChangesAsync();
                 return Results.Ok(request);
             }
-            catch
-            {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
-            }
+            catch (Exception ex) { return Results.Problem(detail: ex.Message, title: "Ошибка", statusCode: 500); }
         });
+
         app.MapPut("/api/comments", async (Comment commentData, ApplicationDbContext db) =>
         {
             try
@@ -238,13 +257,12 @@ internal class Program
                 await db.SaveChangesAsync();
                 return Results.Ok(comment);
             }
-            catch
-            {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
-            }
+            catch { return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500); }
         });
 
-        // удаление
+        // ──────────────────────────────────────────────────────
+        // DELETE
+        // ──────────────────────────────────────────────────────
         app.MapDelete("/api/users/{id}", async (ApplicationDbContext db, int id) =>
         {
             try
@@ -255,11 +273,9 @@ internal class Program
                 await db.SaveChangesAsync();
                 return Results.Ok(user);
             }
-            catch
-            {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
-            }
+            catch { return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500); }
         });
+
         app.MapDelete("/api/requests/{id}", async (ApplicationDbContext db, int id) =>
         {
             try
@@ -270,11 +286,9 @@ internal class Program
                 await db.SaveChangesAsync();
                 return Results.Ok(request);
             }
-            catch
-            {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
-            }
+            catch { return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500); }
         });
+
         app.MapDelete("/api/comments/{id}", async (ApplicationDbContext db, int id) =>
         {
             try
@@ -285,47 +299,20 @@ internal class Program
                 await db.SaveChangesAsync();
                 return Results.Ok(comment);
             }
-            catch
-            {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
-            }
+            catch { return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500); }
         });
 
-        // поиск (серверный)
-        app.MapGet("/api/requests/search", async (ApplicationDbContext db, string? status, string? query) =>
-        {
-            try
-            {
-                var q = db.Requests.AsQueryable();
-                if (!string.IsNullOrWhiteSpace(status))
-                {
-                    q = q.Where(r => r.RequestStatus == status);
-                }
-                if (!string.IsNullOrWhiteSpace(query))
-                {
-                    // поиск по типу, модели и описанию проблемы (Postgres ILIKE)
-                    var pattern = $"%{query}%";
-                    q = q.Where(r => EF.Functions.ILike(r.CarType, pattern)
-                                  || EF.Functions.ILike(r.CarModel, pattern)
-                                  || EF.Functions.ILike(r.ProblemDescryption, pattern));
-                }
-                var list = await q.ToListAsync();
-                return Results.Ok(list);
-            }
-            catch
-            {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
-            }
-        });
-
-        // авторизация
+        // ──────────────────────────────────────────────────────
+        // AUTH
+        // ──────────────────────────────────────────────────────
         app.MapPost("/api/login", async (HttpContext context, ApplicationDbContext db, Person person) =>
         {
             try
             {
                 var user = await db.Users.FirstOrDefaultAsync(
                     u => u.Login == person.Login && u.Password == person.Password);
-                if (user == null) return Results.Unauthorized();
+                if (user == null)
+                    return Results.Json(new { message = "Неверный логин или пароль" }, statusCode: 401);
 
                 var claims = new List<Claim>
                 {
@@ -333,19 +320,17 @@ internal class Program
                     new Claim(ClaimTypes.Role, user.Type),
                     new Claim("userID", user.UserID.ToString())
                 };
-                var claimsIdentity = new ClaimsIdentity(
-                    claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 await context.SignInAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(claimsIdentity));
 
-                return Results.Ok(new { user.UserID, user.Fio, user.Type });
+                // Возвращаем camelCase явно
+                return Results.Ok(new { userID = user.UserID, fio = user.Fio, type = user.Type });
             }
-            catch
-            {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
-            }
+            catch { return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500); }
         });
+
         app.MapGet("/api/logout", async (HttpContext context) =>
         {
             try
@@ -353,13 +338,38 @@ internal class Program
                 await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
                 return Results.Redirect("/login");
             }
-            catch
-            {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
-            }
+            catch { return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500); }
         });
 
-        // клиент
+        app.MapGet("/api/me", async (HttpContext ctx, ApplicationDbContext db) =>
+        {
+            try
+            {
+                if (!ctx.User.Identity!.IsAuthenticated)
+                    return Results.Unauthorized();
+
+                var userIdClaim = ctx.User.FindFirst("userID")?.Value;
+                if (userIdClaim == null) return Results.Unauthorized();
+
+                var user = await db.Users.FindAsync(int.Parse(userIdClaim));
+                if (user == null) return Results.Unauthorized();
+
+                // Возвращаем camelCase явно
+                return Results.Ok(new {
+                    userID = user.UserID,
+                    fio = user.Fio,
+                    phone = user.Phone,
+                    login = user.Login,
+                    password = user.Password,
+                    type = user.Type
+                });
+            }
+            catch (Exception ex) { return Results.Problem("Ошибка: " + ex.Message); }
+        });
+
+        // ──────────────────────────────────────────────────────
+        // Страницы (HTML)
+        // ──────────────────────────────────────────────────────
         async Task ServePage(HttpContext ctx, string fileName, bool requireAuth = true)
         {
             if (requireAuth && !ctx.User.Identity!.IsAuthenticated)
@@ -375,155 +385,95 @@ internal class Program
 
         app.MapGet("/login", async (HttpContext ctx) =>
         {
-            try
-            {
-                await ServePage(ctx, "html/login.html", false);
-                return Results.Empty;
-            }
-            catch
-            {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
-            }
+            await ServePage(ctx, "html/login.html", false);
+            return Results.Empty;
+        });
+        app.MapGet("/profile", async (HttpContext ctx) =>
+        {
+            await ServePage(ctx, "html/profile.html");
+            return Results.Empty;
         });
         app.MapGet("/my-requests", async (HttpContext ctx) =>
         {
-            try
-            {
-                await ServePage(ctx, "html/my-requests.html");
-                return Results.Empty;
-            }
-            catch
-            {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
-            }
+            await ServePage(ctx, "html/my-requests.html");
+            return Results.Empty;
         });
         app.MapGet("/create-request", async (HttpContext ctx) =>
         {
-            try
-            {
-                await ServePage(ctx, "html/create-request.html");
-                return Results.Empty;
-            }
-            catch
-            {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
-            }
+            await ServePage(ctx, "html/create-request.html");
+            return Results.Empty;
         });
         app.MapGet("/request-detail", async (HttpContext ctx) =>
         {
-            try
-            {
-                await ServePage(ctx, "html/request-detail.html");
-                return Results.Empty;
-            }
-            catch
-            {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
-            }
+            await ServePage(ctx, "html/request-detail.html");
+            return Results.Empty;
         });
         app.MapGet("/faq", async (HttpContext ctx) =>
         {
-            try
-            {
-                await ServePage(ctx, "html/faq.html", false);
-                return Results.Empty;
-            }
-            catch
-            {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
-            }
+            await ServePage(ctx, "html/faq.html", false);
+            return Results.Empty;
         });
         app.MapGet("/contact", async (HttpContext ctx) =>
         {
-            try
-            {
-                await ServePage(ctx, "html/contact.html", false);
-                return Results.Empty;
-            }
-            catch
-            {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
-            }
+            await ServePage(ctx, "html/contact.html", false);
+            return Results.Empty;
         });
-
-        // сотрудники
         app.MapGet("/requests", async (HttpContext ctx) =>
         {
-            try
-            {
-                if (!ctx.User.Identity!.IsAuthenticated) { ctx.Response.Redirect("/login"); return Results.Empty; }
-                await ServePage(ctx, "html/requests.html");
-                return Results.Empty;
-            }
-            catch
-            {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
-            }
+            if (!ctx.User.Identity!.IsAuthenticated) { ctx.Response.Redirect("/login"); return Results.Empty; }
+            await ServePage(ctx, "html/requests.html");
+            return Results.Empty;
         });
-
         app.MapGet("/request-card", async (HttpContext ctx) =>
         {
-            try
-            {
-                if (!ctx.User.Identity!.IsAuthenticated) { ctx.Response.Redirect("/login"); return Results.Empty; }
-                await ServePage(ctx, "html/request-card.html");
-                return Results.Empty;
-            }
-            catch
-            {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
-            }
+            if (!ctx.User.Identity!.IsAuthenticated) { ctx.Response.Redirect("/login"); return Results.Empty; }
+            await ServePage(ctx, "html/request-card.html");
+            return Results.Empty;
         });
-
         app.MapGet("/assign", async (HttpContext ctx) =>
         {
-            try
-            {
-                if (!ctx.User.IsInRole("manager") && !ctx.User.IsInRole("admin"))
-                    return Results.Redirect("/login");
-                await ServePage(ctx, "html/assign.html");
-                return Results.Empty;
-            }
-            catch
-            {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
-            }
+            if (!ctx.User.IsInRole("manager") && !ctx.User.IsInRole("admin"))
+                return Results.Redirect("/requests");
+            await ServePage(ctx, "html/assign.html");
+            return Results.Empty;
         });
-
         app.MapGet("/statistics", async (HttpContext ctx) =>
         {
-            try
-            {
-                if (!ctx.User.IsInRole("manager") && !ctx.User.IsInRole("admin"))
-                    return Results.Redirect("/login");
-                await ServePage(ctx, "html/statistics.html");
-                return Results.Empty;
-            }
-            catch
-            {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
-            }
+            if (!ctx.User.Identity!.IsAuthenticated) { ctx.Response.Redirect("/login"); return Results.Empty; }
+            await ServePage(ctx, "html/statistics.html");
+            return Results.Empty;
         });
-
         app.MapGet("/staff", async (HttpContext ctx) =>
         {
-            try
-            {
-                if (!ctx.User.IsInRole("admin"))
-                    return Results.Redirect("/login");
-                await ServePage(ctx, "html/staff.html");
-                return Results.Empty;
-            }
-            catch
-            {
-                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
-            }
+            if (!ctx.User.IsInRole("admin")) return Results.Redirect("/requests");
+            await ServePage(ctx, "html/staff.html");
+            return Results.Empty;
+        });
+        app.MapGet("/messages", async (HttpContext ctx) =>
+        {
+            if (!ctx.User.Identity!.IsAuthenticated) return Results.Redirect("/login");
+            await ServePage(ctx, "html/messages.html");
+            return Results.Empty;
         });
 
         app.Run();
     }
+
+    // Нормализация статусов: английские → русские (как в БД)
+    private static string NormalizeStatus(string status) => status switch
+    {
+        "new"         => "Новая заявка",
+        "in_progress" => "В процессе ремонта",
+        "waiting"     => "Ожидание автозапчастей",
+        "done"        => "Готова к выдаче",
+        "cancelled"   => "Отменена",
+        _             => status   // уже русский — оставляем
+    };
 }
 
+// ──────────────────────────────────────────────────────────────
+// Модели
+// ──────────────────────────────────────────────────────────────
 public class User
 {
     public int UserID { get; set; }
@@ -533,6 +483,7 @@ public class User
     public required string Password { get; set; }
     public required string Type { get; set; }
 }
+
 public class Request
 {
     public int RequestID { get; set; }
@@ -546,6 +497,21 @@ public class Request
     public int? MasterID { get; set; }
     public int ClientID { get; set; }
 }
+
+// DTO для PUT /api/requests — все поля кроме ID опциональны
+public class RequestUpdateDto
+{
+    public int RequestID { get; set; }
+    public string? CarType { get; set; }
+    public string? CarModel { get; set; }
+    public string? ProblemDescryption { get; set; }
+    public string? RequestStatus { get; set; }
+    public DateOnly? CompletionDate { get; set; }
+    public string? RepairParts { get; set; }
+    public int? MasterID { get; set; }
+    public int? ClientID { get; set; }
+}
+
 public class Comment
 {
     public int CommentID { get; set; }
@@ -553,11 +519,22 @@ public class Comment
     public int MasterID { get; set; }
     public int RequestID { get; set; }
 }
+
+public class Message
+{
+    public int MessageID { get; set; }
+    public required string Subject { get; set; }
+    public required string MessageText { get; set; }
+    public int ClientID { get; set; }
+}
+
 public class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
     public DbSet<User> Users { get; set; }
     public DbSet<Request> Requests { get; set; }
     public DbSet<Comment> Comments { get; set; }
+    public DbSet<Message> Messages { get; set; }
 }
+
 record class Person(string Login, string Password);

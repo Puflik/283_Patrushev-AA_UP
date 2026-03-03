@@ -1,23 +1,23 @@
-// получение заявки для назначения
 async function getRequest(id) {
     const response = await fetch(`/api/requests/${id}`, {
-        method: "GET",
         headers: { "Accept": "application/json" }
     });
-    if (response.ok === true) {
+    if (response.ok) {
         const request = await response.json();
         document.getElementById("requestID").value = request.requestID;
-        document.getElementById("carType").value   = request.carType;
-        document.getElementById("carModel").value  = request.carModel;
-        document.getElementById("problem").value   = request.problemDescryption;
-        document.getElementById("status").value    = request.requestStatus;
+        const infoEl = document.getElementById("requestInfo");
+        const problemEl = document.getElementById("requestProblem");
+        const subEl = document.getElementById("topbarSub");
+        if (infoEl) infoEl.textContent = `#${request.requestID} · ${request.carType} · ${request.carModel}`;
+        if (problemEl) problemEl.textContent = request.problemDescryption;
+        if (subEl) subEl.textContent = `Заявка #${request.requestID}`;
+        const backLink = document.getElementById("backLink");
+        if (backLink) backLink.href = `/request-card?id=${request.requestID}`;
     } else {
-        const error = await response.json();
-        showError(error.message);
+        showError('Заявка не найдена');
     }
 }
 
-// получение списка механиков
 async function getMechanics() {
     const response = await fetch("/api/users", {
         method: "GET",
@@ -35,15 +35,25 @@ async function getMechanics() {
     }
 }
 
-// назначение механика на заявку
 async function assignMechanic(requestId, masterId) {
+    const currentRes = await fetch(`/api/requests/${requestId}`);
+    const current = await currentRes.json();
+    const completionDate = document.getElementById("completionDateInput").value || null;
+
     const response = await fetch("/api/requests", {
         method: "PUT",
         headers: { "Accept": "application/json", "Content-Type": "application/json" },
         body: JSON.stringify({
-            requestID: parseInt(requestId),
-            masterID: parseInt(masterId),
-            requestStatus: "in_progress"
+            requestID:          current.requestID,
+            startDate:          current.startDate,
+            carType:            current.carType,
+            carModel:           current.carModel,
+            problemDescryption: current.problemDescryption,
+            requestStatus:      "В процессе ремонта",
+            completionDate:     completionDate || current.completionDate || null,
+            repairParts:        current.repairParts,
+            masterID:           parseInt(masterId),
+            clientID:           current.clientID
         })
     });
     if (response.ok === true) {
@@ -54,7 +64,6 @@ async function assignMechanic(requestId, masterId) {
     }
 }
 
-// формирование строки механика
 function row(mechanic) {
     const tr = document.createElement("tr");
     tr.setAttribute("data-rowid", mechanic.userID);
@@ -87,8 +96,8 @@ function row(mechanic) {
     return tr;
 }
 
-// инициализация: id заявки из адресной строки
 const params = new URLSearchParams(window.location.search);
 const requestId = params.get("id");
 getRequest(requestId);
 getMechanics();
+initSidebar();

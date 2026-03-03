@@ -7,61 +7,54 @@
 </head>
 <body>
 
-<nav class="client-nav">
-  <span class="client-nav__logo">АвтоТранс</span>
-  <div class="client-nav__links">
-    <a class="client-nav__link" href="/profile">Главная</a>
-    <a class="client-nav__link" href="/my-requests">Мои заявки</a>
-    <a class="client-nav__link" href="/create-request">Создать заявку</a>
-    <a class="client-nav__link active" href="/faq">FAQ</a>
-    <a class="client-nav__link" href="/contact">Связаться с нами</a>
-  </div>
-  <div class="client-nav__user">
-    <div class="client-nav__avatar">ИИ</div>
-  </div>
-</nav>
+    <nav class="client-nav">
+        <span class="client-nav__logo">АвтоТранс</span>
+        <div class="client-nav__links">
+            <a class="client-nav__link" href="/profile">Главная</a>
+            <a class="client-nav__link" href="/my-requests">Мои заявки</a>
+            <a class="client-nav__link" href="/create-request">Создать заявку</a>
+            <a class="client-nav__link active" href="/faq">FAQ</a>
+            <a class="client-nav__link" href="/contact">Связаться с нами</a>
+        </div>
+        <div class="client-nav__user">
+            <div class="client-nav__avatar" id="navAvatar">ИИ</div>
+            <span class="client-nav__name" id="navName"></span>
+        </div>
+    </nav>
 
-<div style="padding: 28px 40px; max-width: 900px;">
+    <div style="padding: 28px 40px; max-width: 900px;">
 
-  <h1 class="mb-8">Часто задаваемые вопросы</h1>
-  <p class="text-muted mb-24">Ответы на популярные вопросы о работе сервиса</p>
+        <h1 class="mb-8">Часто задаваемые вопросы</h1>
+        <p class="text-muted mb-24">Ответы на популярные вопросы о работе сервиса</p>
 
-  <div class="search-bar mb-24" style="max-width:600px;">
-    <input type="text" id="faqSearch" placeholder="Поиск по вопросам..." />
-  </div>
+        <div class="search-bar mb-24" style="max-width:600px;">
+            <input type="text" id="faqSearch" placeholder="Поиск по вопросам..." />
+        </div>
 
-  <div id="faqList">
-    <div class="faq-item">
-      <div class="faq-item__q">Как создать заявку?</div>
-      <div class="faq-item__a">Перейдите в раздел «Создать заявку», выберите автомобиль из профиля и опишите проблему. Заявка будет зарегистрирована сразу после отправки.</div>
+        <div id="faqList">
+            <div class="faq-item">
+                <div class="faq-item__q">Как создать заявку?</div>
+                <div class="faq-item__a">Перейдите в раздел «Создать заявку», выберите автомобиль из профиля и опишите проблему. Заявка будет зарегистрирована сразу после отправки.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-item__q">Когда будет готов автомобиль?</div>
+                <div class="faq-item__a">Сроки зависят от сложности ремонта. После назначения механика ожидаемая дата отображается в карточке заявки.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-item__q">Можно ли отменить заявку?</div>
+                <div class="faq-item__a">Да, отмена доступна пока заявка имеет статус «Новая». После назначения механика отмена согласовывается с менеджером через форму обращения.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-item__q">Как связаться с сотрудником?</div>
+                <div class="faq-item__a">Используйте раздел «Связаться с нами». Опишите вопрос — менеджер ответит в течение рабочего дня.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-item__q">Как изменить личные данные?</div>
+                <div class="faq-item__a">В личном кабинете нажмите «Редактировать профиль» и измените нужные поля.</div>
+            </div>
+        </div>
     </div>
-    <div class="faq-item">
-      <div class="faq-item__q">Когда будет готов автомобиль?</div>
-      <div class="faq-item__a">Сроки зависят от сложности ремонта. После назначения механика ожидаемая дата отображается в карточке заявки.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-item__q">Можно ли отменить заявку?</div>
-      <div class="faq-item__a">Да, отмена доступна пока заявка имеет статус «Новая». После назначения механика отмена согласовывается с менеджером через форму обращения.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-item__q">Как связаться с сотрудником?</div>
-      <div class="faq-item__a">Используйте раздел «Связаться с нами». Опишите вопрос — менеджер ответит в течение рабочего дня.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-item__q">Как изменить личные данные?</div>
-      <div class="faq-item__a">В личном кабинете нажмите «Редактировать профиль» и измените нужные поля.</div>
-    </div>
-  </div>
-</div>
-
-<script>
-  document.getElementById("faqSearch").addEventListener("input", function() {
-    const q = this.value.toLowerCase();
-    document.querySelectorAll(".faq-item").forEach(item => {
-      const text = item.textContent.toLowerCase();
-      item.style.display = text.includes(q) ? "" : "none";
-    });
-  });
-</script>
+    <script src="../js/shared.js"></script>
+    <script src="../js/faq.js"></script>
 </body>
 </html>
