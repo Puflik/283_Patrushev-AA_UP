@@ -165,7 +165,11 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
+<<<<<<< HEAD
     "Method": "\u003CMain\u003Eb__0_39",
+=======
+    "Method": "\u003CMain\u003Eb__0_36",
+>>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
     "RelativePath": "api/me",
     "HttpMethod": "GET",
     "IsController": false,
@@ -181,6 +185,7 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
+<<<<<<< HEAD
     "Method": "\u003CMain\u003Eb__0_5",
     "RelativePath": "api/messages",
     "HttpMethod": "GET",
@@ -198,6 +203,9 @@
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
     "Method": "\u003CMain\u003Eb__0_15",
+=======
+    "Method": "\u003CMain\u003Eb__0_37",
+>>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
     "RelativePath": "api/messages",
     "HttpMethod": "POST",
     "IsController": false,
@@ -498,7 +506,11 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
+<<<<<<< HEAD
     "Method": "\u003CMain\u003Eb__0_35",
+=======
+    "Method": "\u003CMain\u003Eb__0_33",
+>>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
     "RelativePath": "assign",
     "HttpMethod": "GET",
     "IsController": false,
@@ -514,7 +526,11 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
+<<<<<<< HEAD
     "Method": "\u003CMain\u003Eb__0_32",
+=======
+    "Method": "\u003CMain\u003Eb__0_30",
+>>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
     "RelativePath": "contact",
     "HttpMethod": "GET",
     "IsController": false,
@@ -530,7 +546,11 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
+<<<<<<< HEAD
     "Method": "\u003CMain\u003Eb__0_29",
+=======
+    "Method": "\u003CMain\u003Eb__0_27",
+>>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
     "RelativePath": "create-request",
     "HttpMethod": "GET",
     "IsController": false,
@@ -546,7 +566,11 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
+<<<<<<< HEAD
     "Method": "\u003CMain\u003Eb__0_31",
+=======
+    "Method": "\u003CMain\u003Eb__0_29",
+>>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
     "RelativePath": "faq",
     "HttpMethod": "GET",
     "IsController": false,
@@ -578,6 +602,7 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
+<<<<<<< HEAD
     "Method": "\u003CMain\u003Eb__0_38",
     "RelativePath": "messages",
     "HttpMethod": "GET",
@@ -595,6 +620,9 @@
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
     "Method": "\u003CMain\u003Eb__0_28",
+=======
+    "Method": "\u003CMain\u003Eb__0_26",
+>>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
     "RelativePath": "my-requests",
     "HttpMethod": "GET",
     "IsController": false,
@@ -610,7 +638,11 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
+<<<<<<< HEAD
     "Method": "\u003CMain\u003Eb__0_27",
+    "RelativePath": "profile",
+=======
+    "Method": "\u003CMain\u003Eb__0_25",
     "RelativePath": "profile",
     "HttpMethod": "GET",
     "IsController": false,
@@ -626,6 +658,56 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
+    "Method": "\u003CMain\u003Eb__0_32",
+    "RelativePath": "request-card",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Program\u002B\u003C\u003Ec",
+    "Method": "\u003CMain\u003Eb__0_28",
+    "RelativePath": "request-detail",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Program\u002B\u003C\u003Ec",
+    "Method": "\u003CMain\u003Eb__0_31",
+    "RelativePath": "requests",
+>>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Program\u002B\u003C\u003Ec",
+<<<<<<< HEAD
     "Method": "\u003CMain\u003Eb__0_34",
     "RelativePath": "request-card",
     "HttpMethod": "GET",
@@ -644,6 +726,10 @@
     "ContainingType": "Program\u002B\u003C\u003Ec",
     "Method": "\u003CMain\u003Eb__0_30",
     "RelativePath": "request-detail",
+=======
+    "Method": "\u003CMain\u003Eb__0_35",
+    "RelativePath": "staff",
+>>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
     "HttpMethod": "GET",
     "IsController": false,
     "Order": 0,
@@ -658,6 +744,7 @@
   },
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
+<<<<<<< HEAD
     "Method": "\u003CMain\u003Eb__0_33",
     "RelativePath": "requests",
     "HttpMethod": "GET",
@@ -691,6 +778,9 @@
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
     "Method": "\u003CMain\u003Eb__0_36",
+=======
+    "Method": "\u003CMain\u003Eb__0_34",
+>>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
     "RelativePath": "statistics",
     "HttpMethod": "GET",
     "IsController": false,

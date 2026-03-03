@@ -5,6 +5,10 @@ async function getRequest(id) {
     if (response.ok) {
         const request = await response.json();
         document.getElementById("requestID").value = request.requestID;
+<<<<<<< HEAD
+=======
+        // Показываем информацию в шапке карточки
+>>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
         const infoEl = document.getElementById("requestInfo");
         const problemEl = document.getElementById("requestProblem");
         const subEl = document.getElementById("topbarSub");

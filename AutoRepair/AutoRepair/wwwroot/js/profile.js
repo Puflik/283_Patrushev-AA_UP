@@ -106,6 +106,7 @@ async function loadProfile() {
         const res = await fetch(`/api/requests/client/${user.userID}`);
         if (res.ok) {
             const requests = await res.json();
+<<<<<<< HEAD
         const statusMap = {
             active: ["new", "in_progress", "waiting", "Новая заявка", "В процессе ремонта", "Ожидание автозапчастей"],
             done:   ["done", "Завершена", "Готова к выдаче"],
@@ -115,6 +116,12 @@ async function loadProfile() {
         document.getElementById("statDone").textContent = requests.filter(r => statusMap.done.includes(r.requestStatus)).length;
         document.getElementById("statActive").textContent = requests.filter(r => statusMap.active.includes(r.requestStatus)).length;
         document.getElementById("statCancelled").textContent = requests.filter(r => statusMap.cancelled.includes(r.requestStatus)).length;
+=======
+            document.getElementById("statTotal").textContent = requests.length;
+            document.getElementById("statDone").textContent = requests.filter(r => r.requestStatus === "done").length;
+            document.getElementById("statActive").textContent = requests.filter(r => ["new", "in_progress", "waiting"].includes(r.requestStatus)).length;
+            document.getElementById("statCancelled").textContent = requests.filter(r => r.requestStatus === "cancelled").length;
+>>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
         }
     } catch (e) {
         console.error('Ошибка загрузки статистики', e);

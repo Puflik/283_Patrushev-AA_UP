@@ -14,7 +14,11 @@ async function createRequest(carType, carModel, problemDescryption) {
             carType: carType,
             carModel: carModel,
             problemDescryption: problemDescryption,
+<<<<<<< HEAD
             requestStatus: "Новая заявка",
+=======
+            requestStatus: "new",
+>>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
             clientID: user.userID
         })
     });

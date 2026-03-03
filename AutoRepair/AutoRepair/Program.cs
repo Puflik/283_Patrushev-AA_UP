@@ -38,6 +38,7 @@ internal class Program
 
         DefaultFilesOptions options = new DefaultFilesOptions();
         options.DefaultFileNames.Clear();
+<<<<<<< HEAD
         options.DefaultFileNames.Add("html/login.html");
         app.UseDefaultFiles(options);
         app.UseStaticFiles();
@@ -45,12 +46,19 @@ internal class Program
         // ──────────────────────────────────────────────────────
         // GET списки
         // ──────────────────────────────────────────────────────
+=======
+        options.DefaultFileNames.Add("html/login.html"); 
+        app.UseDefaultFiles(options);
+        app.UseStaticFiles();
+
+>>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
         app.MapGet("/api/users", async (ApplicationDbContext db) =>
         {
             try { return Results.Ok(await db.Users.ToListAsync()); }
             catch { return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500); }
         });
 
+<<<<<<< HEAD
         app.MapGet("/api/requests", async (ApplicationDbContext db) =>
         {
             try { return Results.Ok(await db.Requests.ToListAsync()); }
@@ -121,6 +129,8 @@ internal class Program
         // ──────────────────────────────────────────────────────
         // GET по id — после литеральных маршрутов
         // ──────────────────────────────────────────────────────
+=======
+>>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
         app.MapGet("/api/users/{id}", async (ApplicationDbContext db, int id) =>
         {
             try
@@ -154,9 +164,49 @@ internal class Program
             catch { return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500); }
         });
 
+<<<<<<< HEAD
         // ──────────────────────────────────────────────────────
         // POST
         // ──────────────────────────────────────────────────────
+=======
+        app.MapGet("/api/requests/client/{clientId}", async (ApplicationDbContext db, int clientId) =>
+        {
+            try
+            {
+                var request = await db.Requests.Where(r => r.ClientID == clientId).ToListAsync();
+                return Results.Ok(request);
+            }
+            catch
+            {
+                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
+            }
+        });
+        app.MapGet("/api/requests/master/{masterId}", async (ApplicationDbContext db, int masterId) =>
+        {
+            try
+            {
+                var request = await db.Requests.Where(r => r.MasterID == masterId).ToListAsync();
+                return Results.Ok(request);
+            }
+            catch
+            {
+                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
+            }
+        });
+        app.MapGet("/api/comments/request/{requestId}", async (ApplicationDbContext db, int requestId) =>
+        {
+            try
+            {
+                var comment = await db.Comments.Where(c => c.RequestID == requestId).ToListAsync();
+                return Results.Ok(comment);
+            }
+            catch
+            {
+                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
+            }
+        });
+
+>>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
         app.MapPost("/api/users", async (User user, ApplicationDbContext db) =>
         {
             try
@@ -192,6 +242,7 @@ internal class Program
             catch { return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500); }
         });
 
+<<<<<<< HEAD
         app.MapPost("/api/messages", async (Message message, ApplicationDbContext db) =>
         {
             try
@@ -206,6 +257,8 @@ internal class Program
         // ──────────────────────────────────────────────────────
         // PUT
         // ──────────────────────────────────────────────────────
+=======
+>>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
         app.MapPut("/api/users", async (User userData, ApplicationDbContext db) =>
         {
             try
@@ -260,9 +313,12 @@ internal class Program
             catch { return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500); }
         });
 
+<<<<<<< HEAD
         // ──────────────────────────────────────────────────────
         // DELETE
         // ──────────────────────────────────────────────────────
+=======
+>>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
         app.MapDelete("/api/users/{id}", async (ApplicationDbContext db, int id) =>
         {
             try
@@ -301,10 +357,28 @@ internal class Program
             }
             catch { return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500); }
         });
+<<<<<<< HEAD
 
         // ──────────────────────────────────────────────────────
         // AUTH
         // ──────────────────────────────────────────────────────
+=======
+        app.MapGet("/api/requests/search", async (ApplicationDbContext db, string? status, string? query) => {
+            try
+            {
+                var q = db.Requests.AsQueryable();
+                if (!string.IsNullOrEmpty(status) && status != "all")
+                    q = q.Where(r => r.RequestStatus == status);
+                if (!string.IsNullOrEmpty(query))
+                    q = q.Where(r => r.CarModel.Contains(query) || r.ProblemDescryption.Contains(query) || r.RequestID.ToString() == query);
+                return Results.Ok(await q.ToListAsync());
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem("Ошибка поиска: " + ex.Message);
+            }
+        });
+>>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
         app.MapPost("/api/login", async (HttpContext context, ApplicationDbContext db, Person person) =>
         {
             try
@@ -341,6 +415,7 @@ internal class Program
             catch { return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500); }
         });
 
+<<<<<<< HEAD
         app.MapGet("/api/me", async (HttpContext ctx, ApplicationDbContext db) =>
         {
             try
@@ -370,6 +445,8 @@ internal class Program
         // ──────────────────────────────────────────────────────
         // Страницы (HTML)
         // ──────────────────────────────────────────────────────
+=======
+>>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
         async Task ServePage(HttpContext ctx, string fileName, bool requireAuth = true)
         {
             if (requireAuth && !ctx.User.Identity!.IsAuthenticated)
@@ -392,6 +469,18 @@ internal class Program
         {
             await ServePage(ctx, "html/profile.html");
             return Results.Empty;
+        });
+        app.MapGet("/profile", async (HttpContext ctx) =>
+        {
+            try
+            {
+                await ServePage(ctx, "html/profile.html");
+                return Results.Empty;
+            }
+            catch
+            {
+                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
+            }
         });
         app.MapGet("/my-requests", async (HttpContext ctx) =>
         {
@@ -418,6 +507,10 @@ internal class Program
             await ServePage(ctx, "html/contact.html", false);
             return Results.Empty;
         });
+<<<<<<< HEAD
+=======
+
+>>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
         app.MapGet("/requests", async (HttpContext ctx) =>
         {
             if (!ctx.User.Identity!.IsAuthenticated) { ctx.Response.Redirect("/login"); return Results.Empty; }
@@ -454,6 +547,39 @@ internal class Program
             if (!ctx.User.Identity!.IsAuthenticated) return Results.Redirect("/login");
             await ServePage(ctx, "html/messages.html");
             return Results.Empty;
+        });
+
+        app.MapGet("/api/me", async (HttpContext ctx, ApplicationDbContext db) => {
+            try
+            {
+                if (!ctx.User.Identity!.IsAuthenticated)
+                    return Results.Unauthorized();
+
+                var userIdClaim = ctx.User.FindFirst("userID")?.Value;
+                if (userIdClaim == null) return Results.Unauthorized();
+
+                var user = await db.Users.FindAsync(int.Parse(userIdClaim));
+                if (user == null) return Results.Unauthorized();
+
+                return Results.Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem("Ошибка: " + ex.Message);
+            }
+        });
+
+        app.MapPost("/api/messages", async (Message message, ApplicationDbContext db) => {
+            try
+            {
+                await db.Messages.AddAsync(message);
+                await db.SaveChangesAsync();
+                return Results.Created($"/api/messages/{message.MessageID}", message);
+            }
+            catch
+            {
+                return Results.Problem(detail: "Внутренняя ошибка сервера", title: "Ошибка", statusCode: 500);
+            }
         });
 
         app.Run();
@@ -519,7 +645,10 @@ public class Comment
     public int MasterID { get; set; }
     public int RequestID { get; set; }
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
 public class Message
 {
     public int MessageID { get; set; }
@@ -527,7 +656,10 @@ public class Message
     public required string MessageText { get; set; }
     public int ClientID { get; set; }
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
 public class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }

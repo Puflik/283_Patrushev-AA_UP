@@ -29,6 +29,10 @@ function renderRequests(requests) {
 }
 
 async function cancelRequest(id) {
+<<<<<<< HEAD
+=======
+    // Сначала получаем текущую заявку чтобы не затереть поля
+>>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
     const currentRes = await fetch(`/api/requests/${id}`);
     const current = await currentRes.json();
 
@@ -87,7 +91,11 @@ function row(request) {
     detailBtn.addEventListener("click", () => location.href = `/request-detail?id=${request.requestID}`);
     linksTd.append(detailBtn);
 
+<<<<<<< HEAD
     if (request.requestStatus === "Новая заявка") {
+=======
+    if (request.requestStatus === "new" || request.requestStatus === "Новая заявка") {
+>>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
         const cancelBtn = document.createElement("button");
         cancelBtn.textContent = "Отменить";
         cancelBtn.className = "remove-button";
@@ -102,15 +110,34 @@ function row(request) {
     return tr;
 }
 
+<<<<<<< HEAD
+=======
+// Фильтры
+>>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
 document.querySelectorAll(".filter-btn[data-status]").forEach(btn => {
     btn.addEventListener("click", () => {
         document.querySelectorAll(".filter-btn[data-status]").forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
         const status = btn.dataset.status;
 
+<<<<<<< HEAD
     const filtered = status === "all"
         ? allRequests
         : allRequests.filter(r => (statusMap[status] || [status]).includes(r.requestStatus));   
+=======
+        // Маппинг английских статусов на русские (как в БД)
+        const statusMap = {
+            "new": ["new", "Новая заявка"],
+            "in_progress": ["in_progress", "В процессе ремонта"],
+            "waiting": ["waiting", "Ожидание автозапчастей"],
+            "done": ["done", "Завершена", "Готова к выдаче"],
+            "cancelled": ["cancelled", "Отменена"]
+        };
+
+        const filtered = status === "all"
+            ? allRequests
+            : allRequests.filter(r => (statusMap[status] || [status]).includes(r.requestStatus));
+>>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
         renderRequests(filtered);
     });
 });

@@ -86,6 +86,7 @@ C:\Users\Антон\Downloads\ИСРПО\283_Patrushev-AA_UP\AutoRepair\AutoRepa
 C:\Users\Антон\Downloads\ИСРПО\283_Patrushev-AA_UP\AutoRepair\AutoRepair\obj\Debug\net10.0\compressed\8q9u2yv3m4-{0}-sohb4fwqn5-sohb4fwqn5.gz
 C:\Users\Антон\Downloads\ИСРПО\283_Patrushev-AA_UP\AutoRepair\AutoRepair\obj\Debug\net10.0\compressed\chaqpym90c-{0}-85njlspqxm-85njlspqxm.gz
 C:\Users\Антон\Downloads\ИСРПО\283_Patrushev-AA_UP\AutoRepair\AutoRepair\obj\Debug\net10.0\compressed\665ji0bhbk-{0}-u3e9eorxro-u3e9eorxro.gz
+<<<<<<< HEAD
 C:\Users\User\Downloads\фелшка\ИСРПО УП\283_Patrushev-AA_UP\AutoRepair\AutoRepair\bin\Debug\net10.0\appsettings.Development.json
 C:\Users\User\Downloads\фелшка\ИСРПО УП\283_Patrushev-AA_UP\AutoRepair\AutoRepair\bin\Debug\net10.0\appsettings.json
 C:\Users\User\Downloads\фелшка\ИСРПО УП\283_Patrushev-AA_UP\AutoRepair\AutoRepair\bin\Debug\net10.0\AutoRepair.staticwebassets.runtime.json
@@ -173,3 +174,5 @@ C:\Users\User\Downloads\фелшка\ИСРПО УП\283_Patrushev-AA_UP\AutoRep
 C:\Users\User\Downloads\фелшка\ИСРПО УП\283_Patrushev-AA_UP\AutoRepair\AutoRepair\obj\Debug\net10.0\compressed\f6ripzxdeg-{0}-7ihvlwkjez-7ihvlwkjez.gz
 C:\Users\User\Downloads\фелшка\ИСРПО УП\283_Patrushev-AA_UP\AutoRepair\AutoRepair\obj\Debug\net10.0\compressed\8q9u2yv3m4-{0}-f0jksljs63-f0jksljs63.gz
 C:\Users\User\Downloads\фелшка\ИСРПО УП\283_Patrushev-AA_UP\AutoRepair\AutoRepair\obj\Debug\net10.0\compressed\fr9jcnp5wr-{0}-9po53tn734-9po53tn734.gz
+=======
+>>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2

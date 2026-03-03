@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 var allRequests = [];
 var allUsers    = [];
 
@@ -148,10 +149,20 @@ function renderMechanics(doneRequests) {
 document.querySelectorAll(".filter-btn[data-period]").forEach(function(btn) {
     btn.addEventListener("click", function() {
         document.querySelectorAll(".filter-btn[data-period]").forEach(function(b) { b.classList.remove("active"); });
+=======
+
+document.querySelectorAll(".filter-btn[data-period]").forEach(btn => {
+    btn.addEventListener("click", () => {
+        document.querySelectorAll(".filter-btn[data-period]").forEach(b => b.classList.remove("active"));
+>>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
         btn.classList.add("active");
         loadStatistics(btn.dataset.period);
     });
 });
 
 initSidebar();
+<<<<<<< HEAD
 loadData();
+=======
+loadStatistics('month');
+>>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 var statusToEng = {
     'Новая заявка': 'new', 'В процессе ремонта': 'in_progress',
     'Ожидание автозапчастей': 'waiting', 'Готова к выдаче': 'done', 'Отменена': 'cancelled'
@@ -7,6 +8,8 @@ var statusToRu = {
     'waiting': 'Ожидание автозапчастей', 'done': 'Готова к выдаче', 'cancelled': 'Отменена'
 };
 
+=======
+>>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
 async function getRequest(id) {
     const response = await fetch(`/api/requests/${id}`, {
         method: "GET",
@@ -49,6 +52,7 @@ async function getRequest(id) {
     }
 }
 
+<<<<<<< HEAD
 async function editRequest(requestID, statusEng, repairParts, completionDate) {
     const statusToRu = {
         'new':         'Новая заявка',
@@ -61,6 +65,9 @@ async function editRequest(requestID, statusEng, repairParts, completionDate) {
     const currentRes = await fetch(`/api/requests/${requestID}`);
     const current = await currentRes.json();
 
+=======
+async function editRequest(requestID, requestStatus, repairParts, completionDate) {
+>>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
     const response = await fetch("/api/requests", {
         method: "PUT",
         headers: { "Accept": "application/json", "Content-Type": "application/json" },
