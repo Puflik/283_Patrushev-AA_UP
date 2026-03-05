@@ -49,3 +49,13 @@ COPY "Comments"("CommentID", "Message", "MasterID", "RequestID")
 FROM 'C:\postgresql\17\data\inputDataComments.csv'
 DELIMITER ';' 
 CSV HEADER;
+
+CREATE ROLE client_role;
+CREATE ROLE mechanic_role;
+CREATE ROLE manager_role;
+CREATE ROLE admin_role;
+
+GRANT SELECT ON "Requests", "Users", "Comments" TO client_role;
+GRANT SELECT, UPDATE ON "Requests", "Comments" TO mechanic_role;
+GRANT SELECT, INSERT, UPDATE ON "Requests", "Users", "Comments" TO manager_role;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO admin_role;
