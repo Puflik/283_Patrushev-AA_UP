@@ -1,166 +1,139 @@
-<<<<<<< HEAD
-var allRequests = [];
-
-async function getRequests() {
-    var response = await fetch("/api/requests", {
-=======
+// requests.js
 let allRequests = [];
+let allUsers    = [];
 
-async function getRequests() {
-    const response = await fetch("/api/requests", {
->>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
-        headers: { "Accept": "application/json" }
-    });
-    if (response.ok) {
-        allRequests = await response.json();
-        renderRequests(allRequests);
-    } else {
-<<<<<<< HEAD
-        showError('Ошибка загрузки заявок');
-=======
-        const error = await response.json();
-        showError(error.message || 'Ошибка загрузки');
->>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
-    }
+// Типы клиентов в БД (русские значения)
+const CLIENT_TYPES = ['client', 'Заказчик'];
+
+async function loadData() {
+  const [rRes, uRes] = await Promise.all([
+    fetch('/api/requests'),
+    fetch('/api/users')
+  ]);
+  if (rRes.ok) allRequests = await rRes.json();
+  if (uRes.ok) {
+    const raw = await uRes.json();
+    allUsers = raw.map(u => ({ ...u, _normType: normalizeType(u.type) }));
+  }
+  renderRequests(allRequests);
 }
 
-function renderRequests(requests) {
-<<<<<<< HEAD
-    var tbody = document.querySelector("#t1 tbody");
-    tbody.innerHTML = "";
-    if (requests.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--muted)">Заявки не найдены</td></tr>';
-        return;
-    }
-    requests.forEach(function(r) { tbody.append(row(r)); });
-=======
-    const tbody = document.querySelector("#t1 tbody");
-    tbody.innerHTML = "";
-    if (requests.length === 0) {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `<td colspan="8" style="text-align:center;color:var(--muted)">Заявки не найдены</td>`;
-        tbody.append(tr);
-        return;
-    }
-    requests.forEach(r => tbody.append(row(r)));
->>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
+function renderRequests(list) {
+  const tbody = document.querySelector('#t1 tbody');
+  tbody.innerHTML = '';
+  if (list.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:32px;color:var(--muted);">Заявки не найдены</td></tr>';
+    return;
+  }
+  list.forEach(r => tbody.append(row(r)));
 }
 
-function row(request) {
-    var tr = document.createElement("tr");
-    tr.setAttribute("data-rowid",  request.requestID);
-    tr.setAttribute("data-status", request.requestStatus);
-
-<<<<<<< HEAD
-    [
-=======
-    const cells = [
->>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
-        request.requestID,
-        request.startDate,
-        request.carType,
-        request.carModel,
-        request.problemDescryption,
-        statusLabel(request.requestStatus),
-<<<<<<< HEAD
-        request.masterID !== null && request.masterID !== undefined ? request.masterID : "—"
-    ].forEach(function(text) {
-        var td = document.createElement("td");
-        td.textContent = (text !== null && text !== undefined) ? text : "—";
-        tr.append(td);
-    });
-
-    var linksTd = document.createElement("td");
-    var openBtn = document.createElement("button");
-    openBtn.textContent = "Открыть";
-    openBtn.className   = "edit-button";
-    openBtn.addEventListener("click", function() { location.href = "/request-card?id=" + request.requestID; });
-=======
-        request.masterID ?? "—"
-    ];
-    cells.forEach(text => {
-        const td = document.createElement("td");
-        td.textContent = text;
-        tr.append(td);
-    });
-
-    const linksTd = document.createElement("td");
-    const openBtn = document.createElement("button");
-    openBtn.textContent = "Открыть";
-    openBtn.className = "edit-button";
-    openBtn.addEventListener("click", () => location.href = `/request-card?id=${request.requestID}`);
->>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
-    linksTd.append(openBtn);
-    tr.append(linksTd);
-    return tr;
+function row(r) {
+  const mech  = allUsers.find(u => u.userID === r.masterID);
+  const badge = `<span class="badge ${statusBadgeClass(r.requestStatus)}">${statusLabel(r.requestStatus)}</span>`;
+  const tr    = document.createElement('tr');
+  tr.innerHTML = `
+    <td>${r.requestID}</td>
+    <td>${formatDate(r.startDate)}</td>
+    <td>${r.clientFio || '—'}</td>
+    <td>${r.carType}</td>
+    <td>${r.carModel}</td>
+    <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.problemDescryption}</td>
+    <td>${badge}</td>
+    <td>${mech ? mech.fio : (r.masterFio || '—')}</td>
+    <td></td>`;
+  const btn = document.createElement('button');
+  btn.textContent = 'Открыть';
+  btn.className = 'btn btn-outline btn-sm';
+  btn.addEventListener('click', () => location.href = `/request-card?id=${r.requestID}`);
+  tr.querySelector('td:last-child').appendChild(btn);
+  return tr;
 }
 
-<<<<<<< HEAD
-document.querySelectorAll(".filter-btn[data-status]").forEach(function(btn) {
-    btn.addEventListener("click", function() {
-        document.querySelectorAll(".filter-btn[data-status]").forEach(function(b) { b.classList.remove("active"); });
-=======
-document.querySelectorAll(".filter-btn[data-status]").forEach(btn => {
-    btn.addEventListener("click", () => {
-        document.querySelectorAll(".filter-btn[data-status]").forEach(b => b.classList.remove("active"));
->>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
-        btn.classList.add("active");
-        applyFilters();
-    });
+// Фильтры
+document.querySelectorAll('.filter-btn[data-status]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn[data-status]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  });
+});
+const searchInput = document.getElementById('searchInput');
+if (searchInput) searchInput.addEventListener('input', applyFilters);
+
+function applyFilters() {
+  const activeBtn = document.querySelector('.filter-btn.active[data-status]');
+  const status = activeBtn ? activeBtn.dataset.status : 'all';
+  const q = (searchInput ? searchInput.value : '').toLowerCase();
+  const filtered = allRequests.filter(r => {
+    const matchStatus = status === 'all' || (statusMap[status] || []).includes(r.requestStatus);
+    const matchQ = !q || String(r.requestID).includes(q)
+      || (r.carModel||'').toLowerCase().includes(q)
+      || (r.clientFio||'').toLowerCase().includes(q)
+      || (r.problemDescryption||'').toLowerCase().includes(q);
+    return matchStatus && matchQ;
+  });
+  renderRequests(filtered);
+}
+
+// Новая заявка
+document.getElementById('btnNewReq').addEventListener('click', async () => {
+  // Если пользователи ещё не загружены — загрузить
+  if (allUsers.length === 0) await loadData();
+
+  const modal = document.getElementById('newReqModal');
+
+  // Фильтруем клиентов: тип 'Заказчик' или 'client' после нормализации
+  const clients = allUsers.filter(u => u._normType === 'client');
+
+  const sel = document.getElementById('nrClientSel');
+  if (clients.length === 0) {
+    sel.innerHTML = '<option value="">— Нет заказчиков —</option>';
+  } else {
+    sel.innerHTML = '<option value="">— Выберите клиента —</option>' +
+      clients.map(c => `<option value="${c.userID}">${c.fio}</option>`).join('');
+  }
+
+  // Сбросить форму
+  document.getElementById('nrCarModel').value  = '';
+  document.getElementById('nrProblem').value   = '';
+  document.getElementById('nrErr').textContent = '';
+
+  modal.classList.remove('hidden');
 });
 
-<<<<<<< HEAD
-var searchInput = document.getElementById("searchInput");
-if (searchInput) {
-    searchInput.addEventListener("input", function() { applyFilters(); });
-}
+document.getElementById('nrCancelBtn').addEventListener('click', () =>
+  document.getElementById('newReqModal').classList.add('hidden'));
 
-function applyFilters() {
-    var activeBtn = document.querySelector(".filter-btn.active[data-status]");
-    var status    = activeBtn ? activeBtn.dataset.status : "all";
-    var query     = (searchInput ? searchInput.value : "").toLowerCase();
+document.getElementById('newReqModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('newReqModal'))
+    document.getElementById('newReqModal').classList.add('hidden');
+});
 
-    var filtered = allRequests.filter(function(r) {
-        var allowed      = statusMap[status] || [status];
-        var matchStatus  = status === "all" || allowed.indexOf(r.requestStatus) !== -1;
-        var matchQuery   = !query
-            || String(r.requestID).indexOf(query) !== -1
-            || (r.carModel           || "").toLowerCase().indexOf(query) !== -1
-            || (r.problemDescryption || "").toLowerCase().indexOf(query) !== -1;
-=======
-const searchInput = document.getElementById("searchInput");
-if (searchInput) {
-    searchInput.addEventListener("input", () => applyFilters());
-}
+document.getElementById('nrSaveBtn').addEventListener('click', async () => {
+  const clientID           = parseInt(document.getElementById('nrClientSel').value);
+  const carType            = document.getElementById('nrCarType').value;
+  const carModel           = document.getElementById('nrCarModel').value.trim();
+  const problemDescryption = document.getElementById('nrProblem').value.trim();
+  const errEl              = document.getElementById('nrErr');
+  if (!clientID)           { errEl.textContent = 'Выберите клиента'; return; }
+  if (!carModel)           { errEl.textContent = 'Укажите модель'; return; }
+  if (!problemDescryption) { errEl.textContent = 'Опишите проблему'; return; }
 
-function applyFilters() {
-    const activeBtn = document.querySelector(".filter-btn.active[data-status]");
-    const status = activeBtn ? activeBtn.dataset.status : "all";
-    const query = (searchInput ? searchInput.value : "").toLowerCase();
+  const res = await fetch('/api/requests', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      startDate: new Date().toISOString().split('T')[0],
+      carType, carModel, problemDescryption,
+      requestStatus: 'Новая заявка', clientID
+    })
+  });
+  if (res.ok) {
+    document.getElementById('newReqModal').classList.add('hidden');
+    await loadData();
+  } else errEl.textContent = 'Ошибка создания заявки';
+});
 
-    const statusMap = {
-        "new": ["new", "Новая заявка"],
-        "in_progress": ["in_progress", "В процессе ремонта"],
-        "waiting": ["waiting", "Ожидание автозапчастей"],
-        "done": ["done", "Завершена", "Готова к выдаче"],
-        "cancelled": ["cancelled", "Отменена"]
-    };
-
-    const filtered = allRequests.filter(r => {
-        const matchStatus = status === "all" || (statusMap[status] || [status]).includes(r.requestStatus);
-        const matchQuery = !query ||
-            String(r.requestID).includes(query) ||
-            (r.carModel || "").toLowerCase().includes(query) ||
-            (r.problemDescryption || "").toLowerCase().includes(query);
->>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
-        return matchStatus && matchQuery;
-    });
-    renderRequests(filtered);
-}
-
-getRequests();
-<<<<<<< HEAD
 initSidebar();
-=======
-initSidebar();
->>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
+loadData();

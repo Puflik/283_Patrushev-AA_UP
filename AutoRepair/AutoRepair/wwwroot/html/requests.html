@@ -1,32 +1,24 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Заявки — АвтоТранс</title>
-  <link rel="stylesheet" href="../css/shared.css">
+  <link rel="stylesheet" href="../css/shared.css?v=4"/>
 </head>
 <body>
-<input type="hidden" id="currentUserId" value="" />
-<input type="hidden" id="currentUserRole" value="" />
+<input type="hidden" id="currentUserId" value=""/>
+<input type="hidden" id="currentUserRole" value=""/>
 
 <div class="layout">
-
   <aside class="sidebar">
     <div class="sidebar__logo">АвтоТранс</div>
     <div class="sidebar__role" id="sidebarRole">—</div>
     <div class="sidebar__divider"></div>
-    <a class="sidebar__link active" href="/requests">
-      <span class="icon">☰</span> Заявки
-    </a>
-    <a class="sidebar__link hidden" href="/messages" id="linkMessages">
-        <span class="icon">✉</span> Обращения
-    </a>  
-    <a class="sidebar__link" href="/statistics" id="linkStats">
-      <span class="icon">#</span> Статистика
-    </a>
-    <a class="sidebar__link hidden" href="/staff" id="linkStaff">
-      <span class="icon">@</span> Сотрудники
-    </a>
+    <a class="sidebar__link active" href="/requests"><span class="icon">☰</span> Заявки</a>
+    <a class="sidebar__link" href="/statistics" id="linkStats"><span class="icon">#</span> Статистика</a>
+    <a class="sidebar__link hidden" href="/staff" id="linkStaff"><span class="icon">@</span> Сотрудники</a>
+    <a class="sidebar__link hidden" href="/messages" id="linkMessages"><span class="icon">✉</span> Сообщения</a>
     <div class="sidebar__bottom">
       <div class="sidebar__divider"></div>
       <div class="sidebar__user">
@@ -46,26 +38,31 @@
       <span class="topbar__sub">Управление заявками</span>
     </div>
     <div class="content">
-
-      <div class="search-bar">
-        <span class="text-muted">🔍</span>
-        <input type="text" id="searchInput" placeholder="Поиск по номеру, клиенту..." />
+      <div class="flex items-center justify-between mb-16">
+        <div class="search-bar" style="flex:1;margin-right:16px;margin-bottom:0;">
+          <span class="text-muted">🔍</span>
+          <input type="text" id="searchInput" placeholder="Поиск по номеру, клиенту, модели..."/>
+        </div>
+        <button class="btn btn-primary" id="btnNewReq">+ Новая заявка</button>
       </div>
+
       <div class="filters">
         <button class="filter-btn active" data-status="all">Все</button>
         <button class="filter-btn" data-status="new">Новые</button>
         <button class="filter-btn" data-status="in_progress">В работе</button>
         <button class="filter-btn" data-status="waiting">Ожидание</button>
         <button class="filter-btn" data-status="done">Завершено</button>
+        <button class="filter-btn" data-status="cancelled">Отменено</button>
       </div>
 
-      <div class="card" style="padding:0; overflow:hidden;">
+      <div class="card" style="padding:0;overflow:hidden;">
         <div class="table-wrap">
           <table id="t1">
             <thead>
               <tr>
                 <th>№</th>
                 <th>Дата</th>
+                <th>Клиент</th>
                 <th>Вид авто</th>
                 <th>Модель</th>
                 <th>Проблема</th>
@@ -78,12 +75,45 @@
           </table>
         </div>
       </div>
-
     </div>
   </div>
 </div>
 
-<script src="../js/shared.js"></script>
-<script src="../js/requests.js"></script>
+<!-- Модальное окно: новая заявка от имени клиента -->
+<div id="newReqModal" class="modal-overlay hidden">
+  <div class="card" style="width:90%;max-width:480px;">
+    <div class="card-header"><span class="card-title">Новая заявка</span></div>
+    <div class="flex-col gap-16">
+      <div class="form-group">
+        <label>Клиент</label>
+        <select id="nrClientSel"></select>
+      </div>
+      <div class="form-group">
+        <label>Вид авто</label>
+        <select id="nrCarType">
+          <option>Легковой</option><option>Внедорожник</option>
+          <option>Грузовой</option><option>Микроавтобус</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Модель авто</label>
+        <input type="text" id="nrCarModel" placeholder="Toyota Camry 2020"/>
+      </div>
+      <div class="form-group">
+        <label>Описание проблемы</label>
+        <textarea id="nrProblem" placeholder="Опишите неисправность..."></textarea>
+      </div>
+      <div class="error-msg" id="nrErr"></div>
+    </div>
+    <div class="divider"></div>
+    <div class="flex gap-12">
+      <button class="btn btn-primary" id="nrSaveBtn">Создать</button>
+      <button class="btn btn-ghost" id="nrCancelBtn">Отмена</button>
+    </div>
+  </div>
+</div>
+
+<script src="../js/shared.js?v=4"></script>
+<script src="../js/requests.js?v=4"></script>
 </body>
 </html>

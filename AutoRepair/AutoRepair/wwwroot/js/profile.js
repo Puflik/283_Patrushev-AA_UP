@@ -1,131 +1,78 @@
-async function getUser(id) {
-    const response = await fetch(`/api/users/${id}`, {
-        method: "GET",
-        headers: { "Accept": "application/json" }
+// profile.js
+document.addEventListener('DOMContentLoaded', async () => {
+  const user = await getCurrentUser();
+  if (!user) return;
+  initClientNav();
+
+  // Заполнить профиль
+  document.getElementById('profileAvatar').textContent = initials(user.fio);
+  document.getElementById('profileName').textContent   = user.fio;
+  document.getElementById('profileMeta').textContent   = roleLabel(user.type) + (user.phone ? '  ·  ' + user.phone : '');
+
+  // Редактирование
+  document.getElementById('toggleEditBtn').addEventListener('click', () => {
+    const form = document.getElementById('editForm');
+    form.classList.toggle('hidden');
+    if (!form.classList.contains('hidden')) {
+      document.getElementById('userID').value    = user.userID;
+      document.getElementById('userFio').value   = user.fio;
+      document.getElementById('userPhone').value = user.phone;
+      document.getElementById('userLogin').value = user.login;
+      document.getElementById('userPassword').value = '';
+    }
+  });
+  document.getElementById('cancelEditBtn').addEventListener('click', () =>
+    document.getElementById('editForm').classList.add('hidden'));
+
+  document.getElementById('saveProfileBtn').addEventListener('click', async () => {
+    const body = {
+      fio:      document.getElementById('userFio').value.trim(),
+      phone:    document.getElementById('userPhone').value.trim(),
+      login:    document.getElementById('userLogin').value.trim(),
+      password: document.getElementById('userPassword').value
+    };
+    const r = await fetch(`/api/users/${user.userID}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
     });
-    if (response.ok === true) {
-        const user = await response.json();
-        document.getElementById("userID").value    = user.userID;
-        document.getElementById("userFio").value   = user.fio;
-        document.getElementById("userPhone").value = user.phone;
-        document.getElementById("userLogin").value = user.login;
+    if (r.ok) {
+      showInfo('Данные обновлены. Перезагрузите страницу.');
+      document.getElementById('editForm').classList.add('hidden');
+    } else showError('Не удалось сохранить');
+  });
+
+  // Сводка по заявкам
+  const reqRes = await fetch('/api/requests');
+  if (reqRes.ok) {
+    const reqs = await reqRes.json();
+    document.getElementById('statTotal').textContent     = reqs.length;
+    document.getElementById('statDone').textContent      = reqs.filter(r => r.requestStatus === 'Готова к выдаче').length;
+    document.getElementById('statActive').textContent    = reqs.filter(r =>
+      ['Новая заявка','В процессе ремонта','Ожидание автозапчастей'].includes(r.requestStatus)).length;
+    document.getElementById('statCancelled').textContent = reqs.filter(r => r.requestStatus === 'Отменена').length;
+  }
+
+  // Уведомления (ответы на сообщения)
+  const msgRes = await fetch('/api/messages');
+  const notifEl = document.getElementById('notifList');
+  if (msgRes.ok) {
+    const msgs = await msgRes.json();
+    const replied = msgs.filter(m => m.reply);
+    if (replied.length === 0) {
+      notifEl.innerHTML = '<p class="text-muted text-sm">Нет новых уведомлений</p>';
     } else {
-        const error = await response.json();
-        showError(error.message);
+      notifEl.innerHTML = replied.map(m => `
+        <div class="card mb-16" style="border-left:4px solid var(--accent);">
+          <div class="font-bold mb-8">${m.subject}</div>
+          <div class="text-sm text-muted mb-8">Ваш вопрос: ${m.messageText}</div>
+          <div class="text-sm" style="background:var(--bg);padding:10px 14px;border-radius:var(--radius-sm);">
+            <b>Ответ менеджера:</b> ${m.reply}
+          </div>
+          <div class="text-xs text-muted mt-8">${formatDate(m.sentAt)}</div>
+        </div>`).join('');
     }
-}
-
-async function editUser(userId, fio, phone, login, password) {
-    const currentRes = await fetch(`/api/users/${userId}`);
-    const current = await currentRes.json();
-
-    const response = await fetch("/api/users", {
-        method: "PUT",
-        headers: { "Accept": "application/json", "Content-Type": "application/json" },
-        body: JSON.stringify({
-            userID: parseInt(userId),
-            fio: fio,
-            phone: phone,
-            login: login,
-            password: password.trim() !== "" ? password : current.password,
-            type: current.type
-        })
-    });
-    if (response.ok) {
-        const user = await response.json();
-        document.getElementById("profileName").textContent = user.fio;
-        document.getElementById("profileMeta").textContent = `${user.login} · ${user.phone}`;
-        document.getElementById("profileAvatar").textContent = initials(user.fio);
-        const navAvatar = document.getElementById("navAvatar");
-        const navName = document.getElementById("navName");
-        if (navAvatar) navAvatar.textContent = initials(user.fio);
-        if (navName) navName.textContent = user.fio;
-        showInfo("Данные сохранены");
-    } else {
-        const error = await response.json();
-        showError(error.detail || error.message || "Ошибка сохранения");
-    }
-}
-
-function reset() {
-    document.getElementById("userFio").value      =
-        document.getElementById("userPhone").value    =
-        document.getElementById("userLogin").value    =
-        document.getElementById("userPassword").value = "";
-}
-
-function toggleEdit() {
-    const form = document.getElementById("editForm");
-    const btn  = document.getElementById("toggleEditBtn");
-    if (form.classList.contains("hidden")) {
-        form.classList.remove("hidden");
-        btn.textContent = "Отмена";
-    } else {
-        form.classList.add("hidden");
-        btn.textContent = "Редактировать профиль";
-        reset();
-    }
-}
-
-document.getElementById("toggleEditBtn").addEventListener("click", toggleEdit);
-
-document.getElementById("resetBtn").addEventListener("click", () => toggleEdit());
-
-document.getElementById("saveBtn").addEventListener("click", async () => {
-    const id       = document.getElementById("userID").value;
-    const fio      = document.getElementById("userFio").value;
-    const phone    = document.getElementById("userPhone").value;
-    const login    = document.getElementById("userLogin").value;
-    const password = document.getElementById("userPassword").value;
-    await editUser(id, fio, phone, login, password);
-    toggleEdit();
+  } else {
+    notifEl.innerHTML = '<p class="text-muted text-sm">—</p>';
+  }
 });
-
-async function loadProfile() {
-    const user = await getCurrentUser();
-    if (!user) return;
-
-    const nameEl = document.getElementById("profileName");
-    const metaEl = document.getElementById("profileMeta");
-    const avatarEl = document.getElementById("profileAvatar");
-    const navAvatarEl = document.getElementById("navAvatar");
-    const navNameEl = document.getElementById("navName");
-
-    if (nameEl) nameEl.textContent = user.fio;
-    if (metaEl) metaEl.textContent = `${user.login} · ${user.phone}`;
-    if (avatarEl) avatarEl.textContent = initials(user.fio);
-    if (navAvatarEl) navAvatarEl.textContent = initials(user.fio);
-    if (navNameEl) navNameEl.textContent = user.fio;
-
-    document.getElementById("userID").value = user.userID;
-    document.getElementById("userFio").value = user.fio;
-    document.getElementById("userPhone").value = user.phone;
-    document.getElementById("userLogin").value = user.login;
-
-    try {
-        const res = await fetch(`/api/requests/client/${user.userID}`);
-        if (res.ok) {
-            const requests = await res.json();
-<<<<<<< HEAD
-        const statusMap = {
-            active: ["new", "in_progress", "waiting", "Новая заявка", "В процессе ремонта", "Ожидание автозапчастей"],
-            done:   ["done", "Завершена", "Готова к выдаче"],
-            cancelled: ["cancelled", "Отменена"]
-        };
-        document.getElementById("statTotal").textContent = requests.length;
-        document.getElementById("statDone").textContent = requests.filter(r => statusMap.done.includes(r.requestStatus)).length;
-        document.getElementById("statActive").textContent = requests.filter(r => statusMap.active.includes(r.requestStatus)).length;
-        document.getElementById("statCancelled").textContent = requests.filter(r => statusMap.cancelled.includes(r.requestStatus)).length;
-=======
-            document.getElementById("statTotal").textContent = requests.length;
-            document.getElementById("statDone").textContent = requests.filter(r => r.requestStatus === "done").length;
-            document.getElementById("statActive").textContent = requests.filter(r => ["new", "in_progress", "waiting"].includes(r.requestStatus)).length;
-            document.getElementById("statCancelled").textContent = requests.filter(r => r.requestStatus === "cancelled").length;
->>>>>>> 15f748bc242f4638a09b984bc58142a7323b85b2
-        }
-    } catch (e) {
-        console.error('Ошибка загрузки статистики', e);
-    }
-}
-
-loadProfile();

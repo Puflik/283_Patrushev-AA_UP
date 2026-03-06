@@ -1,8 +1,10 @@
-document.getElementById("faqSearch").addEventListener("input", function () {
+// faq.js
+document.addEventListener('DOMContentLoaded', () => {
+  initClientNav();
+  document.getElementById('faqSearch').addEventListener('input', function () {
     const q = this.value.toLowerCase();
-    document.querySelectorAll(".faq-item").forEach(item => {
-        const text = item.textContent.toLowerCase();
-        item.style.display = text.includes(q) ? "" : "none";
+    document.querySelectorAll('.faq-item').forEach(item => {
+      item.style.display = item.textContent.toLowerCase().includes(q) ? '' : 'none';
     });
+  });
 });
-initClientNav();

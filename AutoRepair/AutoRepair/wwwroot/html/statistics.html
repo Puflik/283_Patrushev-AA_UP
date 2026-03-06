@@ -1,38 +1,29 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Статистика — АвтоТранс</title>
-  <link rel="stylesheet" href="../css/shared.css">
+  <link rel="stylesheet" href="../css/shared.css?v=4"/>
 </head>
 <body>
-<input type="hidden" id="currentUserId" value="" />
+<input type="hidden" id="currentUserId" value=""/>
+<input type="hidden" id="currentUserRole" value=""/>
 
 <div class="layout">
-
   <aside class="sidebar">
     <div class="sidebar__logo">АвтоТранс</div>
     <div class="sidebar__role" id="sidebarRole">—</div>
     <div class="sidebar__divider"></div>
-    <a class="sidebar__link" href="/requests">
-      <span class="icon">☰</span> Заявки
-    </a>
-    <a class="sidebar__link hidden" href="/messages" id="linkMessages">
-        <span class="icon">✉</span> Обращения
-    </a>  
-    <a class="sidebar__link active" href="/statistics">
-      <span class="icon">#</span> Статистика
-    </a>
-    <a class="sidebar__link hidden" href="/staff" id="linkStaff">
-      <span class="icon">@</span> Сотрудники
-    </a>
+    <a class="sidebar__link" href="/requests"><span class="icon">☰</span> Заявки</a>
+    <a class="sidebar__link active" href="/statistics" id="linkStats"><span class="icon">#</span> Статистика</a>
+    <a class="sidebar__link hidden" href="/staff" id="linkStaff"><span class="icon">@</span> Сотрудники</a>
+    <a class="sidebar__link hidden" href="/messages" id="linkMessages"><span class="icon">✉</span> Сообщения</a>
     <div class="sidebar__bottom">
       <div class="sidebar__divider"></div>
       <div class="sidebar__user">
         <div class="sidebar__avatar" id="sidebarAvatar">—</div>
-        <div>
-          <div class="sidebar__uname" id="sidebarName">—</div>
-        </div>
+        <div><div class="sidebar__uname" id="sidebarName">—</div></div>
       </div>
       <div class="sidebar__logout"><a href="/api/logout">Выйти</a></div>
     </div>
@@ -41,67 +32,57 @@
   <div class="main">
     <div class="topbar">
       <span class="topbar__title">Статистика</span>
-      <span class="topbar__sub">Анализ работы сервиса</span>
+      <span class="topbar__sub">Аналитика работы сервиса</span>
     </div>
     <div class="content">
 
-      <div class="filters mb-24">
-        <button class="filter-btn" data-period="week">Неделя</button>
-        <button class="filter-btn active" data-period="month">Месяц</button>
-        <button class="filter-btn" data-period="quarter">Квартал</button>
-        <button class="filter-btn" data-period="year">Год</button>
+      <div class="filters" id="periodPills">
+        <button class="filter-btn" data-p="week">Неделя</button>
+        <button class="filter-btn active" data-p="month">Месяц</button>
+        <button class="filter-btn" data-p="quarter">Квартал</button>
+        <button class="filter-btn" data-p="year">Год</button>
       </div>
 
+      <!-- Метрики -->
       <div class="metrics">
         <div class="metric-card" style="--_color:var(--st-done);">
-          <div class="val" id="statDone">—</div>
-          <div class="lbl">Выполнено заявок</div>
+          <div class="val" id="statDone">—</div><div class="lbl">Завершено</div>
         </div>
         <div class="metric-card" style="--_color:var(--accent);">
-          <div class="val" id="statAvgTime">—</div>
-          <div class="lbl">Среднее время выполнения</div>
+          <div class="val" id="statAvgTime">—</div><div class="lbl">Среднее время (дн)</div>
         </div>
         <div class="metric-card" style="--_color:var(--st-new);">
-          <div class="val" id="statTotal">—</div>
-          <div class="lbl">Всего заявок за период</div>
+          <div class="val" id="statTotal">—</div><div class="lbl">Новых клиентов</div>
         </div>
-        <div class="metric-card" style="--_color:var(--st-work);">
-          <div class="val" id="statWaiting">—</div>
-          <div class="lbl">Ожидают назначения</div>
+        <div class="metric-card" style="--_color:var(--st-wait);">
+          <div class="val" id="statWaiting">—</div><div class="lbl">Ожидают</div>
         </div>
       </div>
 
-      <div class="grid-2 mb-20">
-
+      <div class="grid-2">
+        <!-- Bar chart -->
         <div class="card">
-          <div class="card-header">
-            <span class="card-title">Заявки по дням</span>
-          </div>
-          <div id="barChart" style="display:flex;align-items:flex-end;gap:6px;height:160px;padding-bottom:24px;position:relative;">
-          </div>
-          <div id="barLabels" style="display:flex;gap:6px;margin-top:4px;"></div>
+          <div class="card-header"><span class="card-title" id="barTitle">Заявки по дням</span></div>
+          <div style="height:140px;display:flex;align-items:flex-end;gap:3px;" id="barChart"></div>
+          <div style="display:flex;gap:3px;margin-top:4px;" id="barLabels"></div>
         </div>
 
+        <!-- Типы неисправностей -->
         <div class="card">
-          <div class="card-header">
-            <span class="card-title">Топ неисправностей</span>
-          </div>
-          <div id="issuesList">
-          </div>
+          <div class="card-header"><span class="card-title">Типы неисправностей</span></div>
+          <div id="issuesList"></div>
         </div>
-
       </div>
 
-      <div class="card" style="padding:0; overflow:hidden;">
-        <div class="card-header" style="padding:16px 20px;">
-          <span class="card-title">Производительность механиков</span>
-        </div>
+      <!-- Производительность механиков -->
+      <div class="card mt-20">
+        <div class="card-header"><span class="card-title">Производительность механиков</span></div>
         <div class="table-wrap">
           <table id="t1">
             <thead>
               <tr>
                 <th>Механик</th>
-                <th>Выполнено заявок</th>
+                <th>Завершено</th>
                 <th>Среднее время</th>
                 <th>Последняя заявка</th>
               </tr>
@@ -115,7 +96,7 @@
   </div>
 </div>
 
-<script src="../js/shared.js"></script>
-<script src="../js/statistics.js"></script>
+<script src="../js/shared.js?v=4"></script>
+<script src="../js/statistics.js?v=4"></script>
 </body>
 </html>

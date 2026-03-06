@@ -1,39 +1,29 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Карточка заявки — АвтоТранс</title>
-  <link rel="stylesheet" href="../css/shared.css">
+  <link rel="stylesheet" href="../css/shared.css?v=4"/>
 </head>
 <body>
-<input type="hidden" id="currentUserId" value="" />
-<input type="hidden" id="currentUserRole" value="" />
+<input type="hidden" id="currentUserId" value=""/>
+<input type="hidden" id="currentUserRole" value=""/>
 
 <div class="layout">
-
   <aside class="sidebar">
     <div class="sidebar__logo">АвтоТранс</div>
     <div class="sidebar__role" id="sidebarRole">—</div>
     <div class="sidebar__divider"></div>
-    <a class="sidebar__link active" href="/requests">
-      <span class="icon">☰</span> Заявки
-    </a>
-    <a class="sidebar__link hidden" href="/messages" id="linkMessages">
-        <span class="icon">✉</span> Обращения
-    </a>  
-    <a class="sidebar__link" href="/statistics">
-      <span class="icon">#</span> Статистика
-    </a>
-    <a class="sidebar__link hidden" href="/staff" id="linkStaff">
-      <span class="icon">@</span> Сотрудники
-    </a>
+    <a class="sidebar__link active" href="/requests"><span class="icon">☰</span> Заявки</a>
+    <a class="sidebar__link" href="/statistics" id="linkStats"><span class="icon">#</span> Статистика</a>
+    <a class="sidebar__link hidden" href="/staff" id="linkStaff"><span class="icon">@</span> Сотрудники</a>
+    <a class="sidebar__link hidden" href="/messages" id="linkMessages"><span class="icon">✉</span> Сообщения</a>
     <div class="sidebar__bottom">
       <div class="sidebar__divider"></div>
       <div class="sidebar__user">
         <div class="sidebar__avatar" id="sidebarAvatar">—</div>
-        <div>
-          <div class="sidebar__uname" id="sidebarName">—</div>
-        </div>
+        <div><div class="sidebar__uname" id="sidebarName">—</div></div>
       </div>
       <div class="sidebar__logout"><a href="/api/logout">Выйти</a></div>
     </div>
@@ -45,10 +35,7 @@
       <span class="topbar__sub" id="topbarSub"></span>
     </div>
     <div class="content">
-
-      <div class="breadcrumb mb-16">
-        <a href="/requests">← Назад к списку</a>
-      </div>
+      <div class="breadcrumb mb-16"><a href="/requests">← Назад к списку</a></div>
 
       <div class="flex items-center gap-12 mb-24">
         <h1 id="pageTitle">Заявка #—</h1>
@@ -56,30 +43,28 @@
       </div>
 
       <div class="grid-2">
-
         <div class="flex-col gap-20">
 
+          <!-- Основные данные -->
           <div class="card">
-            <div class="card-header">
-              <span class="card-title">Информация о заявке</span>
-            </div>
-            <input type="hidden" id="requestID" />
+            <div class="card-header"><span class="card-title">Информация о заявке</span></div>
+            <input type="hidden" id="requestID"/>
             <div class="grid-2 gap-16">
               <div class="form-group">
                 <label>Дата создания</label>
-                <input type="text" id="startDate" readonly />
+                <input type="text" id="startDate" readonly/>
               </div>
               <div class="form-group">
                 <label>Срок выполнения</label>
-                <input type="date" id="completionDate" />
+                <input type="date" id="completionDate"/>
               </div>
               <div class="form-group">
                 <label>Вид авто</label>
-                <input type="text" id="carType" readonly />
+                <input type="text" id="carType" readonly/>
               </div>
               <div class="form-group">
                 <label>Модель</label>
-                <input type="text" id="carModel" readonly />
+                <input type="text" id="carModel" readonly/>
               </div>
               <div class="form-group" style="grid-column:1/-1;">
                 <label>Описание проблемы</label>
@@ -87,75 +72,70 @@
               </div>
               <div class="form-group" style="grid-column:1/-1;">
                 <label>Запчасти и материалы</label>
-                <input type="text" id="repairParts" placeholder="Перечислите использованные запчасти" />
+                <input type="text" id="repairParts" placeholder="Перечислите через точку с запятой"/>
               </div>
             </div>
           </div>
 
+          <!-- Клиент -->
           <div class="card">
-            <div class="card-header">
-              <span class="card-title">Изменить статус</span>
-              <span class="badge" id="currentStatusBadge"></span>
-            </div>
-            <div class="form-group mb-16">
-              <label>Новый статус</label>
-              <select id="requestStatus">
-                <option value="new">Новая</option>
-                <option value="in_progress">В работе</option>
-                <option value="waiting">Ожидание</option>
-                <option value="done">Завершено</option>
-                <option value="cancelled">Отменено</option>
-              </select>
-            </div>
-            <div class="flex gap-12">
-              <button class="btn btn-primary" id="saveBtn">Сохранить изменения</button>
-              <a href="/assign" id="assignLink" class="btn btn-outline hidden">Назначить механика</a>
+            <div class="card-header"><span class="card-title">Клиент</span></div>
+            <div class="grid-2 gap-16">
+              <div class="form-group"><label>ФИО</label><input type="text" id="clientFio" readonly/></div>
+              <div class="form-group"><label>Телефон</label><input type="text" id="clientPhone" readonly/></div>
             </div>
           </div>
 
-        </div>
-
-        <div class="flex-col gap-20">
+          <!-- Действия -->
           <div class="card">
-            <div class="card-header">
-              <span class="card-title">Добавить комментарий</span>
-            </div>
-            <div class="form-group mb-16">
-              <label>Комментарий</label>
-              <textarea id="commentMessage" placeholder="Введите комментарий..."></textarea>
-            </div>
-            <div class="flex gap-12">
-              <button class="btn btn-primary" id="addCommentBtn">Добавить</button>
-              <button class="btn btn-ghost" id="resetBtn">Очистить</button>
-            </div>
-          </div>
-
-          <div class="card" style="padding:0; overflow:hidden;">
-            <div class="card-header" style="padding:16px 20px;">
-              <span class="card-title">Комментарии</span>
-            </div>
-            <div class="table-wrap">
-              <table id="t1">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Сообщение</th>
-                    <th>Механик</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody></tbody>
-              </table>
+            <div class="card-header"><span class="card-title">Управление</span></div>
+            <div class="flex-col gap-16">
+              <div class="form-group" id="statusRow">
+                <label>Изменить статус</label>
+                <select id="statusSel">
+                  <option value="Новая заявка">Новая заявка</option>
+                  <option value="В процессе ремонта">В процессе ремонта</option>
+                  <option value="Ожидание автозапчастей">Ожидание автозапчастей</option>
+                  <option value="Готова к выдаче">Готова к выдаче</option>
+                  <option value="Отменена">Отменена</option>
+                </select>
+              </div>
+              <div class="flex gap-12" id="actionBtns">
+                <button class="btn btn-primary" id="saveBtn">Сохранить</button>
+                <button class="btn btn-success hidden" id="finishBtn">Завершить ремонт</button>
+                <button class="btn btn-outline hidden" id="helpBtn">Запросить помощь</button>
+                <button class="btn btn-danger hidden" id="deleteBtn">Удалить заявку</button>
+              </div>
             </div>
           </div>
         </div>
 
+        <div class="flex-col gap-20">
+          <!-- Механик -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Механик</span>
+              <button class="btn btn-outline btn-sm hidden" id="assignBtn">Назначить</button>
+            </div>
+            <div id="mechInfo" class="text-muted text-sm">Не назначен</div>
+          </div>
+
+          <!-- Комментарии -->
+          <div class="card">
+            <div class="card-header"><span class="card-title">Комментарии</span></div>
+            <div id="commentsList" style="margin-bottom:12px;"></div>
+            <div class="form-group">
+              <textarea id="newComment" placeholder="Добавить комментарий..."></textarea>
+            </div>
+            <button class="btn btn-outline btn-sm mt-8" id="addCommentBtn">Добавить</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<script src="../js/shared.js"></script>
-<script src="../js/request-card.js"></script>
+<script src="../js/shared.js?v=4"></script>
+<script src="../js/request-card.js?v=4"></script>
 </body>
 </html>

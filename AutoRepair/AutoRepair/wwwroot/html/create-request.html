@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Новая заявка — АвтоТранс</title>
-  <link rel="stylesheet" href="../css/shared.css">
+  <link rel="stylesheet" href="../css/shared.css?v=4"/>
 </head>
 <body>
-
-<input type="hidden" id="currentUserId" value="" />
+<input type="hidden" id="currentUserId" value=""/>
 
 <nav class="client-nav">
   <span class="client-nav__logo">АвтоТранс</span>
@@ -19,46 +19,42 @@
     <a class="client-nav__link" href="/contact">Связаться с нами</a>
   </div>
   <div class="client-nav__user">
-      <div class="client-nav__avatar" id="navAvatar">ИИ</div>
-      <span class="client-nav__name" id="navName"></span>
+    <div class="client-nav__avatar" id="navAvatar">??</div>
+    <span class="client-nav__name" id="navName"></span>
+    <a href="/api/logout" class="btn btn-ghost btn-sm" style="margin-left:8px;">Выйти</a>
   </div>
 </nav>
 
-<div style="padding: 28px 40px;">
-  <div class="breadcrumb mb-16">
-    <a href="/my-requests">Заявки</a> / Новая заявка
-  </div>
+<div style="padding:28px 40px;">
+  <div class="breadcrumb mb-16"><a href="/my-requests">Заявки</a> / Новая заявка</div>
   <h1 class="mb-24">Новая заявка</h1>
 
   <div class="grid-2" style="max-width:1000px;">
-
     <div class="card">
-      <div class="card-header">
-        <span class="card-title">Данные о заявке</span>
-      </div>
-
+      <div class="card-header"><span class="card-title">Данные о заявке</span></div>
       <div class="flex-col gap-16">
         <div class="form-group">
           <label>Вид автомобиля</label>
           <select id="carType">
-            <option value="">— выберите —</option>
-            <option value="Грузовая">Грузовая</option>
-            <option value="Легковая">Легковая</option>
-            <option value="Другое">Другое</option>
+            <option value="Легковой">Легковой</option>
+            <option value="Внедорожник">Внедорожник</option>
+            <option value="Грузовой">Грузовой</option>
+            <option value="Микроавтобус">Микроавтобус</option>
           </select>
         </div>
-
         <div class="form-group">
           <label>Модель автомобиля</label>
-          <input type="text" id="carModel" placeholder="Toyota Camry 2020" />
+          <input type="text" id="carModel" placeholder="Toyota Camry 2020"/>
         </div>
-
         <div class="form-group">
           <label>Описание проблемы</label>
           <textarea id="problemDescryption" placeholder="Опишите неисправность подробно..."></textarea>
         </div>
-
-
+        <div class="form-group">
+          <label>Желаемая дата выполнения (необязательно)</label>
+          <input type="date" id="completionDate"/>
+        </div>
+        <div class="error-msg" id="formErr"></div>
         <div class="divider"></div>
         <div class="flex gap-12">
           <button class="btn btn-primary" id="saveBtn">Отправить заявку</button>
@@ -67,34 +63,47 @@
       </div>
     </div>
 
-    <div class="card" style="align-self:start;">
-      <div class="card-header">
-        <span class="card-title">Как это работает</span>
+    <div class="flex-col gap-20">
+      <div class="card" style="align-self:start;">
+        <div class="card-header"><span class="card-title">Как это работает</span></div>
+        <div class="flex-col gap-16">
+          <div class="flex gap-12 items-center">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:.8rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
+            <span class="text-sm">Создайте заявку с описанием проблемы</span>
+          </div>
+          <div class="flex gap-12 items-center">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:.8rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
+            <span class="text-sm">Оператор назначит механика</span>
+          </div>
+          <div class="flex gap-12 items-center">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:.8rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div>
+            <span class="text-sm">Следите за статусом в «Мои заявки»</span>
+          </div>
+          <div class="flex gap-12 items-center">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:.8rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">4</div>
+            <span class="text-sm">Заберите автомобиль после завершения</span>
+          </div>
+        </div>
       </div>
-      <div class="flex-col gap-16">
-        <div class="flex gap-12 items-center">
-          <div style="width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:.8rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
-          <span class="text-sm">Создайте заявку с описанием проблемы</span>
-        </div>
-        <div class="flex gap-12 items-center">
-          <div style="width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:.8rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
-          <span class="text-sm">Менеджер назначит автомеханика</span>
-        </div>
-        <div class="flex gap-12 items-center">
-          <div style="width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:.8rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div>
-          <span class="text-sm">Механик выполнит ремонт</span>
-        </div>
-        <div class="flex gap-12 items-center">
-          <div style="width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:.8rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">4</div>
-          <span class="text-sm">Вы получите уведомление о готовности</span>
+
+      <!-- QR-код оценки качества -->
+      <div class="card" style="align-self:start;">
+        <div class="card-header"><span class="card-title">Оцените сервис</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:8px 0;">
+          <div id="qr1" style="width:120px;height:120px;"></div>
+          <p class="text-sm text-muted" style="text-align:center;max-width:200px;">
+            Отсканируйте QR‑код и оставьте отзыв о качестве обслуживания
+          </p>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSdhZcExx6LSIXxk0ub55mSu-WIh23WYdGG9HY5EZhLDo7P8eA/viewform?usp=sf_link"
+             target="_blank" rel="noopener" class="btn btn-outline btn-sm">Открыть форму ↗</a>
         </div>
       </div>
     </div>
-
   </div>
 </div>
 
-<script src="../js/shared.js"></script>
-<script src="../js/create-request.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="../js/shared.js?v=4"></script>
+<script src="../js/create-request.js?v=4"></script>
 </body>
 </html>

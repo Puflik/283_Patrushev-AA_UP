@@ -1,61 +1,66 @@
 CREATE TABLE "Users" (
-    "UserID" SERIAL PRIMARY KEY,
-    "Fio" VARCHAR(255) NOT NULL,
-    "Phone" VARCHAR(20) NOT NULL,
-    "Login" VARCHAR(100) UNIQUE NOT NULL,
-    "Password" VARCHAR(255) NOT NULL,
-    "Type" VARCHAR(50) NOT NULL
+    "UserID"   SERIAL        PRIMARY KEY,
+    "Fio"      VARCHAR(255)  NOT NULL,
+    "Phone"    VARCHAR(20)   NOT NULL,
+    "Login"    VARCHAR(100)  UNIQUE NOT NULL,
+    "Password" VARCHAR(255)  NOT NULL,
+    "Type"     VARCHAR(50)   NOT NULL
 );
-
 CREATE TABLE "Requests" (
-    "RequestID" SERIAL PRIMARY KEY,
-    "StartDate" DATE NOT NULL,
-    "CarType" VARCHAR(100) NOT NULL,
-    "CarModel" VARCHAR(100) NOT NULL,
-    "ProblemDescryption" TEXT NOT NULL,
-    "RequestStatus" VARCHAR(50) NOT NULL,
-    "CompletionDate" DATE,
-    "RepairParts" TEXT,
-    "MasterID" INTEGER REFERENCES "Users"("UserID") ON DELETE SET NULL,
-    "ClientID" INTEGER NOT NULL REFERENCES "Users"("UserID") ON DELETE CASCADE
+    "RequestID"          SERIAL        PRIMARY KEY,
+    "StartDate"          DATE          NOT NULL,
+    "CarType"            VARCHAR(100)  NOT NULL,
+    "CarModel"           VARCHAR(100)  NOT NULL,
+    "ProblemDescryption" TEXT          NOT NULL,
+    "RequestStatus"      VARCHAR(50)   NOT NULL,
+    "CompletionDate"     DATE,
+    "RepairParts"        TEXT,
+    "MasterID"           INTEGER       REFERENCES "Users"("UserID") ON DELETE SET NULL,
+    "ClientID"           INTEGER       NOT NULL REFERENCES "Users"("UserID") ON DELETE CASCADE
 );
-
 CREATE TABLE "Comments" (
-    "CommentID" SERIAL PRIMARY KEY,
-    "Message" TEXT NOT NULL,
-    "MasterID" INTEGER NOT NULL REFERENCES "Users"("UserID") ON DELETE CASCADE,
-    "RequestID" INTEGER NOT NULL REFERENCES "Requests"("RequestID") ON DELETE CASCADE
+    "CommentID" SERIAL   PRIMARY KEY,
+    "Message"   TEXT     NOT NULL,
+    "MasterID"  INTEGER  NOT NULL REFERENCES "Users"("UserID") ON DELETE CASCADE,
+    "RequestID" INTEGER  NOT NULL REFERENCES "Requests"("RequestID") ON DELETE CASCADE
 );
-
 CREATE TABLE "Messages" (
-    "MessageID" SERIAL PRIMARY KEY,
-    "Subject"     VARCHAR(255) NOT NULL,
-    "MessageText" TEXT         NOT NULL,
-    "ClientID"    INTEGER      NOT NULL REFERENCES "Users"("UserID") ON DELETE CASCADE
+    "MessageID"   SERIAL        PRIMARY KEY,
+    "Subject"     VARCHAR(255)  NOT NULL,
+    "MessageText" TEXT          NOT NULL,
+    "ClientID"    INTEGER       NOT NULL REFERENCES "Users"("UserID") ON DELETE CASCADE,
+    "Reply"       TEXT,
+    "IsRead"      BOOLEAN       NOT NULL DEFAULT FALSE,
+    "SentAt"      DATE
 );
 
-COPY "Users"("UserID", "Fio", "Phone", "Login", "Password", "Type") 
+COPY "Users"("UserID", "Fio", "Phone", "Login", "Password", "Type")
 FROM 'C:\postgresql\17\data\inputDataUsers.csv'
-DELIMITER ';' 
+DELIMITER ';'
 CSV HEADER;
-
-COPY "Requests"("RequestID", "StartDate", "CarType", "CarModel", "ProblemDescryption", "RequestStatus", "CompletionDate", "RepairParts", "MasterID", "ClientID") 
+COPY "Requests"("RequestID", "StartDate", "CarType", "CarModel", "ProblemDescryption", "RequestStatus", "CompletionDate", "RepairParts", "MasterID", "ClientID")
 FROM 'C:\postgresql\17\data\inputDataRequests.txt'
-DELIMITER ';' 
+DELIMITER ';'
 CSV HEADER
 NULL 'null';
-
-COPY "Comments"("CommentID", "Message", "MasterID", "RequestID") 
+COPY "Comments"("CommentID", "Message", "MasterID", "RequestID")
 FROM 'C:\postgresql\17\data\inputDataComments.csv'
-DELIMITER ';' 
+DELIMITER ';'
 CSV HEADER;
+
+SELECT setval('"Users_UserID_seq"',       (SELECT MAX("UserID")    FROM "Users"));
+SELECT setval('"Requests_RequestID_seq"', (SELECT MAX("RequestID") FROM "Requests"));
+SELECT setval('"Comments_CommentID_seq"', (SELECT MAX("CommentID") FROM "Comments"));
+SELECT setval('"Messages_MessageID_seq"', (SELECT MAX("MessageID") FROM "Messages"));
 
 CREATE ROLE client_role;
 CREATE ROLE mechanic_role;
 CREATE ROLE manager_role;
 CREATE ROLE admin_role;
 
-GRANT SELECT ON "Requests", "Users", "Comments" TO client_role;
-GRANT SELECT, UPDATE ON "Requests", "Comments" TO mechanic_role;
-GRANT SELECT, INSERT, UPDATE ON "Requests", "Users", "Comments" TO manager_role;
+GRANT SELECT                 ON "Requests", "Users", "Comments", "Messages" TO client_role;
+GRANT INSERT                 ON "Requests", "Messages"                      TO client_role;
+GRANT SELECT, UPDATE         ON "Requests", "Comments"                      TO mechanic_role;
+GRANT INSERT                 ON "Comments"                                  TO mechanic_role;
+GRANT SELECT, INSERT, UPDATE ON "Requests", "Users", "Comments", "Messages" TO manager_role;
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO admin_role;

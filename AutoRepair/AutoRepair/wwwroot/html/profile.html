@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Личный кабинет — АвтоТранс</title>
-  <link rel="stylesheet" href="../css/shared.css">
+  <link rel="stylesheet" href="../css/shared.css?v=4"/>
 </head>
 <body>
-
-<input type="hidden" id="currentUserId" value="" />
+<input type="hidden" id="currentUserId" value=""/>
+<input type="hidden" id="currentUserRole" value=""/>
 
 <nav class="client-nav">
   <span class="client-nav__logo">АвтоТранс</span>
@@ -19,17 +20,17 @@
     <a class="client-nav__link" href="/contact">Связаться с нами</a>
   </div>
   <div class="client-nav__user">
-    <div class="client-nav__avatar" id="navAvatar">ИИ</div>
+    <div class="client-nav__avatar" id="navAvatar">??</div>
     <span class="client-nav__name" id="navName"></span>
+    <a href="/api/logout" class="btn btn-ghost btn-sm" style="margin-left:8px;">Выйти</a>
   </div>
 </nav>
 
-<div style="padding: 28px 40px; max-width: 900px;">
-
+<div style="padding:28px 40px;max-width:1000px;">
   <h1 class="mb-24">Личный кабинет</h1>
 
   <div class="profile-header">
-    <div class="profile-avatar" id="profileAvatar">ИИ</div>
+    <div class="profile-avatar" id="profileAvatar">??</div>
     <div>
       <div class="profile-info__name" id="profileName">—</div>
       <div class="profile-info__meta" id="profileMeta">—</div>
@@ -39,63 +40,60 @@
 
   <div class="divider"></div>
 
+  <!-- Форма редактирования -->
   <div class="card mb-24 hidden" id="editForm">
-    <div class="card-header">
-      <span class="card-title">Изменить данные</span>
-    </div>
-    <input type="hidden" id="userID" />
+    <div class="card-header"><span class="card-title">Изменить данные</span></div>
+    <input type="hidden" id="userID"/>
     <div class="grid-2 gap-16">
       <div class="form-group" style="grid-column:1/-1;">
         <label>ФИО</label>
-        <input type="text" id="userFio" />
+        <input type="text" id="userFio"/>
       </div>
       <div class="form-group">
         <label>Телефон</label>
-        <input type="text" id="userPhone" />
+        <input type="text" id="userPhone"/>
       </div>
       <div class="form-group">
         <label>Логин</label>
-        <input type="text" id="userLogin" />
+        <input type="text" id="userLogin"/>
       </div>
       <div class="form-group">
         <label>Новый пароль</label>
-        <input type="password" id="userPassword" placeholder="Оставьте пустым, чтобы не менять" />
+        <input type="password" id="userPassword" placeholder="Оставьте пустым, чтобы не менять"/>
       </div>
     </div>
     <div class="divider"></div>
     <div class="flex gap-12">
-      <button class="btn btn-primary" id="saveBtn">Сохранить</button>
-      <button class="btn btn-ghost" id="resetBtn">Отмена</button>
+      <button class="btn btn-primary" id="saveProfileBtn">Сохранить</button>
+      <button class="btn btn-ghost" id="cancelEditBtn">Отмена</button>
     </div>
   </div>
 
+  <!-- Сводка -->
   <h2 class="mb-16">Сводка по заявкам</h2>
-  <div class="metrics mb-24" style="grid-template-columns:repeat(4,1fr);">
+  <div class="metrics" style="grid-template-columns:repeat(4,1fr);" id="statsGrid">
     <div class="metric-card" style="--_color:var(--accent);">
-      <div class="val" id="statTotal">—</div>
-      <div class="lbl">Всего</div>
+      <div class="val" id="statTotal">—</div><div class="lbl">Всего</div>
     </div>
     <div class="metric-card" style="--_color:var(--st-done);">
-      <div class="val" id="statDone">—</div>
-      <div class="lbl">Завершено</div>
+      <div class="val" id="statDone">—</div><div class="lbl">Завершено</div>
     </div>
     <div class="metric-card" style="--_color:var(--st-work);">
-      <div class="val" id="statActive">—</div>
-      <div class="lbl">Активных</div>
+      <div class="val" id="statActive">—</div><div class="lbl">Активных</div>
     </div>
     <div class="metric-card" style="--_color:var(--st-cancel);">
-      <div class="val" id="statCancelled">—</div>
-      <div class="lbl">Отменено</div>
+      <div class="val" id="statCancelled">—</div><div class="lbl">Отменено</div>
     </div>
   </div>
 
   <div class="divider"></div>
-  <div class="mt-16">
-    <a href="/api/logout" class="btn btn-ghost btn-sm">Выйти из аккаунта</a>
-  </div>
 
+  <!-- Уведомления (ответы на обращения) -->
+  <h2 class="mb-16">Уведомления</h2>
+  <div id="notifList"><p class="text-muted">Загрузка...</p></div>
 </div>
-<script src="../js/shared.js"></script>
-<script src="../js/profile.js"></script>
+
+<script src="../js/shared.js?v=4"></script>
+<script src="../js/profile.js?v=4"></script>
 </body>
 </html>

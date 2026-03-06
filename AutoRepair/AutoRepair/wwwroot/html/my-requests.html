@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Мои заявки — АвтоТранс</title>
-  <link rel="stylesheet" href="../css/shared.css">
+  <link rel="stylesheet" href="../css/shared.css?v=4"/>
 </head>
 <body>
-
-<input type="hidden" id="currentUserId" value="" />
+<input type="hidden" id="currentUserId" value=""/>
 
 <nav class="client-nav">
   <span class="client-nav__logo">АвтоТранс</span>
@@ -19,15 +19,23 @@
     <a class="client-nav__link" href="/contact">Связаться с нами</a>
   </div>
   <div class="client-nav__user">
-    <div class="client-nav__avatar" id="navAvatar">ИИ</div>
+    <div class="client-nav__avatar" id="navAvatar">??</div>
     <span class="client-nav__name" id="navName"></span>
+    <a href="/api/logout" class="btn btn-ghost btn-sm" style="margin-left:8px;">Выйти</a>
   </div>
 </nav>
 
-<div style="padding: 28px 40px;">
+<div style="padding:28px 40px;">
   <div class="flex items-center justify-between mb-20">
     <h1>Мои заявки</h1>
     <a href="/create-request" class="btn btn-primary">+ Новая заявка</a>
+  </div>
+
+  <div class="flex gap-12 mb-16" style="flex-wrap:wrap;">
+    <div class="search-bar" style="flex:1;min-width:220px;margin-bottom:0;">
+      <span class="text-muted">🔍</span>
+      <input type="text" id="searchInput" placeholder="Поиск по номеру, модели..."/>
+    </div>
   </div>
 
   <div class="filters">
@@ -39,7 +47,7 @@
     <button class="filter-btn" data-status="cancelled">Отменено</button>
   </div>
 
-  <div class="card" style="padding:0; overflow:hidden;">
+  <div class="card" style="padding:0;overflow:hidden;">
     <div class="table-wrap">
       <table id="t1">
         <thead>
@@ -59,7 +67,7 @@
   </div>
 </div>
 
-<script src="../js/shared.js"></script>
-<script src="../js/my-requests.js"></script>
+<script src="../js/shared.js?v=4"></script>
+<script src="../js/my-requests.js?v=4"></script>
 </body>
 </html>

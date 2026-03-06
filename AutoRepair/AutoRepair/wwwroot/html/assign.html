@@ -1,32 +1,28 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Назначение механика — АвтоТранс</title>
-  <link rel="stylesheet" href="../css/shared.css">
+  <link rel="stylesheet" href="../css/shared.css?v=4"/>
 </head>
 <body>
-<input type="hidden" id="currentUserId" value="" />
+<input type="hidden" id="currentUserId" value=""/>
+<input type="hidden" id="currentUserRole" value=""/>
 
 <div class="layout">
-
   <aside class="sidebar">
     <div class="sidebar__logo">АвтоТранс</div>
-    <div class="sidebar__role">Менеджер</div>
+    <div class="sidebar__role" id="sidebarRole">—</div>
     <div class="sidebar__divider"></div>
-    <a class="sidebar__link active" href="/requests">
-      <span class="icon">☰</span> Заявки
-    </a>
-    <a class="sidebar__link hidden" href="/messages" id="linkMessages">
-        <span class="icon">✉</span> Обращения
-    </a>  
-    <a class="sidebar__link" href="/statistics">
-      <span class="icon">#</span> Статистика
-    </a>
+    <a class="sidebar__link active" href="/requests"><span class="icon">☰</span> Заявки</a>
+    <a class="sidebar__link" href="/statistics" id="linkStats"><span class="icon">#</span> Статистика</a>
+    <a class="sidebar__link hidden" href="/staff" id="linkStaff"><span class="icon">@</span> Сотрудники</a>
+    <a class="sidebar__link hidden" href="/messages" id="linkMessages"><span class="icon">✉</span> Сообщения</a>
     <div class="sidebar__bottom">
       <div class="sidebar__divider"></div>
       <div class="sidebar__user">
-        <div class="sidebar__avatar">МА</div>
+        <div class="sidebar__avatar" id="sidebarAvatar">—</div>
         <div><div class="sidebar__uname" id="sidebarName">—</div></div>
       </div>
       <div class="sidebar__logout"><a href="/api/logout">Выйти</a></div>
@@ -36,60 +32,52 @@
   <div class="main">
     <div class="topbar">
       <span class="topbar__title">Назначение механика</span>
-      <span class="topbar__sub" id="topbarSub"></span>
     </div>
     <div class="content">
-
-      <div class="breadcrumb mb-16">
-        <a id="backLink" href="/requests">← Назад к заявке</a>
+      <div class="breadcrumb mb-16" id="backLink">
+        <a href="/requests">← Назад к заявкам</a>
       </div>
 
-      <div class="card mb-24" style="border-left:4px solid var(--st-new);">
-        <input type="hidden" id="requestID" />
-        <div class="flex items-center gap-16">
-          <div>
-            <div class="font-bold" id="requestInfo">—</div>
-            <div class="text-sm text-muted mt-4" id="requestProblem">—</div>
+      <!-- Сводка по заявке -->
+      <div class="card mb-24" id="reqSummary" style="border-left:4px solid var(--accent);">
+        <div class="grid-2 gap-16">
+          <div><span class="text-muted text-xs">ЗАЯВКА</span><div class="font-bold" id="aReqId">—</div></div>
+          <div><span class="text-muted text-xs">СТАТУС</span><div id="aReqStatus">—</div></div>
+          <div><span class="text-muted text-xs">АВТОМОБИЛЬ</span><div id="aReqCar">—</div></div>
+          <div><span class="text-muted text-xs">ПРОБЛЕМА</span><div id="aReqProblem" style="font-size:.85rem;">—</div></div>
+        </div>
+      </div>
+
+      <h2 class="mb-16">Выберите механика</h2>
+      <div id="mechCards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:28px;"></div>
+
+      <div class="card" style="max-width:500px;">
+        <div class="card-header"><span class="card-title">Подтверждение назначения</span></div>
+        <div class="flex-col gap-16">
+          <div class="form-group">
+            <label>Выбранный механик</label>
+            <input type="text" id="selectedMechName" readonly placeholder="Нажмите на карточку выше"/>
+            <input type="hidden" id="selectedMechId"/>
           </div>
-          <span class="badge badge-new" style="margin-left:auto;" id="statusBadge">Новая</span>
+          <div class="form-group">
+            <label>Срок выполнения (необязательно)</label>
+            <input type="date" id="assignDeadline"/>
+          </div>
+          <div class="form-group">
+            <label>Примечание</label>
+            <textarea id="assignNote" placeholder="Дополнительные указания механику..."></textarea>
+          </div>
+          <div class="flex gap-12">
+            <button class="btn btn-primary" id="confirmAssignBtn">Назначить механика</button>
+            <button class="btn btn-ghost" id="cancelAssignBtn">Отмена</button>
+          </div>
         </div>
       </div>
-
-      <h2 class="mb-8">Выберите механика</h2>
-      <p class="text-sm text-muted mb-20">Доступность и нагрузка по каждому механику</p>
-
-      <div class="card" style="padding:0; overflow:hidden; max-width:900px;">
-        <div class="table-wrap">
-          <table id="t1">
-            <thead>
-              <tr>
-                <th>Механик</th>
-                <th>Телефон</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="divider" style="max-width:900px;"></div>
-
-      <div class="flex gap-16 items-center" style="max-width:900px;">
-        <div class="form-group" style="flex:0 0 200px;">
-          <label>Срок выполнения</label>
-          <input type="date" id="completionDateInput" />
-        </div>
-        <div style="margin-top:18px;">
-          <button class="btn btn-ghost" onclick="location.href='/requests'">Отмена</button>
-        </div>
-      </div>
-
     </div>
   </div>
 </div>
 
-<script src="../js/shared.js"></script>
-<script src="../js/assign.js"></script>
+<script src="../js/shared.js?v=4"></script>
+<script src="../js/assign.js?v=4"></script>
 </body>
 </html>

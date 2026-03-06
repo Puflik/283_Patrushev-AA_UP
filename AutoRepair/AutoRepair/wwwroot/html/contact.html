@@ -1,84 +1,95 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Связаться с нами — АвтоТранс</title>
-  <link rel="stylesheet" href="../css/shared.css">
+  <link rel="stylesheet" href="../css/shared.css?v=4"/>
 </head>
 <body>
+<input type="hidden" id="currentUserId" value=""/>
 
-    <input type="hidden" id="currentUserId" value="" />
+<nav class="client-nav">
+  <span class="client-nav__logo">АвтоТранс</span>
+  <div class="client-nav__links">
+    <a class="client-nav__link" href="/profile">Главная</a>
+    <a class="client-nav__link" href="/my-requests">Мои заявки</a>
+    <a class="client-nav__link" href="/create-request">Создать заявку</a>
+    <a class="client-nav__link" href="/faq">FAQ</a>
+    <a class="client-nav__link active" href="/contact">Связаться с нами</a>
+  </div>
+  <div class="client-nav__user">
+    <div class="client-nav__avatar" id="navAvatar">?</div>
+    <span class="client-nav__name" id="navName"></span>
+    <a href="/api/logout" class="btn btn-ghost btn-sm" style="margin-left:8px;">Выйти</a>
+  </div>
+</nav>
 
-    <nav class="client-nav">
-        <span class="client-nav__logo">АвтоТранс</span>
-        <div class="client-nav__links">
-            <a class="client-nav__link" href="/profile">Главная</a>
-            <a class="client-nav__link" href="/my-requests">Мои заявки</a>
-            <a class="client-nav__link" href="/create-request">Создать заявку</a>
-            <a class="client-nav__link" href="/faq">FAQ</a>
-            <a class="client-nav__link active" href="/contact">Связаться с нами</a>
+<div style="padding:28px 40px;">
+  <h1 class="mb-8">Связаться с нами</h1>
+  <p class="text-muted mb-24">Менеджер ответит в течение рабочего дня</p>
+
+  <div class="grid-2" style="max-width:900px;">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Новое обращение</span></div>
+      <div class="flex-col gap-16">
+        <div class="form-group">
+          <label>Тема</label>
+          <input type="text" id="subject" placeholder="Кратко опишите тему"/>
         </div>
-        <div class="client-nav__user">
-            <div class="client-nav__avatar" id="navAvatar">ИИ</div>
-            <span class="client-nav__name" id="navName"></span>
+        <div class="form-group">
+          <label>Сообщение</label>
+          <textarea id="messageText" rows="5" placeholder="Опишите ваш вопрос..."></textarea>
         </div>
-    </nav>
-
-    <div style="padding: 28px 40px;">
-        <h1 class="mb-8">Связаться с нами</h1>
-        <p class="text-muted mb-24">Менеджер ответит в течение рабочего дня</p>
-
-        <div class="grid-2" style="max-width:900px;">
-
-            <div class="card">
-                <div class="card-header">
-                    <span class="card-title">Новое обращение</span>
-                </div>
-                <div class="flex-col gap-16">
-                    <div class="form-group">
-                        <label>Тема</label>
-                        <input type="text" id="subject" placeholder="Кратко опишите тему" />
-                    </div>
-                    <div class="form-group">
-                        <label>Сообщение</label>
-                        <textarea id="messageText" placeholder="Опишите ваш вопрос..."></textarea>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="flex gap-12">
-                        <button class="btn btn-primary" id="saveBtn">Отправить</button>
-                        <button class="btn btn-ghost" id="resetBtn">Очистить</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card" style="align-self:start;">
-                <div class="card-header">
-                    <span class="card-title">Контакты</span>
-                </div>
-                <div class="flex-col gap-0">
-                    <div class="contact-item">
-                        <span class="contact-item__label">Телефон</span>
-                        <span class="contact-item__value">+7 (800) 123-45-67</span>
-                    </div>
-                    <div class="contact-item">
-                        <span class="contact-item__label">Email</span>
-                        <span class="contact-item__value">info@avtotrans.ru</span>
-                    </div>
-                    <div class="contact-item">
-                        <span class="contact-item__label">Режим работы</span>
-                        <span class="contact-item__value">Пн–Пт, 09:00–18:00</span>
-                    </div>
-                    <div class="contact-item">
-                        <span class="contact-item__label">Адрес</span>
-                        <span class="contact-item__value">г. Москва, ул. Ремонтная, 12</span>
-                    </div>
-                </div>
-            </div>
-
+        <div class="error-msg" id="msgErr"></div>
+        <div class="divider"></div>
+        <div class="flex gap-12">
+          <button class="btn btn-primary" id="saveBtn">Отправить</button>
+          <button class="btn btn-ghost" id="resetBtn">Очистить</button>
         </div>
+      </div>
     </div>
 
-    <script src="../js/shared.js"></script>
-    <script src="../js/contact.js"></script>
+    <div class="flex-col gap-20">
+      <div class="card" style="align-self:start;">
+        <div class="card-header"><span class="card-title">Контакты</span></div>
+        <div class="flex-col gap-0">
+          <div class="contact-item">
+            <span class="contact-item__label">Телефон</span>
+            <span class="contact-item__value">+7 (800) 123-45-67</span>
+          </div>
+          <div class="contact-item">
+            <span class="contact-item__label">Email</span>
+            <span class="contact-item__value">info@avtotrans.ru</span>
+          </div>
+          <div class="contact-item">
+            <span class="contact-item__label">Режим работы</span>
+            <span class="contact-item__value">Пн–Пт, 09:00–18:00</span>
+          </div>
+          <div class="contact-item">
+            <span class="contact-item__label">Адрес</span>
+            <span class="contact-item__value">г. Москва, ул. Ремонтная, 12</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="align-self:start;">
+        <div class="card-header"><span class="card-title">Оцените качество сервиса</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:8px 0;">
+          <div id="qr2"></div>
+          <p class="text-sm text-muted" style="text-align:center;max-width:220px;">
+            Отсканируйте QR‑код для прохождения опроса о качестве обслуживания
+          </p>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSdhZcExx6LSIXxk0ub55mSu-WIh23WYdGG9HY5EZhLDo7P8eA/viewform?usp=sf_link"
+             target="_blank" rel="noopener" class="btn btn-outline btn-sm">Открыть форму опроса ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="../js/shared.js?v=4"></script>
+<script src="../js/contact.js?v=4"></script>
 </body>
 </html>

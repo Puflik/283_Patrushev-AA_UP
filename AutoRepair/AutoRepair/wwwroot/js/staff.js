@@ -1,181 +1,136 @@
-async function getUsers() {
-    const response = await fetch("/api/users", {
-        method: "GET",
-        headers: { "Accept": "application/json" }
-    });
-    if (response.ok === true) {
-        const users = await response.json();
-        const rows = document.querySelector("#t1 tbody");
-        users.forEach(user => rows.append(row(user)));
-    } else {
-        const error = await response.json();
-        showError(error.message);
+// staff.js
+let allUsers = [];
+let allReqs  = [];
+let roleFilter = 'all';
+
+async function loadData() {
+  const [uRes, rRes] = await Promise.all([
+    fetch('/api/users'),
+    fetch('/api/requests')
+  ]);
+  if (uRes.ok) {
+    allUsers = (await uRes.json()).map(u => ({ ...u, _normType: normalizeType(u.type) }));
+  }
+  if (rRes.ok) allReqs = await rRes.json();
+  renderStaff();
+}
+
+function renderStaff() {
+  const tbody = document.querySelector('#t1 tbody');
+  tbody.innerHTML = '';
+
+  // Показываем только сотрудников (не клиентов)
+  let list = allUsers.filter(u => u._normType !== 'client');
+
+  if (roleFilter === 'mechanic')  list = list.filter(u => u._normType === 'mechanic');
+  else if (roleFilter === 'manager')  list = list.filter(u => u._normType === 'manager');
+  else if (roleFilter === 'operator') list = list.filter(u => u._normType === 'operator');
+  else if (roleFilter === 'admin')    list = list.filter(u => u._normType === 'admin');
+  else if (roleFilter === 'inactive') list = list.filter(u => u._normType.startsWith('inactive_'));
+  else list = list.filter(u => !u._normType.startsWith('inactive_'));
+
+  if (list.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--muted);">Нет сотрудников</td></tr>';
+    return;
+  }
+
+  list.forEach(u => {
+    const active = !u._normType.startsWith('inactive_');
+    const activeReqs = allReqs.filter(r =>
+      r.masterID === u.userID &&
+      ['Новая заявка','В процессе ремонта','Ожидание автозапчастей'].includes(r.requestStatus)
+    ).length;
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;
+               font-size:.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            ${initials(u.fio)}
+          </div>
+          <div>
+            <div class="font-bold">${u.fio}</div>
+            <div class="text-muted text-xs">${u.phone}</div>
+          </div>
+        </div>
+      </td>
+      <td>${roleLabel(u._normType)}</td>
+      <td>${u.phone}</td>
+      <td>${u.login}</td>
+      <td><span class="badge ${active ? 'badge-done' : 'badge-cancel'}">${active ? 'Активен' : 'Неактивен'}</span></td>
+      <td>${activeReqs}</td>
+      <td></td>`;
+    if (active) {
+      const btn = document.createElement('button');
+      btn.textContent = 'Деактивировать';
+      btn.className = 'btn btn-danger btn-sm';
+      btn.addEventListener('click', async () => {
+        if (!await confirmAction(`Деактивировать сотрудника ${u.fio}?`)) return;
+        const res = await fetch(`/api/users/${u.userID}`, { method: 'DELETE' });
+        if (res.ok) await loadData();
+        else showError('Ошибка');
+      });
+      tr.querySelector('td:last-child').appendChild(btn);
     }
+    tbody.append(tr);
+  });
 }
 
-async function getUser(id) {
-    const response = await fetch(`/api/users/${id}`, {
-        method: "GET",
-        headers: { "Accept": "application/json" }
-    });
-    if (response.ok === true) {
-        const user = await response.json();
-        document.getElementById("userID").value       = user.userID;
-        document.getElementById("userFio").value      = user.fio;
-        document.getElementById("userPhone").value    = user.phone;
-        document.getElementById("userLogin").value    = user.login;
-        document.getElementById("userPassword").value = user.password;
-        document.getElementById("userType").value     = user.type;
-    } else {
-        const error = await response.json();
-        showError(error.message);
-    }
-}
-
-async function createUser(fio, phone, login, password, type) {
-    const response = await fetch("/api/users", {
-        method: "POST",
-        headers: { "Accept": "application/json", "Content-Type": "application/json" },
-        body: JSON.stringify({
-            fio: fio,
-            phone: phone,
-            login: login,
-            password: password,
-            type: type
-        })
-    });
-    if (response.ok === true) {
-        const user = await response.json();
-        document.querySelector("#t1 tbody").append(row(user));
-    } else {
-        const error = await response.json();
-        showError(error.message);
-    }
-}
-
-async function editUser(userId, fio, phone, login, password, type) {
-    const response = await fetch("/api/users", {
-        method: "PUT",
-        headers: { "Accept": "application/json", "Content-Type": "application/json" },
-        body: JSON.stringify({
-            userID: parseInt(userId),
-            fio: fio,
-            phone: phone,
-            login: login,
-            password: password,
-            type: type
-        })
-    });
-    if (response.ok === true) {
-        const user = await response.json();
-        document.querySelector(`#t1 tr[data-rowid='${user.userID}']`).replaceWith(row(user));
-    } else {
-        const error = await response.json();
-        showError(error.message);
-    }
-}
-
-async function deleteUser(id) {
-    const response = await fetch(`/api/users/${id}`, {
-        method: "DELETE",
-        headers: { "Accept": "application/json", "Content-Type": "application/json" }
-    });
-    if (response.ok === true) {
-        document.querySelector(`#t1 tr[data-rowid='${id}']`).remove();
-    } else {
-        const error = await response.json();
-        showError(error.message);
-    }
-}
-
-function reset() {
-    document.getElementById("userID").value       =
-        document.getElementById("userFio").value      =
-        document.getElementById("userPhone").value    =
-        document.getElementById("userLogin").value    =
-        document.getElementById("userPassword").value =
-        document.getElementById("userType").value     = "";
-}
-
-function row(user) {
-    const tr = document.createElement("tr");
-    tr.setAttribute("data-rowid", user.userID);
-    tr.setAttribute("data-role", user.type);
-
-    const idTd = document.createElement("td");
-    idTd.append(user.userID);
-    tr.append(idTd);
-
-    const fioTd = document.createElement("td");
-    fioTd.append(user.fio);
-    tr.append(fioTd);
-
-    const phoneTd = document.createElement("td");
-    phoneTd.append(user.phone);
-    tr.append(phoneTd);
-
-    const loginTd = document.createElement("td");
-    loginTd.append(user.login);
-    tr.append(loginTd);
-
-    const passwordTd = document.createElement("td");
-    passwordTd.append(user.password);
-    tr.append(passwordTd);
-
-    const typeTd = document.createElement("td");
-    typeTd.append(user.type);
-    tr.append(typeTd);
-
-    const linksTd = document.createElement("td");
-    linksTd.classList.add("button-group");
-
-    const editLink = document.createElement("button");
-    editLink.append("Изменить");
-    editLink.classList.add("edit-button");
-    editLink.addEventListener("click", async () => await getUser(user.userID));
-    linksTd.append(editLink);
-
-    const removeLink = document.createElement("button");
-    removeLink.append("Удалить");
-    removeLink.classList.add("remove-button");
-    removeLink.addEventListener("click", async () => {
-        const ok = await confirmAction('Вы уверены? Это действие необратимо');
-        if (ok) {
-            await deleteUser(user.userID);
-            showInfo('Пользователь удалён');
-        }
-    });
-    linksTd.append(removeLink);
-
-    tr.append(linksTd);
-    return tr;
-}
-
-document.getElementById("resetBtn").addEventListener("click", () => reset());
-
-document.getElementById("saveBtn").addEventListener("click", async () => {
-    const id       = document.getElementById("userID").value;
-    const fio      = document.getElementById("userFio").value;
-    const phone    = document.getElementById("userPhone").value;
-    const login    = document.getElementById("userLogin").value;
-    const password = document.getElementById("userPassword").value;
-    const type     = document.getElementById("userType").value;
-    if (id === "")
-        await createUser(fio, phone, login, password, type);
-    else
-        await editUser(id, fio, phone, login, password, type);
-    reset();
+// Фильтры
+document.querySelectorAll('#staffPills .filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#staffPills .filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    roleFilter = btn.dataset.r;
+    renderStaff();
+  });
 });
 
-getUsers();
-
-document.querySelectorAll(".filter-btn[data-role]").forEach(btn => {
-    btn.addEventListener("click", () => {
-        document.querySelectorAll(".filter-btn[data-role]").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        const role = btn.dataset.role;
-        document.querySelectorAll("#t1 tbody tr").forEach(tr => {
-            tr.style.display = (role === "all" || tr.dataset.role === role) ? "" : "none";
-        });
-    });
+// Добавить сотрудника
+document.getElementById('btnAddStaff').addEventListener('click', () => {
+  // сбросить форму
+  document.getElementById('asName').value     = '';
+  document.getElementById('asPhone').value    = '';
+  document.getElementById('asLogin').value    = '';
+  document.getElementById('asPassword').value = '';
+  document.getElementById('asErr').textContent = '';
+  document.getElementById('addStaffModal').classList.remove('hidden');
 });
+
+document.getElementById('asCancelBtn').addEventListener('click', () =>
+  document.getElementById('addStaffModal').classList.add('hidden'));
+
+document.getElementById('addStaffModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('addStaffModal'))
+    document.getElementById('addStaffModal').classList.add('hidden');
+});
+
+document.getElementById('asSaveBtn').addEventListener('click', async () => {
+  const body = {
+    fio:      document.getElementById('asName').value.trim(),
+    phone:    document.getElementById('asPhone').value.trim(),
+    login:    document.getElementById('asLogin').value.trim(),
+    password: document.getElementById('asPassword').value,
+    type:     document.getElementById('asRole').value
+  };
+  const errEl = document.getElementById('asErr');
+  if (!body.fio || !body.login || !body.password) {
+    errEl.textContent = 'Заполните обязательные поля'; return;
+  }
+  const res = await fetch('/api/users/staff', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  if (res.ok) {
+    document.getElementById('addStaffModal').classList.add('hidden');
+    await loadData();
+  } else {
+    const err = await res.json().catch(() => ({}));
+    errEl.textContent = err.message || 'Ошибка';
+  }
+});
+
+initSidebar();
+loadData();

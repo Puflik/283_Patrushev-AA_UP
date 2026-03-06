@@ -1,0 +1,16 @@
+/* login.css — дополнительные стили только для страницы входа */
+.login-page__decor1 {
+  width: 120px; height: 120px; border-radius: 50%;
+  background: var(--accent); opacity: .35;
+  position: absolute; top: 40px; right: 60px;
+}
+.login-page__decor2 {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: rgba(255,255,255,.07);
+  position: absolute; bottom: 80px; left: 44px;
+}
+.login-page__decor3 {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: rgba(255,255,255,.05);
+  position: absolute; top: 50%; right: 20px;
+}

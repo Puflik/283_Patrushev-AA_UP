@@ -1,40 +1,29 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <title>Заявки — АвтоТранс</title>
-  <link rel="stylesheet" href="../css/shared.css">
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Сообщения — АвтоТранс</title>
+  <link rel="stylesheet" href="../css/shared.css?v=4"/>
 </head>
 <body>
-<input type="hidden" id="currentUserId" value="" />
-<input type="hidden" id="currentUserRole" value="" />
+<input type="hidden" id="currentUserId" value=""/>
+<input type="hidden" id="currentUserRole" value=""/>
 
 <div class="layout">
-
   <aside class="sidebar">
     <div class="sidebar__logo">АвтоТранс</div>
     <div class="sidebar__role" id="sidebarRole">—</div>
     <div class="sidebar__divider"></div>
-    <a class="sidebar__link active" href="/requests">
-      <span class="icon">☰</span> Заявки
-    </a>
-    <a class="sidebar__link hidden" href="/messages" id="linkMessages">
-        <span class="icon">✉</span> Обращения
-    </a>  
-    <a class="sidebar__link" href="/statistics" id="linkStats">
-      <span class="icon">#</span> Статистика
-    </a>
-    <a class="sidebar__link hidden" href="/staff" id="linkStaff">
-      <span class="icon">@</span> Сотрудники
-    </a>
+    <a class="sidebar__link" href="/requests"><span class="icon">☰</span> Заявки</a>
+    <a class="sidebar__link" href="/statistics" id="linkStats"><span class="icon">#</span> Статистика</a>
+    <a class="sidebar__link hidden" href="/staff" id="linkStaff"><span class="icon">@</span> Сотрудники</a>
+    <a class="sidebar__link active" href="/messages" id="linkMessages"><span class="icon">✉</span> Сообщения</a>
     <div class="sidebar__bottom">
       <div class="sidebar__divider"></div>
       <div class="sidebar__user">
         <div class="sidebar__avatar" id="sidebarAvatar">—</div>
-        <div>
-          <div class="sidebar__uname" id="sidebarName">—</div>
-          <div class="sidebar__uemail" id="sidebarLogin">—</div>
-        </div>
+        <div><div class="sidebar__uname" id="sidebarName">—</div></div>
       </div>
       <div class="sidebar__logout"><a href="/api/logout">Выйти</a></div>
     </div>
@@ -42,44 +31,27 @@
 
   <div class="main">
     <div class="topbar">
-      <span class="topbar__title">Обращения</span>
-      <span class="topbar__sub">Управление обращениями</span>
+      <span class="topbar__title">Сообщения от клиентов</span>
+      <span class="topbar__sub" id="unreadBadge"></span>
     </div>
     <div class="content">
-
-      <div class="search-bar">
-        <span class="text-muted">🔍</span>
-        <input type="text" id="searchInput" placeholder="Поиск по номеру, клиенту..." />
-      </div>
-      <div class="filters">
-        <button class="filter-btn active" data-status="all">Все</button>
-        <button class="filter-btn" data-status="new">Новые</button>
-        <button class="filter-btn" data-status="in_progress">В работе</button>
-        <button class="filter-btn" data-status="waiting">Ожидание</button>
-        <button class="filter-btn" data-status="done">Завершено</button>
-      </div>
-
-      <div class="card" style="padding:0; overflow:hidden;">
-        <div class="table-wrap">
-          <table id="t1">
-            <thead>
-              <tr>
-                <th>№</th>
-                <th>Тема</th>
-                <th>Сообщение</th>
-                <th>Клиент</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
-      </div>
-
+      <div id="msgList" style="max-width:720px;"></div>
     </div>
   </div>
 </div>
 
-<script src="../js/shared.js"></script>
-<script src="../js/messages.js"></script>
+<!-- Модальное окно: просмотр сообщения + ответ -->
+<div id="msgModal" class="modal-overlay hidden">
+  <div class="card" style="width:90%;max-width:520px;">
+    <div class="card-header">
+      <span class="card-title" id="msgModalTitle">Сообщение</span>
+    </div>
+    <div id="msgModalBody" class="flex-col gap-12" style="margin-bottom:16px;"></div>
+    <div class="flex gap-12" id="msgModalFooter"></div>
+  </div>
+</div>
+
+<script src="../js/shared.js?v=4"></script>
+<script src="../js/messages.js?v=4"></script>
 </body>
 </html>

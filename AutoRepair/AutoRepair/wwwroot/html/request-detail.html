@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Заявка — АвтоТранс</title>
-  <link rel="stylesheet" href="../css/shared.css">
+  <link rel="stylesheet" href="../css/shared.css?v=4"/>
 </head>
 <body>
-
-<input type="hidden" id="currentUserId" value="" />
+<input type="hidden" id="currentUserId" value=""/>
 
 <nav class="client-nav">
   <span class="client-nav__logo">АвтоТранс</span>
@@ -19,97 +19,80 @@
     <a class="client-nav__link" href="/contact">Связаться с нами</a>
   </div>
   <div class="client-nav__user">
-    <div class="client-nav__avatar">ИИ</div>
+    <div class="client-nav__avatar" id="navAvatar">??</div>
+    <span class="client-nav__name" id="navName"></span>
+    <a href="/api/logout" class="btn btn-ghost btn-sm" style="margin-left:8px;">Выйти</a>
   </div>
 </nav>
 
-<div style="padding: 28px 40px;">
+<div style="padding:28px 40px;max-width:900px;">
   <div class="breadcrumb mb-16">
-    <a href="/my-requests">← Назад к списку</a>
+    <a href="/my-requests">← Мои заявки</a>
   </div>
-
   <div class="flex items-center gap-12 mb-24">
     <h1 id="pageTitle">Заявка #—</h1>
     <span class="badge" id="statusBadge"></span>
   </div>
 
-  <div class="grid-2" style="max-width:1000px;">
-
-    <div class="card">
-      <div class="card-header">
-        <span class="card-title">Информация о заявке</span>
-      </div>
-
-      <input type="hidden" id="requestID" />
-
-      <div class="grid-2 gap-20">
-        <div class="form-group">
-          <label>Дата создания</label>
-          <input type="text" id="startDate" readonly />
+  <div class="grid-2">
+    <div class="flex-col gap-20">
+      <div class="card">
+        <div class="card-header"><span class="card-title">Информация о заявке</span></div>
+        <div class="grid-2 gap-16">
+          <div class="form-group">
+            <label>Дата создания</label>
+            <input type="text" id="startDate" readonly/>
+          </div>
+          <div class="form-group">
+            <label>Срок выполнения</label>
+            <input type="text" id="completionDate" readonly/>
+          </div>
+          <div class="form-group">
+            <label>Вид авто</label>
+            <input type="text" id="carType" readonly/>
+          </div>
+          <div class="form-group">
+            <label>Модель</label>
+            <input type="text" id="carModel" readonly/>
+          </div>
+          <div class="form-group" style="grid-column:1/-1;">
+            <label>Описание проблемы</label>
+            <textarea id="problemDescryption" readonly></textarea>
+          </div>
+          <div class="form-group" style="grid-column:1/-1;" id="repairPartsRow">
+            <label>Запчасти и материалы</label>
+            <input type="text" id="repairParts" readonly/>
+          </div>
         </div>
-        <div class="form-group">
-          <label>Срок выполнения</label>
-          <input type="text" id="completionDate" readonly />
+        <div class="divider"></div>
+        <div class="flex gap-12">
+          <button class="btn btn-danger" id="cancelBtn">Отменить заявку</button>
+          <a href="/my-requests" class="btn btn-ghost">Назад</a>
         </div>
-        <div class="form-group">
-          <label>Вид авто</label>
-          <input type="text" id="carType" readonly />
-        </div>
-        <div class="form-group">
-          <label>Модель</label>
-          <input type="text" id="carModel" readonly />
-        </div>
-        <div class="form-group" style="grid-column:1/-1;">
-          <label>Описание проблемы</label>
-          <textarea id="problem" readonly></textarea>
-        </div>
-        <div class="form-group" style="grid-column:1/-1;">
-          <label>Запчасти и материалы</label>
-          <input type="text" id="repairParts" readonly />
-        </div>
-        <div class="form-group">
-          <label>Статус</label>
-          <input type="text" id="status" readonly />
-        </div>
-      </div>
-
-      <div class="divider"></div>
-
-      <div>
-        <button class="btn btn-danger hidden" id="cancelBtn">Отменить заявку</button>
-        <p class="text-sm text-muted mt-8" id="cancelHint">Отмена доступна только для заявок со статусом «Новая»</p>
+        <div class="error-msg mt-8" id="cancelNote"></div>
       </div>
     </div>
 
-    <div class="card" style="align-self:start;">
-      <div class="card-header">
-        <span class="card-title">История статусов</span>
+    <div class="flex-col gap-20">
+      <div class="card">
+        <div class="card-header"><span class="card-title">Механик</span></div>
+        <div id="mechInfo" class="text-muted">Не назначен</div>
       </div>
-      <div class="timeline" id="timeline">
+
+      <div class="card">
+        <div class="card-header"><span class="card-title">История</span></div>
+        <div class="timeline" id="historyList"></div>
       </div>
-    </div>
 
-  </div>
-
-  <div class="card mt-20" style="max-width:1000px;">
-    <div class="card-header">
-      <span class="card-title">Комментарии</span>
-    </div>
-    <div class="table-wrap">
-      <table id="t1">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Сообщение</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+      <div class="card">
+        <div class="card-header"><span class="card-title">Комментарии</span></div>
+        <div id="commentsList"><p class="text-muted text-sm">Нет комментариев</p></div>
+      </div>
     </div>
   </div>
 </div>
 
-<script src="../js/shared.js"></script>
-<script src="../js/request-detail.js"></script>
+<script src="../js/shared.js?v=4"></script>
+<script src="../js/request-detail.js?v=4"></script>
 </body>
 </html>
