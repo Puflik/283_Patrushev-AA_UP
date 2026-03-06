@@ -1,0 +1,258 @@
+CREATE DATABASE skud_system;
+
+\c skud_system;
+
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+
+CREATE TABLE roles (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE,
+    display_name VARCHAR(100) NOT NULL,
+    description TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE permissions (
+    id SERIAL PRIMARY KEY,
+    role_id INTEGER NOT NULL REFERENCES roles(id) ON DELETE CASCADE,
+    resource VARCHAR(50) NOT NULL,
+    can_view BOOLEAN NOT NULL DEFAULT FALSE,
+    can_create BOOLEAN NOT NULL DEFAULT FALSE,
+    can_edit BOOLEAN NOT NULL DEFAULT FALSE,
+    can_delete BOOLEAN NOT NULL DEFAULT FALSE,
+    can_export BOOLEAN NOT NULL DEFAULT FALSE,
+    UNIQUE(role_id, resource)
+);
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    password_hash TEXT NOT NULL,
+    role_id INTEGER NOT NULL REFERENCES roles(id),
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    session_timeout INTEGER NOT NULL DEFAULT 30,
+    last_login_at TIMESTAMPTZ,
+    password_reset_token TEXT,
+    password_reset_expires TIMESTAMPTZ,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE employees (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    middle_name VARCHAR(100),
+    position VARCHAR(150),
+    department VARCHAR(150),
+    phone VARCHAR(20),
+    photo_path TEXT,
+    face_encoding BYTEA,
+    badge_number VARCHAR(20) UNIQUE,
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    hired_at DATE,
+    fired_at DATE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE vehicles (
+    id SERIAL PRIMARY KEY,
+    license_plate VARCHAR(20) NOT NULL UNIQUE,
+    brand VARCHAR(50) NOT NULL,
+    model VARCHAR(50) NOT NULL,
+    vehicle_type VARCHAR(30) NOT NULL,
+    year INTEGER,
+    color VARCHAR(30),
+    vin VARCHAR(17) UNIQUE,
+    owner_id INTEGER REFERENCES employees(id) ON DELETE SET NULL,
+    status VARCHAR(20) NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'maintenance', 'blocked')),
+    entry_type VARCHAR(20) NOT NULL DEFAULT 'car' CHECK (entry_type IN ('car', 'truck')),
+    is_allowed BOOLEAN NOT NULL DEFAULT TRUE,
+    notes TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE cameras (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    location VARCHAR(150) NOT NULL,
+    camera_type VARCHAR(30) NOT NULL,
+    model VARCHAR(100),
+    ip_address INET UNIQUE,
+    resolution VARCHAR(20),
+    fps INTEGER,
+    description TEXT,
+    status VARCHAR(20) NOT NULL DEFAULT 'online' CHECK (status IN ('online', 'offline', 'maintenance')),
+    purpose VARCHAR(30) NOT NULL DEFAULT 'general' CHECK (purpose IN ('face', 'plate', 'general')),
+    stream_url TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE access_log (
+    id BIGSERIAL PRIMARY KEY,
+    event_type VARCHAR(20) NOT NULL CHECK (event_type IN ('face', 'plate', 'manual', 'denied')),
+    direction VARCHAR(10) NOT NULL DEFAULT 'in' CHECK (direction IN ('in', 'out')),
+    employee_id INTEGER REFERENCES employees(id) ON DELETE SET NULL,
+    vehicle_id INTEGER REFERENCES vehicles(id) ON DELETE SET NULL,
+    camera_id INTEGER REFERENCES cameras(id) ON DELETE SET NULL,
+    recognized_data TEXT,
+    confidence NUMERIC(5,2),
+    is_success BOOLEAN NOT NULL DEFAULT TRUE,
+    notes TEXT,
+    occurred_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE audit_log (
+    id BIGSERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    action VARCHAR(50) NOT NULL,
+    resource VARCHAR(50),
+    resource_id INTEGER,
+    details TEXT,
+    status VARCHAR(20) NOT NULL DEFAULT 'info' CHECK (status IN ('success', 'info', 'warning', 'error')),
+    severity VARCHAR(20) NOT NULL DEFAULT 'info' CHECK (severity IN ('info', 'warning', 'critical')),
+    ip_address INET,
+    occurred_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE notifications (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(200) NOT NULL,
+    message TEXT,
+    type VARCHAR(20) NOT NULL DEFAULT 'info' CHECK (type IN ('info', 'warning', 'error', 'success')),
+    is_read BOOLEAN NOT NULL DEFAULT FALSE,
+    target_role_id INTEGER REFERENCES roles(id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_access_log_occurred ON access_log(occurred_at DESC);
+CREATE INDEX idx_access_log_employee ON access_log(employee_id);
+CREATE INDEX idx_access_log_vehicle ON access_log(vehicle_id);
+CREATE INDEX idx_access_log_camera ON access_log(camera_id);
+CREATE INDEX idx_access_log_type ON access_log(event_type);
+CREATE INDEX idx_access_log_success ON access_log(is_success);
+CREATE INDEX idx_access_log_direction ON access_log(direction);
+
+CREATE INDEX idx_audit_log_occurred ON audit_log(occurred_at DESC);
+CREATE INDEX idx_audit_log_user ON audit_log(user_id);
+CREATE INDEX idx_audit_log_action ON audit_log(action);
+CREATE INDEX idx_audit_log_status ON audit_log(status);
+CREATE INDEX idx_audit_log_severity ON audit_log(severity);
+
+CREATE INDEX idx_employees_active ON employees(is_active);
+CREATE INDEX idx_employees_name ON employees(last_name, first_name);
+CREATE INDEX idx_employees_badge ON employees(badge_number);
+CREATE INDEX idx_employees_department ON employees(department);
+
+CREATE INDEX idx_vehicles_plate ON vehicles(license_plate);
+CREATE INDEX idx_vehicles_status ON vehicles(status);
+CREATE INDEX idx_vehicles_allowed ON vehicles(is_allowed);
+
+CREATE INDEX idx_cameras_status ON cameras(status);
+CREATE INDEX idx_cameras_purpose ON cameras(purpose);
+CREATE INDEX idx_cameras_location ON cameras(location);
+
+CREATE INDEX idx_users_role ON users(role_id);
+CREATE INDEX idx_users_active ON users(is_active);
+CREATE INDEX idx_users_email ON users(email);
+
+CREATE INDEX idx_notifications_read ON notifications(is_read);
+CREATE INDEX idx_notifications_role ON notifications(target_role_id);
+CREATE INDEX idx_notifications_type ON notifications(type);
+
+INSERT INTO roles (name, display_name, description) VALUES 
+    ('admin', 'Администратор', 'Полный доступ ко всем разделам системы'),
+    ('moderator', 'Модератор', 'Просмотр и редактирование данных'),
+    ('employee', 'Сотрудник', 'Только просмотр журнала собственных событий');
+
+INSERT INTO permissions (role_id, resource, can_view, can_create, can_edit, can_delete, can_export) 
+SELECT r.id, res.resource, TRUE, TRUE, TRUE, TRUE, TRUE 
+FROM roles r 
+CROSS JOIN (VALUES 
+    ('employees'), ('vehicles'), ('cameras'), ('audit_log'), 
+    ('access_log'), ('settings'), ('notifications'), ('users')
+) AS res(resource) 
+WHERE r.name = 'admin';
+
+INSERT INTO permissions (role_id, resource, can_view, can_create, can_edit, can_delete, can_export) 
+SELECT r.id, res.resource, res.v, res.c, res.e, res.d, res.ex 
+FROM roles r 
+CROSS JOIN (VALUES 
+    ('employees', TRUE, TRUE, TRUE, FALSE, TRUE),
+    ('vehicles', TRUE, TRUE, TRUE, FALSE, TRUE),
+    ('cameras', TRUE, FALSE, FALSE, FALSE, FALSE),
+    ('audit_log', TRUE, FALSE, FALSE, FALSE, TRUE),
+    ('access_log', TRUE, FALSE, FALSE, FALSE, TRUE),
+    ('settings', FALSE, FALSE, FALSE, FALSE, FALSE),
+    ('notifications', TRUE, FALSE, FALSE, FALSE, FALSE),
+    ('users', TRUE, FALSE, FALSE, FALSE, FALSE)
+) AS res(resource, v, c, e, d, ex) 
+WHERE r.name = 'moderator';
+
+INSERT INTO permissions (role_id, resource, can_view, can_create, can_edit, can_delete, can_export) 
+SELECT r.id, res.resource, res.v, FALSE, FALSE, FALSE, FALSE 
+FROM roles r 
+CROSS JOIN (VALUES 
+    ('access_log', TRUE),
+    ('employees', FALSE),
+    ('vehicles', FALSE),
+    ('cameras', FALSE),
+    ('audit_log', FALSE),
+    ('settings', FALSE),
+    ('notifications', TRUE),
+    ('users', FALSE)
+) AS res(resource, v) 
+WHERE r.name = 'employee';
+
+INSERT INTO users (username, email, password_hash, role_id, session_timeout) VALUES 
+    ('admin', 'admin@skud-company.ru', crypt('admin123', gen_salt('bf', 12)), (SELECT id FROM roles WHERE name = 'admin'), 30),
+    ('moderator', 'moderator@skud-company.ru', crypt('moder123', gen_salt('bf', 12)), (SELECT id FROM roles WHERE name = 'moderator'), 30),
+    ('user', 'user@skud-company.ru', crypt('user123', gen_salt('bf', 12)), (SELECT id FROM roles WHERE name = 'employee'), 30),
+    ('petrov', 'petrov@skud-company.ru', crypt('petrov2024', gen_salt('bf', 12)), (SELECT id FROM roles WHERE name = 'employee'), 30),
+    ('ivanova', 'ivanova@skud-company.ru', crypt('ivanova2024', gen_salt('bf', 12)), (SELECT id FROM roles WHERE name = 'moderator'), 30);
+
+INSERT INTO employees (user_id, first_name, last_name, middle_name, position, department, phone, badge_number, is_active, hired_at) VALUES 
+    ((SELECT id FROM users WHERE username = 'petrov'), 'Пётр', 'Петров', 'Сергеевич', 'Ведущий инженер', 'Производственный отдел', '+7-900-111-22-33', 'EMP-001', TRUE, '2020-03-15'),
+    ((SELECT id FROM users WHERE username = 'ivanova'), 'Мария', 'Иванова', 'Александровна', 'Менеджер по персоналу', 'HR-отдел', '+7-900-444-55-66', 'EMP-002', TRUE, '2019-07-01'),
+    (NULL, 'Алексей', 'Сидоров', 'Викторович', 'Охранник', 'Служба безопасности', '+7-900-777-88-99', 'EMP-003', TRUE, '2021-01-10'),
+    (NULL, 'Елена', 'Козлова', 'Дмитриевна', 'Бухгалтер', 'Бухгалтерия', '+7-900-222-33-44', 'EMP-004', TRUE, '2018-09-20'),
+    (NULL, 'Дмитрий', 'Новиков', 'Павлович', 'Водитель', 'АХО', '+7-900-555-66-77', 'EMP-005', TRUE, '2022-05-05'),
+    (NULL, 'Ольга', 'Морозова', 'Игоревна', 'Секретарь', 'Администрация', '+7-900-333-44-55', 'EMP-006', FALSE, '2017-04-12');
+
+INSERT INTO vehicles (license_plate, brand, model, vehicle_type, year, color, vin, owner_id, status, entry_type, is_allowed) VALUES 
+    ('А123БВ777', 'Toyota', 'Camry', 'Седан', 2022, 'Черный', '2T1BURHE0JC123456', (SELECT id FROM employees WHERE badge_number = 'EMP-005'), 'active', 'car', TRUE),
+    ('В456ГД888', 'Hyundai', 'Tucson', 'Внедорожник', 2021, 'Белый', 'KM8J3CA46JU789012', NULL, 'active', 'car', TRUE),
+    ('Е789Ж3999', 'Ford', 'Transit', 'Минивэн', 2020, 'Серый', 'WF0XXXTTGXKA12345', NULL, 'maintenance', 'truck', TRUE),
+    ('К001МН77', 'KAMAZ', '6520', 'Грузовик', 2019, 'Синий', 'XTC65200090123456', (SELECT id FROM employees WHERE badge_number = 'EMP-005'), 'active', 'truck', TRUE),
+    ('Р222СТ199', 'Lada', 'Vesta', 'Седан', 2023, 'Красный', 'XTA21900L0123456', NULL, 'active', 'car', FALSE);
+
+INSERT INTO cameras (name, location, camera_type, model, ip_address, resolution, fps, description, status, purpose, stream_url) VALUES 
+    ('Камера въезда', 'Главный въезд', 'Цилиндрическая', 'Hikvision DS-2CD2143G0', '192.168.1.100', 'Full HD (1080p)', 30, 'Контроль въезда на территорию', 'online', 'plate', 'rtsp://192.168.1.100:554/stream1'),
+    ('Камера парковки', 'Парковка А', 'Купольная', 'Dahua IPC-HFW2831T', '192.168.1.101', '4K Ultra HD', 25, 'Наблюдение за парковочной зоной', 'online', 'general', 'rtsp://192.168.1.101:554/stream1'),
+    ('Камера периметра', 'Северная стена', 'PTZ (поворотная)', 'Axis P5655-E', '192.168.1.102', 'Full HD (1080p)', 25, 'Контроль периметра территории', 'maintenance', 'general', 'rtsp://192.168.1.102:554/stream1'),
+    ('Камера проходной', 'Проходная №1', 'Купольная', 'Hikvision DS-2DE4425IW', '192.168.1.103', 'Full HD (1080p)', 30, 'Распознавание лиц сотрудников', 'online', 'face', 'rtsp://192.168.1.103:554/stream1'),
+    ('Камера склада', 'Склад (въезд)', 'Цилиндрическая', 'Dahua SD49425XB-HNR', '192.168.1.104', '4K Ultra HD', 20, 'Контроль въезда грузового транспорта', 'offline', 'plate', 'rtsp://192.168.1.104:554/stream1');
+
+INSERT INTO access_log (event_type, direction, employee_id, vehicle_id, camera_id, recognized_data, confidence, is_success, occurred_at) VALUES 
+    ('face', 'in', (SELECT id FROM employees WHERE badge_number = 'EMP-001'), NULL, (SELECT id FROM cameras WHERE name = 'Камера проходной'), 'Петров Пётр Сергеевич', 97.34, TRUE, NOW() - INTERVAL '2 hours'),
+    ('face', 'in', (SELECT id FROM employees WHERE badge_number = 'EMP-002'), NULL, (SELECT id FROM cameras WHERE name = 'Камера проходной'), 'Иванова Мария Александровна', 94.12, TRUE, NOW() - INTERVAL '3 hours'),
+    ('plate', 'in', NULL, (SELECT id FROM vehicles WHERE license_plate = 'А123БВ777'), (SELECT id FROM cameras WHERE name = 'Камера въезда'), 'А123БВ777', 98.76, TRUE, NOW() - INTERVAL '4 hours'),
+    ('plate', 'in', NULL, (SELECT id FROM vehicles WHERE license_plate = 'Р222СТ199'), (SELECT id FROM cameras WHERE name = 'Камера въезда'), 'Р222СТ199', 95.00, FALSE, NOW() - INTERVAL '5 hours'),
+    ('face', 'out', (SELECT id FROM employees WHERE badge_number = 'EMP-003'), NULL, (SELECT id FROM cameras WHERE name = 'Камера проходной'), 'Сидоров Алексей Викторович', 91.50, TRUE, NOW() - INTERVAL '1 hour'),
+    ('denied', 'in', NULL, NULL, (SELECT id FROM cameras WHERE name = 'Камера въезда'), 'Неизвестный номер: В999ЕЕ99', NULL, FALSE, NOW() - INTERVAL '30 minutes');
+
+INSERT INTO audit_log (user_id, action, resource, resource_id, details, status, severity, ip_address, occurred_at) VALUES 
+    ((SELECT id FROM users WHERE username = 'admin'), 'LOGIN', NULL, NULL, 'Вход в систему', 'success', 'info', '192.168.1.1', NOW() - INTERVAL '1 hour'),
+    ((SELECT id FROM users WHERE username = 'admin'), 'CREATE', 'vehicles', (SELECT id FROM vehicles WHERE license_plate = 'А123БВ777'), 'Новый автомобиль добавлен: А123БВ777 (Toyota Camry)', 'success', 'info', '192.168.1.1', NOW() - INTERVAL '2 hours'),
+    ((SELECT id FROM users WHERE username = 'moderator'), 'UPDATE', 'employees', (SELECT id FROM employees WHERE badge_number = 'EMP-001'), 'Профиль сотрудника обновлён', 'success', 'info', '192.168.1.101', NOW() - INTERVAL '3 hours'),
+    ((SELECT id FROM users WHERE username = 'moderator'), 'ACCESS_DENIED', 'settings', NULL, 'Попытка доступа к разделу Настройки', 'warning', 'warning', '192.168.1.101', NOW() - INTERVAL '4 hours');
+
+INSERT INTO notifications (title, message, type, is_read, target_role_id) VALUES 
+    ('Требуется обновление ПО', 'Доступна новая версия системы СКУД v2.1.0. Рекомендуется обновление.', 'warning', FALSE, NULL),
+    ('Новые правила использования', 'Внесены изменения в политику безопасности предприятия.', 'info', FALSE, NULL),
+    ('Камера периметра — обслуживание', 'Камера на северной стене переведена в режим обслуживания до 10.03.2025.', 'warning', FALSE, (SELECT id FROM roles WHERE name = 'admin'));
