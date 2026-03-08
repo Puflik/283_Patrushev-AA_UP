@@ -1,145 +1,218 @@
 -- ================================================================
---  Файл: 003_test_data.sql — Тестовые данные (реалистичные)
---  Соответствуют скриншотам приложения
+--  СКУД — Файл: 003_test_data.sql v2
+--  Тестовые данные под обновлённую схему
 -- ================================================================
 
--- ----------------------------------------------------------------
--- Пользователи (пароли хэшированы bcrypt)
--- admin/admin123 | moderator/moder123 | user/user123
--- ----------------------------------------------------------------
-INSERT INTO users (username, email, password_hash, role_id, session_timeout) VALUES
-  ('admin',     'admin@skud-company.ru',
-   crypt('admin123', gen_salt('bf', 12)),
-   (SELECT id FROM roles WHERE name = 'admin'), 30),
+-- ================================================================
+-- СОТРУДНИКИ
+-- ================================================================
+INSERT INTO employees (first_name, last_name, middle_name, position, department, phone, badge_number, is_active, hired_at)
+VALUES
+  ('Иван',    'Петров',    'Сергеевич', 'Директор',           'Руководство',   '+7-900-111-0001', 'B001', TRUE, '2020-01-15'),
+  ('Мария',   'Сидорова',  'Ивановна',  'Главный бухгалтер',  'Бухгалтерия',   '+7-900-111-0002', 'B002', TRUE, '2020-03-01'),
+  ('Алексей', 'Козлов',    'Петрович',  'Начальник склада',   'Склад',         '+7-900-111-0003', 'B003', TRUE, '2021-05-10'),
+  ('Ольга',   'Новикова',  'Дмитриевна','Менеджер',           'Продажи',       '+7-900-111-0004', 'B004', TRUE, '2021-08-20'),
+  ('Дмитрий', 'Морозов',   'Алексеевич','Водитель-экспедитор','Логистика',     '+7-900-111-0005', 'B005', TRUE, '2022-01-10'),
+  ('Светлана','Волкова',   'Николаевна','Охранник',           'Безопасность',  '+7-900-111-0006', 'B006', TRUE, '2022-03-15'),
+  ('Николай', 'Зайцев',    'Васильевич','Водитель',           'Логистика',     '+7-900-111-0007', 'B007', TRUE, '2022-06-01'),
+  ('Татьяна', 'Соколова',  'Игоревна',  'HR-менеджер',        'Кадры',         '+7-900-111-0008', 'B008', TRUE, '2023-02-14'),
+  ('Андрей',  'Лебедев',   'Романович', 'Инженер ИТ',         'ИТ-отдел',      '+7-900-111-0009', 'B009', TRUE, '2023-04-01'),
+  ('Елена',   'Егорова',   'Степановна','Кладовщик',          'Склад',         '+7-900-111-0010', 'B010', FALSE,'2019-09-01');
 
-  ('moderator', 'moderator@skud-company.ru',
-   crypt('moder123', gen_salt('bf', 12)),
-   (SELECT id FROM roles WHERE name = 'moderator'), 30),
+-- ================================================================
+-- ТРАНСПОРТНЫЕ СРЕДСТВА (обновлено: allowed_gates вместо entry_type)
+-- ================================================================
+INSERT INTO vehicles (license_plate, brand, model, vehicle_type, year, color, owner_id, status, allowed_gates, notes)
+VALUES
+  -- Личные авто сотрудников — gate_1 (легковой въезд)
+  ('А123ВС777', 'Toyota',     'Camry',      'Седан',      2021, 'Белый',
+   (SELECT id FROM employees WHERE badge_number='B001'), 'active', 'gate_1', 'Авто директора'),
+  ('В456ЕК799', 'Volkswagen', 'Tiguan',     'Внедорожник',2020, 'Серый',
+   (SELECT id FROM employees WHERE badge_number='B002'), 'active', 'gate_1', NULL),
+  ('С789МН116', 'Hyundai',    'Solaris',    'Седан',      2022, 'Синий',
+   (SELECT id FROM employees WHERE badge_number='B004'), 'active', 'gate_1', NULL),
+  ('Т321РС750', 'Kia',        'Sportage',   'Внедорожник',2019, 'Чёрный',
+   (SELECT id FROM employees WHERE badge_number='B008'), 'active', 'gate_1', NULL),
+  ('У654ОА197', 'Lada',       'Vesta',      'Седан',      2023, 'Красный',
+   (SELECT id FROM employees WHERE badge_number='B009'), 'active', 'gate_1', NULL),
 
-  ('user',      'user@skud-company.ru',
-   crypt('user123', gen_salt('bf', 12)),
-   (SELECT id FROM roles WHERE name = 'employee'), 30),
+  -- Грузовые ТС компании — gate_2 (грузовой въезд)
+  ('К147НМ750', 'КАМАЗ',      '65115',      'Грузовик',   2018, 'Синий',
+   (SELECT id FROM employees WHERE badge_number='B005'), 'active', 'gate_2', 'Самосвал, доставка стройматериалов'),
+  ('М258ОР799', 'МАЗ',        '5340',       'Грузовик',   2019, 'Зелёный',
+   (SELECT id FROM employees WHERE badge_number='B007'), 'active', 'gate_2', 'Бортовой грузовик'),
+  ('Н369ПС116', 'Volvo',      'FH16',       'Грузовик',   2020, 'Белый',
+   (SELECT id FROM employees WHERE badge_number='B005'), 'active', 'gate_2', 'Фура, межрегиональные рейсы'),
+  ('Р741ТУ777', 'Газель',     'Next',       'Грузовик',   2021, 'Белый',
+   (SELECT id FROM employees WHERE badge_number='B003'), 'active', 'gate_2', 'Малотоннажный, развоз по городу'),
 
-  ('petrov',    'petrov@skud-company.ru',
-   crypt('petrov2024', gen_salt('bf', 12)),
-   (SELECT id FROM roles WHERE name = 'employee'), 30),
+  -- Авто с доступом через любые ворота — all
+  ('Е852ФХ750', 'Ford',       'Transit',    'Минивэн',    2022, 'Серебристый',
+   (SELECT id FROM employees WHERE badge_number='B003'), 'active', 'all',    'Корпоративный микроавтобус'),
 
-  ('ivanova',   'ivanova@skud-company.ru',
-   crypt('ivanova2024', gen_salt('bf', 12)),
-   (SELECT id FROM roles WHERE name = 'moderator'), 30);
+  -- Заблокированное ТС
+  ('Ж963ЦЧ799', 'BMW',        'X5',         'Внедорожник',2018, 'Чёрный',
+   NULL, 'blocked', 'none', 'Заблокирован — нарушение правил парковки'),
 
--- ----------------------------------------------------------------
--- Сотрудники предприятия
--- ----------------------------------------------------------------
-INSERT INTO employees (user_id, first_name, last_name, middle_name, position, department, phone, badge_number, is_active, hired_at) VALUES
-  ((SELECT id FROM users WHERE username = 'petrov'),
-   'Пётр', 'Петров', 'Сергеевич', 'Ведущий инженер', 'Производственный отдел', '+7-900-111-22-33', 'EMP-001', TRUE, '2020-03-15'),
+  -- Авто на обслуживании
+  ('И174ШЩ116', 'Mercedes',   'Sprinter',   'Минивэн',    2020, 'Белый',
+   (SELECT id FROM employees WHERE badge_number='B007'), 'maintenance', 'gate_1', 'На техническом обслуживании до 15.03');
 
-  ((SELECT id FROM users WHERE username = 'ivanova'),
-   'Мария', 'Иванова', 'Александровна', 'Менеджер по персоналу', 'HR-отдел', '+7-900-444-55-66', 'EMP-002', TRUE, '2019-07-01'),
+-- ================================================================
+-- КАМЕРЫ (gate_number вместо purpose=face)
+-- ================================================================
+INSERT INTO cameras (name, location, camera_type, model, ip_address, resolution, fps, status, gate_number, purpose, description)
+VALUES
+  ('Камера въезда №1',   'Ворота №1 (легковой въезд)', 'Цилиндрическая', 'Hikvision DS-2CD2T47G2',
+   '192.168.1.101', 'Full HD (1080p)', 30, 'online',  'gate_1', 'plate',
+   'Основная камера распознавания номеров на легковом въезде'),
 
-  (NULL, 'Алексей', 'Сидоров', 'Викторович', 'Охранник', 'Служба безопасности', '+7-900-777-88-99', 'EMP-003', TRUE, '2021-01-10'),
+  ('Камера въезда №2',   'Ворота №2 (грузовой въезд)', 'Цилиндрическая', 'Hikvision DS-2CD2T47G2',
+   '192.168.1.102', 'Full HD (1080p)', 30, 'online',  'gate_2', 'plate',
+   'Основная камера распознавания номеров на грузовом въезде'),
 
-  (NULL, 'Елена', 'Козлова', 'Дмитриевна', 'Бухгалтер', 'Бухгалтерия', '+7-900-222-33-44', 'EMP-004', TRUE, '2018-09-20'),
+  ('Камера парковки А',  'Парковка — сектор А',        'Купольная',       'Dahua IPC-HDW2849H',
+   '192.168.1.103', 'Full HD (1080p)', 25, 'online',  NULL,     'general',
+   'Обзорная камера парковки'),
 
-  (NULL, 'Дмитрий', 'Новиков', 'Павлович', 'Водитель', 'АХО', '+7-900-555-66-77', 'EMP-005', TRUE, '2022-05-05'),
+  ('Камера склада',      'Территория склада',          'Купольная',       'Dahua IPC-HDW2849H',
+   '192.168.1.104', 'Full HD (1080p)', 25, 'online',  NULL,     'general',
+   'Обзорная камера склада'),
 
-  (NULL, 'Ольга', 'Морозова', 'Игоревна', 'Секретарь', 'Администрация', '+7-900-333-44-55', 'EMP-006', FALSE, '2017-04-12');
+  ('Камера КПП',         'Контрольно-пропускной пункт','PTZ (поворотная)','Hikvision DS-2DE4425IW',
+   '192.168.1.105', '4K Ultra HD',    25, 'online',  NULL,     'general',
+   'Поворотная камера КПП, ручное управление охраной'),
 
--- ----------------------------------------------------------------
--- Транспортные средства (точно как на скрине)
--- ----------------------------------------------------------------
-INSERT INTO vehicles (license_plate, brand, model, vehicle_type, year, color, vin, owner_id, status, entry_type, is_allowed) VALUES
-  ('А123БВ777', 'Toyota',  'Camry',   'Седан',      2022, 'Черный', '2T1BURHE0JC123456', NULL, 'active',      'car',   TRUE),
-  ('В456ГД888', 'Hyundai', 'Tucson',  'Внедорожник', 2021, 'Белый', 'KM8J3CA46JU789012', NULL, 'active',      'car',   TRUE),
-  ('Е789Ж3999', 'Ford',    'Transit', 'Минивэн',    2020, 'Серый', 'WF0XXXTTGXKA12345', NULL, 'maintenance', 'truck', TRUE),
-  ('К001МН77',  'KAMAZ',   '6520',    'Грузовик',   2019, 'Синий', 'XTC65200090123456',
-   (SELECT id FROM employees WHERE badge_number = 'EMP-005'), 'active', 'truck', TRUE),
-  ('Р222СТ199', 'Lada',    'Vesta',   'Седан',      2023, 'Красный', 'XTA21900L0123456', NULL, 'active', 'car', FALSE);  -- заблокирован
+  ('Камера въезда №1 (резерв)', 'Ворота №1 — резервная', 'Цилиндрическая', 'Hikvision DS-2CD2143G0',
+   '192.168.1.106', 'Full HD (1080p)', 25, 'offline', 'gate_1', 'plate',
+   'Резервная камера, в данный момент отключена');
 
--- ----------------------------------------------------------------
--- Камеры видеонаблюдения (точно как на скрине)
--- ----------------------------------------------------------------
-INSERT INTO cameras (name, location, camera_type, model, ip_address, resolution, fps, description, status, purpose) VALUES
-  ('Камера въезда',    'Главный въезд',   'Цилиндрическая', 'Hikvision DS-2CD2143G0', '192.168.1.100', 'Full HD (1080p)', 30, 'Контроль въезда на территорию',    'online',      'plate'),
-  ('Камера парковки',  'Парковка А',      'Купольная',       'Dahua IPC-HFW2831T',     '192.168.1.101', '4K Ultra HD',    25, 'Наблюдение за парковочной зоной',  'online',      'general'),
-  ('Камера периметра', 'Северная стена',  'PTZ (поворотная)', 'Axis P5655-E',          '192.168.1.102', 'Full HD (1080p)', 25, 'Контроль периметра территории',    'maintenance', 'general'),
-  ('Камера проходной', 'Проходная №1',   'Купольная',       'Hikvision DS-2DE4425IW', '192.168.1.103', 'Full HD (1080p)', 30, 'Распознавание лиц сотрудников',    'online',      'face'),
-  ('Камера склада',    'Склад (въезд)',   'Цилиндрическая', 'Dahua SD49425XB-HNR',    '192.168.1.104', '4K Ultra HD',    20, 'Контроль въезда грузового транспорта', 'offline', 'plate');
+-- ================================================================
+-- ТЕСТОВЫЕ СОБЫТИЯ ДОСТУПА
+-- ================================================================
+INSERT INTO access_log (event_type, direction, vehicle_id, camera_id, gate_number, recognized_plate, detect_confidence, ocr_confidence, is_success, deny_reason, occurred_at)
+VALUES
+  -- Успешные въезды через gate_1
+  ('plate', 'in',
+   (SELECT id FROM vehicles WHERE license_plate='А123ВС777'),
+   (SELECT id FROM cameras  WHERE ip_address='192.168.1.101'),
+   'gate_1', 'А123ВС777', 96.50, 98.20, TRUE, NULL,
+   NOW() - INTERVAL '2 hours'),
 
--- ----------------------------------------------------------------
--- Журнал событий доступа (access_log)
--- ----------------------------------------------------------------
-INSERT INTO access_log (event_type, direction, employee_id, vehicle_id, camera_id, recognized_data, confidence, is_success, occurred_at) VALUES
-  ('face',   'in',  (SELECT id FROM employees WHERE badge_number = 'EMP-001'), NULL,
-   (SELECT id FROM cameras WHERE name = 'Камера проходной'),
-   'Петров Пётр Сергеевич', 97.34, TRUE,  NOW() - INTERVAL '2 hours'),
+  ('plate', 'in',
+   (SELECT id FROM vehicles WHERE license_plate='В456ЕК799'),
+   (SELECT id FROM cameras  WHERE ip_address='192.168.1.101'),
+   'gate_1', 'В456ЕК799', 94.80, 97.10, TRUE, NULL,
+   NOW() - INTERVAL '1 hour 45 minutes'),
 
-  ('face',   'in',  (SELECT id FROM employees WHERE badge_number = 'EMP-002'), NULL,
-   (SELECT id FROM cameras WHERE name = 'Камера проходной'),
-   'Иванова Мария Александровна', 94.12, TRUE, NOW() - INTERVAL '3 hours'),
+  -- Успешный въезд через gate_2
+  ('plate', 'in',
+   (SELECT id FROM vehicles WHERE license_plate='К147НМ750'),
+   (SELECT id FROM cameras  WHERE ip_address='192.168.1.102'),
+   'gate_2', 'К147НМ750', 91.20, 95.40, TRUE, NULL,
+   NOW() - INTERVAL '1 hour 30 minutes'),
 
-  ('plate',  'in',  NULL, (SELECT id FROM vehicles WHERE license_plate = 'А123БВ777'),
-   (SELECT id FROM cameras WHERE name = 'Камера въезда'),
-   'А123БВ777', 98.76, TRUE,  NOW() - INTERVAL '4 hours'),
+  -- Отказ — не найден в БД
+  ('denied', 'in',
+   NULL,
+   (SELECT id FROM cameras WHERE ip_address='192.168.1.101'),
+   'gate_1', 'О999ОО799', 88.50, 92.30, FALSE, 'not_found',
+   NOW() - INTERVAL '1 hour'),
 
-  ('plate',  'in',  NULL, (SELECT id FROM vehicles WHERE license_plate = 'Р222СТ199'),
-   (SELECT id FROM cameras WHERE name = 'Камера въезда'),
-   'Р222СТ199', 95.00, FALSE, NOW() - INTERVAL '5 hours'),  -- отказано (is_allowed = FALSE)
+  -- Отказ — заблокирован
+  ('denied', 'in',
+   (SELECT id FROM vehicles WHERE license_plate='Ж963ЦЧ799'),
+   (SELECT id FROM cameras  WHERE ip_address='192.168.1.101'),
+   'gate_1', 'Ж963ЦЧ799', 95.10, 97.80, FALSE, 'blocked',
+   NOW() - INTERVAL '50 minutes'),
 
-  ('face',   'out', (SELECT id FROM employees WHERE badge_number = 'EMP-003'), NULL,
-   (SELECT id FROM cameras WHERE name = 'Камера проходной'),
-   'Сидоров Алексей Викторович', 91.50, TRUE,  NOW() - INTERVAL '1 hour'),
+  -- Отказ — не те ворота (фура пытается въехать через gate_1)
+  ('denied', 'in',
+   (SELECT id FROM vehicles WHERE license_plate='Н369ПС116'),
+   (SELECT id FROM cameras  WHERE ip_address='192.168.1.101'),
+   'gate_1', 'Н369ПС116', 93.70, 96.50, FALSE, 'wrong_gate',
+   NOW() - INTERVAL '40 minutes'),
 
-  ('denied', 'in',  NULL, NULL,
-   (SELECT id FROM cameras WHERE name = 'Камера въезда'),
-   'Неизвестный номер: В999ЕЕ99', NULL, FALSE, NOW() - INTERVAL '30 minutes');
+  -- Выезды
+  ('plate', 'out',
+   (SELECT id FROM vehicles WHERE license_plate='А123ВС777'),
+   (SELECT id FROM cameras  WHERE ip_address='192.168.1.101'),
+   'gate_1', 'А123ВС777', 97.20, 98.90, TRUE, NULL,
+   NOW() - INTERVAL '30 minutes'),
 
--- ----------------------------------------------------------------
--- Журнал аудита системы (audit_log) — как на экране аудита
--- ----------------------------------------------------------------
-INSERT INTO audit_log (user_id, action, resource, resource_id, details, status, severity, ip_address, occurred_at) VALUES
-  ((SELECT id FROM users WHERE username = 'admin'),
-   'LOGIN', NULL, NULL,
-   'Система запущена пользователем: Администратор', 'info', 'info', '192.168.1.1', NOW() - INTERVAL '1 hour 35 min'),
+  -- Ручной пропуск охранником
+  ('manual', 'in',
+   (SELECT id FROM vehicles WHERE license_plate='Е852ФХ750'),
+   (SELECT id FROM cameras WHERE ip_address='192.168.1.105'),
+   'gate_1', NULL, NULL, NULL, TRUE, NULL,
+   NOW() - INTERVAL '20 minutes'),
 
-  ((SELECT id FROM users WHERE username = 'admin'),
-   'CREATE', 'vehicles', (SELECT id FROM vehicles WHERE license_plate = 'А123БВ777'),
-   'Новый автомобиль добавлен: А123БВ777 (Toyota Camry)', 'success', 'info', '192.168.1.1', NOW() - INTERVAL '1 hour 44 min'),
+  -- Ещё несколько для статистики
+  ('plate', 'in',
+   (SELECT id FROM vehicles WHERE license_plate='М258ОР799'),
+   (SELECT id FROM cameras  WHERE ip_address='192.168.1.102'),
+   'gate_2', 'М258ОР799', 89.40, 94.60, TRUE, NULL,
+   NOW() - INTERVAL '15 minutes'),
 
-  ((SELECT id FROM users WHERE username = 'admin'),
-   'SYNC_ERROR', 'employees', NULL,
-   'Ошибка синхронизации с базой данных сотрудников', 'error', 'critical', '192.168.1.1', NOW() - INTERVAL '1 hour 54 min'),
+  ('plate', 'in',
+   (SELECT id FROM vehicles WHERE license_plate='С789МН116'),
+   (SELECT id FROM cameras  WHERE ip_address='192.168.1.101'),
+   'gate_1', 'С789МН116', 95.80, 97.30, TRUE, NULL,
+   NOW() - INTERVAL '10 minutes');
 
-  ((SELECT id FROM users WHERE username = 'moderator'),
-   'UPDATE', 'employees', (SELECT id FROM employees WHERE badge_number = 'EMP-001'),
-   'Профиль сотрудника Петров П.С. успешно обновлён', 'success', 'info', '192.168.1.101', NOW() - INTERVAL '2 hours 1 min'),
+-- ================================================================
+-- ТЕСТОВЫЕ СОБЫТИЯ АУДИТА
+-- ================================================================
+INSERT INTO audit_log (user_id, action, resource, resource_id, details, status, severity, ip_address)
+VALUES
+  ((SELECT id FROM users WHERE username='admin'),
+   'LOGIN', NULL, NULL, 'Успешный вход в систему', 'success', 'info', '192.168.1.10'),
 
-  ((SELECT id FROM users WHERE username = 'admin'),
-   'BACKUP', NULL, NULL,
-   'Резервное копирование базы данных выполнено успешно', 'info', 'info', '192.168.1.1', NOW() - INTERVAL '2 hours 29 min'),
+  ((SELECT id FROM users WHERE username='admin'),
+   'CREATE', 'vehicles', (SELECT id FROM vehicles WHERE license_plate='А123ВС777'),
+   'Добавлено ТС: А123ВС777 (Toyota Camry)', 'success', 'info', '192.168.1.10'),
 
-  ((SELECT id FROM users WHERE username = 'moderator'),
+  ((SELECT id FROM users WHERE username='admin'),
+   'EDIT', 'vehicles', (SELECT id FROM vehicles WHERE license_plate='Ж963ЦЧ799'),
+   'ТС Ж963ЦЧ799: статус изменён на "blocked"', 'success', 'warning', '192.168.1.10'),
+
+  ((SELECT id FROM users WHERE username='moderator'),
+   'LOGIN', NULL, NULL, 'Успешный вход в систему', 'success', 'info', '192.168.1.11'),
+
+  ((SELECT id FROM users WHERE username='moderator'),
+   'CREATE', 'employees', NULL,
+   'Добавлен сотрудник: Лебедев Андрей Романович (ИТ-отдел)', 'success', 'info', '192.168.1.11'),
+
+  ((SELECT id FROM users WHERE username='admin'),
+   'PERMISSION_CHANGE', 'settings', NULL,
+   'Изменены права роли "moderator": vehicles.can_delete = FALSE', 'success', 'warning', '192.168.1.10'),
+
+  ((SELECT id FROM users WHERE username='user'),
    'ACCESS_DENIED', 'settings', NULL,
-   'Попытка несанкционированного доступа к разделу Настройки. Путь: /admin/settings', 'warning', 'warning', '192.168.1.101', NOW() - INTERVAL '3 hours'),
+   'Попытка доступа к разделу "Настройки" без прав', 'warning', 'warning', '192.168.1.12'),
 
-  ((SELECT id FROM users WHERE username = 'admin'),
-   'PERMISSION_CHANGE', 'employees', (SELECT id FROM users WHERE username = 'moderator'),
-   'Изменение прав доступа: Пользователь moderator. Изменение прав доступа', 'success', 'info', '192.168.1.100', NOW() - INTERVAL '4 hours');
+  ((SELECT id FROM users WHERE username='admin'),
+   'LOGOUT', NULL, NULL, 'Выход из системы', 'info', 'info', '192.168.1.10');
 
--- ----------------------------------------------------------------
--- Уведомления (как на Главном экране)
--- ----------------------------------------------------------------
-INSERT INTO notifications (title, message, type, is_read, target_role_id) VALUES
+-- ================================================================
+-- УВЕДОМЛЕНИЯ
+-- ================================================================
+INSERT INTO notifications (title, message, type, is_read, target_role_id)
+VALUES
   ('Требуется обновление ПО',
    'Доступна новая версия системы СКУД v2.1.0. Рекомендуется обновление.',
+   'warning', FALSE,
+   (SELECT id FROM roles WHERE name = 'admin')),
+
+  ('Камера въезда №1 (резерв) отключена',
+   'Резервная камера на воротах №1 не отвечает более 24 часов.',
    'warning', FALSE, NULL),
 
-  ('Новые правила использования',
-   'Внесены изменения в политику безопасности предприятия. Ознакомьтесь с документом.',
-   'info', FALSE, NULL),
+  ('Попытка въезда в нерабочее время',
+   'Зафиксирована попытка въезда в 03:42 — транспортное средство О999ОО799 не найдено в БД.',
+   'error', FALSE,
+   (SELECT id FROM roles WHERE name = 'admin')),
 
-  ('Камера периметра — обслуживание',
-   'Камера на северной стене переведена в режим обслуживания до 10.03.2025.',
-   'warning', FALSE, (SELECT id FROM roles WHERE name = 'admin'));
-
+  ('Плановое обслуживание',
+   'Mercedes Sprinter (И174ШЩ116) направлен на техническое обслуживание.',
+   'info', TRUE, NULL);
